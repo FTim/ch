@@ -1,0 +1,8 @@
+D:\suli\vegy_jegyz\vs_demo\word_magic_lib\word_magic_lib\bin\Debug\word_magic_lib.exe.config
+D:\suli\vegy_jegyz\vs_demo\word_magic_lib\word_magic_lib\bin\Debug\word_magic_lib.exe
+D:\suli\vegy_jegyz\vs_demo\word_magic_lib\word_magic_lib\bin\Debug\word_magic_lib.pdb
+D:\suli\vegy_jegyz\vs_demo\word_magic_lib\word_magic_lib\bin\Debug\Xceed.Words.NET.dll
+D:\suli\vegy_jegyz\vs_demo\word_magic_lib\word_magic_lib\obj\Debug\word_magic_lib.csprojResolveAssemblyReference.cache
+D:\suli\vegy_jegyz\vs_demo\word_magic_lib\word_magic_lib\obj\Debug\word_magic_lib.csproj.CoreCompileInputs.cache
+D:\suli\vegy_jegyz\vs_demo\word_magic_lib\word_magic_lib\obj\Debug\word_magic_lib.exe
+D:\suli\vegy_jegyz\vs_demo\word_magic_lib\word_magic_lib\obj\Debug\word_magic_lib.pdb
