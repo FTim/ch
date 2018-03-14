@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f5809689f5244d8fad59665f1fc05682" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="vegyeszjk1Model.Location" Width="1.5" PointX="7.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.LocationMolecule" Width="1.5" PointX="7.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.MoleculeStatic" Width="1.5" PointX="7.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Person" Width="1.5" PointX="1" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Project" Width="1.5" PointX="3.5" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.ProjectPlan" Width="1.5" PointX="5.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Reaction" Width="1.5" PointX="2" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Reagent" Width="1.5" PointX="5.375" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Solvent" Width="1.5" PointX="5.375" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.StartingMaterial" Width="1.5" PointX="5.375" PointY="8.375" IsExpanded="true" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_LocationMolecule_Location" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_LocationMolecule_LocationMolecule" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_Reagent_MoleculeStatic" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_Solvent_MoleculeStatic" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_StartingMaterial_MoleculeStatic" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_Project_Person_Leader" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_Reaction_Person_Chemist" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_Reaction_Person_Chiefchemist" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_ProjectPlan_ProjectPlan_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_Reaction_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_Reaction_Reaction_Previousstep" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_Reagent_Reaction" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_Solvent_Reaction" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_StartingMaterial_Reaction" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
