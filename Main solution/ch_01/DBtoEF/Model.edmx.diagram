@@ -4,22 +4,25 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f5809689f5244d8fad59665f1fc05682" Name="Diagram1" ZoomLevel="64">
-        <EntityTypeShape EntityType="vegyeszjk1Model.Location" Width="1.5" PointX="7.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="vegyeszjk1Model.LocationMolecule" Width="1.5" PointX="7.75" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="vegyeszjk1Model.MoleculeStatic" Width="1.5" PointX="7.75" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="vegyeszjk1Model.Person" Width="1.5" PointX="1" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="vegyeszjk1Model.Project" Width="1.5" PointX="3.5" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="vegyeszjk1Model.ProjectPlan" Width="1.5" PointX="5.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="vegyeszjk1Model.Reaction" Width="1.5" PointX="2" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="vegyeszjk1Model.Reagent" Width="1.5" PointX="5.375" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="vegyeszjk1Model.Solvent" Width="1.5" PointX="5.375" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="vegyeszjk1Model.StartingMaterial" Width="1.5" PointX="5.375" PointY="8.375" IsExpanded="true" />
+      <Diagram DiagramId="502ebae166c8471d9e5bd837ecfc49ac" Name="Diagram1">
+        <EntityTypeShape EntityType="vegyeszjk1Model.Location" Width="1.5" PointX="8.25" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.LocationMolecule" Width="1.5" PointX="10.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.MoleculeStatic" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.ObservationImg" Width="1.5" PointX="10.5" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Person" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Project" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.ProjectPlan" Width="1.5" PointX="5.25" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Reaction" Width="1.5" PointX="8.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Reagent" Width="1.5" PointX="10.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.Solvent" Width="1.5" PointX="10.5" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.StartingMaterial" Width="1.5" PointX="13.5" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="vegyeszjk1Model.sysdiagrams" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <AssociationConnector Association="vegyeszjk1Model.FK_LocationMolecule_Location" ManuallyRouted="false" />
         <AssociationConnector Association="vegyeszjk1Model.FK_LocationMolecule_LocationMolecule" ManuallyRouted="false" />
         <AssociationConnector Association="vegyeszjk1Model.FK_Reagent_MoleculeStatic" ManuallyRouted="false" />
         <AssociationConnector Association="vegyeszjk1Model.FK_Solvent_MoleculeStatic" ManuallyRouted="false" />
         <AssociationConnector Association="vegyeszjk1Model.FK_StartingMaterial_MoleculeStatic" ManuallyRouted="false" />
+        <AssociationConnector Association="vegyeszjk1Model.FK_ObservationImg_Reaction" ManuallyRouted="false" />
         <AssociationConnector Association="vegyeszjk1Model.FK_Project_Person_Leader" ManuallyRouted="false" />
         <AssociationConnector Association="vegyeszjk1Model.FK_Reaction_Person_Chemist" ManuallyRouted="false" />
         <AssociationConnector Association="vegyeszjk1Model.FK_Reaction_Person_Chiefchemist" ManuallyRouted="false" />

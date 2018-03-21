@@ -43,19 +43,19 @@ namespace DocxGen
             ObservationImg = new List<string>();
         }
         
-        public void generateReport()
+        public void GenerateReport()
         {
             //fill FilePath property first!
             report = DocX.Create(FilePath);
             //fill headerproperties first!
-            generateHeader();
+            GenerateHeader();
             //fill startingmaterial properties first & add reagents+solvents!
-            calculateValues();
-            generateReaction();
+            CalculateValues();
+            GenerateReaction();
             //fill procedure properties first
-            generateProcedure();
+            GenerateProcedure();
             //fill observation properties first
-            generateObservation();
+            GenerateObservation();
 
             report.Save();
             Console.WriteLine("Saved!/nOpening....");
@@ -64,16 +64,16 @@ namespace DocxGen
             Console.ReadKey();
         }
 
-        public void addReagent(MoleculeRow reagent)
+        public void AddReagent(MoleculeRow reagent)
         {
             Reagents.Add(reagent);
         }
 
-        public void addSolvent(MoleculeRow solvent)
+        public void AddSolvent(MoleculeRow solvent)
         {
             Solvents.Add(solvent);
         }
-        public void generateHeader()
+        public void GenerateHeader()
         {
             Table HeaderTable = report.AddTable(6, 4); //6 sor, 4 oszlop; fix méret
 
@@ -114,20 +114,20 @@ namespace DocxGen
             Console.WriteLine("Header generated");
         }
 
-        public void calculateValues()
+        public void CalculateValues()
         {
             foreach (MoleculeRow item in Reagents)
             {
-                item.calculateReagentValues();
+                item.CalculateReagentValues();
             }
             foreach (MoleculeRow item in Solvents)
             {
-                item.calculateSolventValues();
+                item.CalculateSolventValues();
             }
-            Product.calculateProductValues();
+            Product.CalculateProductValues();
         }
 
-        public void generateReaction()
+        public void GenerateReaction()
         {
             report.InsertParagraph("Reactions:\n").Bold().UnderlineStyle(UnderlineStyle.singleLine);
             
@@ -156,25 +156,25 @@ namespace DocxGen
             MaterialTable.Rows[0].Cells[9].Paragraphs[0].Append("Bp.").Bold();
 
             //starting material
-            insertRow(MaterialTable, StartingMaterial, 1);
+            InsertRow(MaterialTable, StartingMaterial, 1);
 
             int actualrow = 2;
             //reagents
             foreach (MoleculeRow item in Reagents)
             {
-                insertRow(MaterialTable, item, actualrow);
+                InsertRow(MaterialTable, item, actualrow);
                 actualrow++;
             }
 
             //solvents
             foreach (MoleculeRow item in Solvents)
             {
-                insertRow(MaterialTable, item, actualrow);
+                InsertRow(MaterialTable, item, actualrow);
                 actualrow++;
             }
 
             //product
-            insertRow(MaterialTable, Product, actualrow);
+            InsertRow(MaterialTable, Product, actualrow);
                         
             //last row background
             foreach (Cell item in MaterialTable.Rows[rowcnt-1].Cells)
@@ -187,7 +187,7 @@ namespace DocxGen
             Console.WriteLine("Material table generated");
         }
 
-        public void insertRow(Table tab, MoleculeRow molecule, int rowindex)
+        public void InsertRow(Table tab, MoleculeRow molecule, int rowindex)
         {
             tab.Rows[rowindex].Cells[0].Paragraphs[0].Append(molecule.Name);
             tab.Rows[rowindex].Cells[1].Paragraphs[0].Append(molecule.CAS);
@@ -201,7 +201,7 @@ namespace DocxGen
             tab.Rows[rowindex].Cells[9].Paragraphs[0].Append(molecule.Bpvalue.ToString());
         }
 
-        public void generateProcedure()
+        public void GenerateProcedure()
         {
             report.InsertParagraph("Procedure:").Bold().UnderlineStyle(UnderlineStyle.singleLine);
             report.InsertParagraph(ProcedureText);
@@ -209,7 +209,7 @@ namespace DocxGen
             Console.WriteLine("Procedure generated");
         }
 
-        public void generateObservation()
+        public void GenerateObservation()
         {
             report.InsertParagraph("Observation:").Bold().UnderlineStyle(UnderlineStyle.singleLine);
             report.InsertParagraph("Yield: " + Yield);

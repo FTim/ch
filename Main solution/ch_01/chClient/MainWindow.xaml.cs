@@ -23,6 +23,7 @@ namespace chClient
         public MainWindow()
         {
             InitializeComponent();
+            
         }
     }
 }

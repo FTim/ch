@@ -17,6 +17,7 @@ namespace DBtoEF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Reaction()
         {
+            this.ObservationImg = new HashSet<ObservationImg>();
             this.Reaction1 = new HashSet<Reaction>();
             this.Reagent = new HashSet<Reagent>();
             this.Solvent = new HashSet<Solvent>();
@@ -36,9 +37,11 @@ namespace DBtoEF
         public bool Sketch { get; set; }
         public byte[] ReactionImg { get; set; }
         public string ProcedureText { get; set; }
-        public Nullable<double> Yield { get; set; }
+        public string Yield { get; set; }
         public string Observation { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ObservationImg> ObservationImg { get; set; }
         public virtual Person Person { get; set; }
         public virtual Person Person1 { get; set; }
         public virtual Project Project { get; set; }

@@ -33,6 +33,14 @@
           <Property Name="dp" Type="float" Nullable="false" />
           <Property Name="purity" Type="float" Nullable="false" />
         </EntityType>
+        <EntityType Name="ObservationImg">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ReactionID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="img" Type="image" Nullable="false" />
+        </EntityType>
         <EntityType Name="Person">
           <Key>
             <PropertyRef Name="ID" />
@@ -75,7 +83,7 @@
           <Property Name="Sketch" Type="bit" Nullable="false" />
           <Property Name="ReactionImg" Type="image" Nullable="false" />
           <Property Name="ProcedureText" Type="nvarchar" MaxLength="2500" />
-          <Property Name="Yield" Type="float" />
+          <Property Name="Yield" Type="nvarchar" MaxLength="50" />
           <Property Name="Observation" Type="nvarchar" MaxLength="2500" />
         </EntityType>
         <EntityType Name="Reagent">
@@ -107,6 +115,16 @@
           <Property Name="m" Type="float" />
           <Property Name="v" Type="float" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <Association Name="FK_LocationMolecule_Location">
           <End Role="Location" Type="Self.Location" Multiplicity="1" />
           <End Role="LocationMolecule" Type="Self.LocationMolecule" Multiplicity="*" />
@@ -128,6 +146,18 @@
             </Principal>
             <Dependent Role="LocationMolecule">
               <PropertyRef Name="MoleculeCAS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ObservationImg_Reaction">
+          <End Role="Reaction" Type="Self.Reaction" Multiplicity="1" />
+          <End Role="ObservationImg" Type="Self.ObservationImg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reaction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ObservationImg">
+              <PropertyRef Name="ReactionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -279,6 +309,7 @@
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocationMolecule" EntityType="Self.LocationMolecule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MoleculeStatic" EntityType="Self.MoleculeStatic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ObservationImg" EntityType="Self.ObservationImg" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectPlan" EntityType="Self.ProjectPlan" Schema="dbo" store:Type="Tables" />
@@ -286,6 +317,7 @@
           <EntitySet Name="Reagent" EntityType="Self.Reagent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Solvent" EntityType="Self.Solvent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StartingMaterial" EntityType="Self.StartingMaterial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_LocationMolecule_Location" Association="Self.FK_LocationMolecule_Location">
             <End Role="Location" EntitySet="Location" />
             <End Role="LocationMolecule" EntitySet="LocationMolecule" />
@@ -293,6 +325,10 @@
           <AssociationSet Name="FK_LocationMolecule_LocationMolecule" Association="Self.FK_LocationMolecule_LocationMolecule">
             <End Role="MoleculeStatic" EntitySet="MoleculeStatic" />
             <End Role="LocationMolecule" EntitySet="LocationMolecule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ObservationImg_Reaction" Association="Self.FK_ObservationImg_Reaction">
+            <End Role="Reaction" EntitySet="Reaction" />
+            <End Role="ObservationImg" EntitySet="ObservationImg" />
           </AssociationSet>
           <AssociationSet Name="FK_Project_Person_Leader" Association="Self.FK_Project_Person_Leader">
             <End Role="Person" EntitySet="Person" />
@@ -383,6 +419,15 @@
           <NavigationProperty Name="Solvent" Relationship="Self.FK_Solvent_MoleculeStatic" FromRole="MoleculeStatic" ToRole="Solvent" />
           <NavigationProperty Name="StartingMaterial" Relationship="Self.FK_StartingMaterial_MoleculeStatic" FromRole="MoleculeStatic" ToRole="StartingMaterial" />
         </EntityType>
+        <EntityType Name="ObservationImg">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ReactionID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="img" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="Reaction" Relationship="Self.FK_ObservationImg_Reaction" FromRole="ObservationImg" ToRole="Reaction" />
+        </EntityType>
         <EntityType Name="Person">
           <Key>
             <PropertyRef Name="ID" />
@@ -432,8 +477,9 @@
           <Property Name="Sketch" Type="Boolean" Nullable="false" />
           <Property Name="ReactionImg" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <Property Name="ProcedureText" Type="String" MaxLength="2500" FixedLength="false" Unicode="true" />
-          <Property Name="Yield" Type="Double" />
+          <Property Name="Yield" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Observation" Type="String" MaxLength="2500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ObservationImg" Relationship="Self.FK_ObservationImg_Reaction" FromRole="Reaction" ToRole="ObservationImg" />
           <NavigationProperty Name="Person" Relationship="Self.FK_Reaction_Person_Chemist" FromRole="Reaction" ToRole="Person" />
           <NavigationProperty Name="Person1" Relationship="Self.FK_Reaction_Person_Chiefchemist" FromRole="Reaction" ToRole="Person" />
           <NavigationProperty Name="Project" Relationship="Self.FK_Reaction_Project" FromRole="Reaction" ToRole="Project" />
@@ -477,6 +523,16 @@
           <Property Name="v" Type="Double" />
           <NavigationProperty Name="MoleculeStatic" Relationship="Self.FK_StartingMaterial_MoleculeStatic" FromRole="StartingMaterial" ToRole="MoleculeStatic" />
           <NavigationProperty Name="Reaction" Relationship="Self.FK_StartingMaterial_Reaction" FromRole="StartingMaterial" ToRole="Reaction" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK_LocationMolecule_Location">
           <End Role="Location" Type="Self.Location" Multiplicity="1" />
@@ -535,6 +591,18 @@
             </Principal>
             <Dependent Role="StartingMaterial">
               <PropertyRef Name="MoleculeCAS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ObservationImg_Reaction">
+          <End Role="Reaction" Type="Self.Reaction" Multiplicity="1" />
+          <End Role="ObservationImg" Type="Self.ObservationImg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reaction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ObservationImg">
+              <PropertyRef Name="ReactionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -650,6 +718,7 @@
           <EntitySet Name="Location" EntityType="Self.Location" />
           <EntitySet Name="LocationMolecule" EntityType="Self.LocationMolecule" />
           <EntitySet Name="MoleculeStatic" EntityType="Self.MoleculeStatic" />
+          <EntitySet Name="ObservationImg" EntityType="Self.ObservationImg" />
           <EntitySet Name="Person" EntityType="Self.Person" />
           <EntitySet Name="Project" EntityType="Self.Project" />
           <EntitySet Name="ProjectPlan" EntityType="Self.ProjectPlan" />
@@ -657,6 +726,7 @@
           <EntitySet Name="Reagent" EntityType="Self.Reagent" />
           <EntitySet Name="Solvent" EntityType="Self.Solvent" />
           <EntitySet Name="StartingMaterial" EntityType="Self.StartingMaterial" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <AssociationSet Name="FK_LocationMolecule_Location" Association="Self.FK_LocationMolecule_Location">
             <End Role="Location" EntitySet="Location" />
             <End Role="LocationMolecule" EntitySet="LocationMolecule" />
@@ -676,6 +746,10 @@
           <AssociationSet Name="FK_StartingMaterial_MoleculeStatic" Association="Self.FK_StartingMaterial_MoleculeStatic">
             <End Role="MoleculeStatic" EntitySet="MoleculeStatic" />
             <End Role="StartingMaterial" EntitySet="StartingMaterial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ObservationImg_Reaction" Association="Self.FK_ObservationImg_Reaction">
+            <End Role="Reaction" EntitySet="Reaction" />
+            <End Role="ObservationImg" EntitySet="ObservationImg" />
           </AssociationSet>
           <AssociationSet Name="FK_Project_Person_Leader" Association="Self.FK_Project_Person_Leader">
             <End Role="Person" EntitySet="Person" />
@@ -747,6 +821,15 @@
                 <ScalarProperty Name="mp" ColumnName="mp" />
                 <ScalarProperty Name="dp" ColumnName="dp" />
                 <ScalarProperty Name="purity" ColumnName="purity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ObservationImg">
+            <EntityTypeMapping TypeName="vegyeszjk1Model.ObservationImg">
+              <MappingFragment StoreEntitySet="ObservationImg">
+                <ScalarProperty Name="ReactionID" ColumnName="ReactionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="img" ColumnName="img" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -825,6 +908,17 @@
                 <ScalarProperty Name="n" ColumnName="n" />
                 <ScalarProperty Name="m" ColumnName="m" />
                 <ScalarProperty Name="v" ColumnName="v" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="vegyeszjk1Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

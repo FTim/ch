@@ -28,6 +28,7 @@ namespace DBtoEF
         public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<LocationMolecule> LocationMolecule { get; set; }
         public virtual DbSet<MoleculeStatic> MoleculeStatic { get; set; }
+        public virtual DbSet<ObservationImg> ObservationImg { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Project> Project { get; set; }
         public virtual DbSet<ProjectPlan> ProjectPlan { get; set; }
@@ -35,5 +36,6 @@ namespace DBtoEF
         public virtual DbSet<Reagent> Reagent { get; set; }
         public virtual DbSet<Solvent> Solvent { get; set; }
         public virtual DbSet<StartingMaterial> StartingMaterial { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }
