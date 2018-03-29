@@ -1,0 +1,148 @@
+﻿<Window x:Class="chClient.ReactionDemo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:chClient"
+        mc:Ignorable="d"
+        Title="ReactionDemo" Height="300" Width="500">
+    <TabControl HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="490" TabStripPlacement="Top" IsTabStop="True">
+        <TabItem Header="Header">
+            <Grid Background="#FFE5E5E5" Height="240" VerticalAlignment="Top">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="250"  Width="200">
+                        <Label Content="Reaction code:" HorizontalAlignment="Right"/>
+                        <Label Content="Chemist:" HorizontalAlignment="Right"/>
+                        <Label Content="Chiefchemist:" HorizontalAlignment="Right"/>
+                        <Label Content="Project:" HorizontalAlignment="Right"/>
+                        <Label Content="Laboratory:" HorizontalAlignment="Right"/>
+                        <Label Content="Date of start:" HorizontalAlignment="Right"/>
+                        <Label Content="Date of closure:" HorizontalAlignment="Right"/>
+                        <Label Content="Previous step:" HorizontalAlignment="Right"/>
+                        <Label Content="Literature:" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="250" Width="300">
+                        <TextBox Height="20"  Width="200" TextWrapping="Wrap" Text="Reaction code" HorizontalAlignment="Right" Margin="0,3,20,0" Name="ReactionCodeInputTb"/>
+                        <TextBox Height="20"  Width="200" TextWrapping="Wrap" Text="Chemist" HorizontalAlignment="Right" Margin="0,5,20,0" Name="ChemistInputTb"/>
+                        <TextBox Height="20"  Width="200" TextWrapping="Wrap" Text="Chiefchemist" HorizontalAlignment="Right" Margin="0,5,20,0" Name="ChiefchemistInputTb"/>
+                        <TextBox Height="20"  Width="200" TextWrapping="Wrap" Text="Project" HorizontalAlignment="Right" Margin="0,5,20,0" Name="ProjectInputTb"/>
+                        <TextBox Height="20"  Width="200" TextWrapping="Wrap" Text="Laboratory" HorizontalAlignment="Right" Margin="0,5,20,0" Name="LaboratoryInputTb"/>
+                        <DatePicker Width="200" HorizontalAlignment="Right" Margin="0,5,20,0" Name="StartDateInputDp"/>
+                        <DatePicker Width="200" HorizontalAlignment="Right" Margin="0,5,20,0" Name="ClosureDateInputDp"/>
+                        <TextBox Height="20"  Width="200" TextWrapping="Wrap" Text="Previous step" HorizontalAlignment="Right" Margin="0,5,20,0" Name="PrevStepInputTb"/>
+                        <TextBox Height="20"  Width="200" TextWrapping="Wrap" Text="Literature" HorizontalAlignment="Right" Margin="0,5,20,0" Name="LiteratureCodeInputTb"/>
+                    </StackPanel>
+
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Reaction and Materials">
+            <Grid Background="#FFE5E5E5" Height="240" VerticalAlignment="Top">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="240" Width="480">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Add reaction image:" HorizontalAlignment="Left"/>
+                        <Button Grid.Column="1" Height="20"  Width="200" Content="Add image..." HorizontalAlignment="Right" Margin="0,3,20,0" Name="AddReactionImgBtn"/>
+                    </Grid>
+                    <Label Content="Starting material"/>
+                    <FlowDocumentReader Padding="0,0,0,0" Margin="10,10,10,0" Width="460" Height="80">
+                        <FlowDocument PagePadding="0,0,0,0">
+                            <Table CellSpacing="0" Padding="0,0,0,0">
+                                <Table.Columns>
+                                    <TableColumn Width="180"/>
+                                    <TableColumn Width="60"/>
+                                    <TableColumn Width="60"/>
+                                    <TableColumn Width="80"/>
+                                    <TableColumn Width="80"/>
+                                </Table.Columns>
+                                <TableRowGroup>
+                                    <TableRow>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            <Paragraph>Name</Paragraph>
+                                        </TableCell>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            <Paragraph>Code</Paragraph>
+                                        </TableCell>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            <Paragraph>Ratio</Paragraph>
+                                        </TableCell>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            <Paragraph>m (mg)</Paragraph>
+                                        </TableCell>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            <Paragraph>V (uL)</Paragraph>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            
+                                        </TableCell>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            
+                                        </TableCell>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            
+                                        </TableCell>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            
+                                        </TableCell>
+                                        <TableCell BorderBrush="Black" BorderThickness="1">
+                                            
+                                        </TableCell>
+                                    </TableRow>
+
+                                </TableRowGroup>
+                            </Table>
+                        </FlowDocument>
+                    </FlowDocumentReader>
+
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Procedure">
+            <Grid Background="#FFE5E5E5" Height="240" VerticalAlignment="Top">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="240" Width="480">
+                    <Label Content="Procedure text:"/>
+                    <TextBox Height="200" Width="470" HorizontalAlignment="Center" Text="Procedure text goes here" Name="ProcedureInputTb"/>
+                </StackPanel>
+            </Grid>
+            
+        </TabItem>
+        <TabItem Header="Observation">
+            <Grid Background="#FFE5E5E5" Height="240" VerticalAlignment="Top">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="240" Width="480">
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Yield:" HorizontalAlignment="Left"/>
+                        <TextBox Grid.Column="1" Height="20"  Width="200" TextWrapping="Wrap" Text="Yield" HorizontalAlignment="Right" Margin="0,3,20,0" Name="YieldInputTb"/>
+                    </Grid>
+                    <Label Content="Observation text:"/>
+                    <TextBox Height="100" Width="470" HorizontalAlignment="Center" Text="Observation text goes here" Name="InputTb"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Add image:" HorizontalAlignment="Left"/>
+                        <Button Grid.Column="1" Height="20"  Width="200" Content="Add image..." HorizontalAlignment="Right" Margin="0,3,20,0" Name="ObservationImgSelectBtn"/>
+                    </Grid>
+                    <Button Content="Save doc" Width="100" Margin="0,10,0,0"/>
+                </StackPanel>
+                    
+            </Grid>
+        </TabItem>
+    </TabControl>
+
+
+</Window>

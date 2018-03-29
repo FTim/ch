@@ -25,5 +25,57 @@ namespace chClient
             InitializeComponent();
             
         }
+
+        private void NewProjectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
+        }
+
+        private void AllProjectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
+        }
+
+        private void MyProjectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
+        }
+
+        private void InventoryCheckBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
+        }
+
+        private void ManualInventoryUpdateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
+        }
+
+        private void InventoryToExcelExportBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
+        }
+
+        private void NewReactionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
+        }
+
+        private void AllReactionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
+        }
+
+        private void MyReactionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
+        }
+
+        private void TestNewReactionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ReactionDemo rd = new ReactionDemo();
+            rd.Show();
+            rd.Visibility = Visibility.Visible;
+        }
     }
 }
