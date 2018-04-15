@@ -1,0 +1,7 @@
+D:\suli\vegy_jegyz\vs_demo\ch_01\DocxGen\obj\Debug\DocxGen.csprojResolveAssemblyReference.cache
+D:\suli\vegy_jegyz\vs_demo\ch_01\DocxGen\obj\Debug\DocxGen.csproj.CoreCompileInputs.cache
+D:\suli\vegy_jegyz\vs_demo\ch_01\DocxGen\bin\Debug\DocxGen.dll
+D:\suli\vegy_jegyz\vs_demo\ch_01\DocxGen\bin\Debug\DocxGen.pdb
+D:\suli\vegy_jegyz\vs_demo\ch_01\DocxGen\bin\Debug\Xceed.Words.NET.dll
+D:\suli\vegy_jegyz\vs_demo\ch_01\DocxGen\obj\Debug\DocxGen.dll
+D:\suli\vegy_jegyz\vs_demo\ch_01\DocxGen\obj\Debug\DocxGen.pdb

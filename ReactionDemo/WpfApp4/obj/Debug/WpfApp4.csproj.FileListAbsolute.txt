@@ -1,0 +1,14 @@
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\bin\Debug\WpfApp4.exe.config
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\bin\Debug\WpfApp4.exe
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\bin\Debug\WpfApp4.pdb
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\WpfApp4.csprojResolveAssemblyReference.cache
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\View\MainPage.baml
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\View\MainPage.g.cs
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\App.g.cs
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\WpfApp4_MarkupCompile.cache
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\WpfApp4.g.resources
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\WpfApp4.Properties.Resources.resources
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\WpfApp4.csproj.GenerateResource.Cache
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\WpfApp4.csproj.CoreCompileInputs.cache
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\WpfApp4.exe
+C:\Users\Timea\Desktop\WpfApp4\WpfApp4\obj\Debug\WpfApp4.pdb
