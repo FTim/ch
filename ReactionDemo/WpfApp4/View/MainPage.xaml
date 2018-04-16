@@ -19,7 +19,7 @@
                 <DatePicker Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,175,0,0" VerticalAlignment="Top" Width="178" x:Name="datetimeClosure"/>
                 <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,203,0,0"  VerticalAlignment="Top" Width="178" x:Name="txtPreviousStep" />
                 <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,231,0,0"  VerticalAlignment="Top" Width="178" x:Name="txtLiterature" />
-                <Button Content="Add image..." Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,259,0,0" VerticalAlignment="Top" Width="178" x:Name="btnAddRectionImg"/>
+                <Button Content="Add image..." Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,259,0,0" VerticalAlignment="Top" Width="178" x:Name="btnAddRectionImg" Click="btnAddRectionImg_Click"/>
                 <Label Content="Reaction code" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,7,0,0" VerticalAlignment="Top" />
                 <Label Content="Chemist" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,35,0,0"  VerticalAlignment="Top" />
                 <Label Content="Chiefchemist" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0"  VerticalAlignment="Top" />
@@ -70,6 +70,9 @@
                 <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,119,0,0" x:Name="btnSMAdd" 
                 VerticalAlignment="Top" Width="178"
                  Click="btnSMAdd_Click"/>
+                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0"
+                VerticalAlignment="Top" Width="178"
+                 Click="btnHint_Click"/>
             </Grid>
         </TabItem>
 
@@ -113,6 +116,9 @@
                 VerticalAlignment="Top" Width="178"
                 Click="btnRAdd_Click"
                   />
+                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0"
+                VerticalAlignment="Top" Width="178"
+                 Click="btnHint_Click"/>
 
             </Grid>
         </TabItem>
@@ -148,6 +154,9 @@
                 <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,119,0,0" x:Name="btnSAdd" 
                 VerticalAlignment="Top" Width="178" Click="btnSAdd_Click"
                  />
+                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0"
+                VerticalAlignment="Top" Width="178"
+                 Click="btnHint_Click"/>
             </Grid>
         </TabItem>
         <TabItem Header="Procedure, observation">
@@ -159,7 +168,7 @@
                 <TextBox Grid.Row="1" Height="46" HorizontalAlignment="Left" Margin="120,7,0,0"  VerticalAlignment="Top" Width="348" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" x:Name="txtProcedure"/>
                 <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,63,0,0"  VerticalAlignment="Top" Width="178" x:Name="txtYield"/>
                 <TextBox Grid.Row="1" Height="46" HorizontalAlignment="Left" Margin="120,91,0,0"  VerticalAlignment="Top" Width="348" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" x:Name="txtObservation"  />
-                <Button Content="Add image..." Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,147,0,0" VerticalAlignment="Top" Width="178" x:Name="btnAddObservationImg"/>
+                <Button Content="Add image..." Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,147,0,0" VerticalAlignment="Top" Width="178" x:Name="btnAddObservationImg" Click="btnAddObservationImg_Click"/>
                 <Label Content="Procedure" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,7,0,0" VerticalAlignment="Top" />
                 <Label Content="Yield" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0"  VerticalAlignment="Top" />
                 <Label Content="Observation" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,91,0,0"  VerticalAlignment="Top" />
@@ -167,7 +176,7 @@
                 <Label Content="Docx location" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,175,0,0" VerticalAlignment="Top" />
                 <Label Content="Selected location: " Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,203,0,0" VerticalAlignment="Top" />
 
-                <Button Content="Select Docx location" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,175,0,0" VerticalAlignment="Top" Width="178" x:Name="btnSelectLocation"/>
+                <Button Content="Select Docx location" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,175,0,0" VerticalAlignment="Top" Width="178" x:Name="btnSelectLocation" Click="btnSelectLocation_Click"/>
 
                 <Button Content="Save Docx" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,259,0,0" VerticalAlignment="Top" Width="178" x:Name="btnSaveDocx" Click="btnSaveDocx_Click"/>
 
