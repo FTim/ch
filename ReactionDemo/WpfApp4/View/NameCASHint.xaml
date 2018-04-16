@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp4.View"
         mc:Ignorable="d"
-        Title="NameCASHint" Height="300" Width="300">
-    <Grid>
-        <Label Name="asdnumber" Height="28" Width="30" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        Title="NameCASHint" Height="525" Width="500">
+    <Grid Margin="0,0,0,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="ExcelList" Grid.Row="1" Margin="12,7,0,0"  Width="480" Height="500" HorizontalAlignment="Center" VerticalAlignment="Top">
+
+            <ListView.View>
+                <GridView x:Name="ExcelListGrid">
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"  Width="300"/>
+                    <GridViewColumn Header="CAS" DisplayMemberBinding="{Binding CAS}"  Width="195" />
+                    
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

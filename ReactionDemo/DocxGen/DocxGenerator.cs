@@ -123,14 +123,12 @@ namespace DocxGen
 
         public void CalculateValues()
         {
+            StartingMaterial.CalculateStartingMaterialValues();
             foreach (MoleculeRow item in Reagents)
             {
-                item.CalculateReagentValues();
+                item.CalculateReagentValues(StartingMaterial);
             }
-            foreach (MoleculeRow item in Solvents)
-            {
-                item.CalculateSolventValues();
-            }
+            
             Product.CalculateProductValues();
 
             //product számolás pls!

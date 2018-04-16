@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using InventoryReader;
+using System.Collections.ObjectModel;
 
 namespace WpfApp4.View
 {
@@ -19,10 +21,23 @@ namespace WpfApp4.View
     /// </summary>
     public partial class NameCASHint : Window
     {
-        public NameCASHint()
+        ObservableCollection<MoleculeData> HintList;
+        public NameCASHint(List<MoleculeData> _hintlist)
         {
+            
+            HintList = new ObservableCollection<MoleculeData>();
+
+            foreach (var item in _hintlist)
+            {
+                
+                HintList.Add(item);
+            }
+            DataContext = this;
             InitializeComponent();
             
+            ExcelList.DataContext = this;
+            ExcelList.ItemsSource = HintList;
+
         }
     }
 }

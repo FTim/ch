@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\AddonInfo.cs" />
+    <Compile Include="Model\Product.cs" />
     <Compile Include="Model\Reaction.cs" />
     <Compile Include="Model\Reagent.cs" />
     <Compile Include="Model\Solvent.cs" />
@@ -111,6 +113,10 @@
     <ProjectReference Include="..\DocxGen\DocxGen.csproj">
       <Project>{EF46D8D1-8282-491F-82D6-DFF07AABE952}</Project>
       <Name>DocxGen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InventoryReader\InventoryReader.csproj">
+      <Project>{104C9234-29D4-481B-B9E2-AD1B88BFE802}</Project>
+      <Name>InventoryReader</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

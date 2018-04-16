@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DocxGen;
+using InventoryReader;
 
 using WpfApp4.Model;
 
@@ -24,31 +25,43 @@ namespace WpfApp4.View
     /// </summary>
     public partial class MainPage : Window
     {
-        public int asd;
+        
         public ObservableCollection<StartingMaterial> smaterialList { get; set; }
         public ObservableCollection<Reagent> reagentList { get; set; }
         public ObservableCollection<Solvent> solventList { get; set; }
+        public ObservableCollection<Product> productList { get; set; }
+        public List<MoleculeData> readed;
         public string ReactionImgPath;
         public string ObservationImgPath;
         public string ReportPath;
         public DocxGenerator gen;
+        public AddonInfo DataFromExcel;
         
         public MainPage()
         {
-            asd = 42;
+            readed = new List<MoleculeData>();
+            InventoryReading reader = new InventoryReading();
+            reader.FilePath = String.Concat(System.IO.Directory.GetCurrentDirectory(), "\\Inventory.xlsx");
+            readed = reader.ReadTo();
+
             smaterialList = new ObservableCollection<StartingMaterial>();
             reagentList = new ObservableCollection<Reagent>();
             solventList = new ObservableCollection<Solvent>();
+            productList = new ObservableCollection<Product>();
+
             ObservationImgPath = null;
             gen = new DocxGenerator();
+            DataFromExcel = new AddonInfo();
             DataContext = this;
             InitializeComponent();
 
             StartingMaterialList.DataContext = this;
             ReagentsList.DataContext = this;
             SolventsList.DataContext = this;
-            
-            
+            ProductsList.DataContext = this;
+
+
+
         }
 
         private void btnSaveDocx_Click(object sender, RoutedEventArgs e)
@@ -69,6 +82,24 @@ namespace WpfApp4.View
             List<MoleculeRow> smMoleculeRow = new List<MoleculeRow>();
             foreach (var item in smaterialList)
             {
+                if (!NameCASvalidate(item))
+                {
+                    var result=MessageBox.Show("Invalid starting material!");
+                    return;
+                     
+                }
+
+                foreach (var excelitem in readed)
+                {
+                    if(excelitem.Name==item.Name)
+                    {
+                        DataFromExcel.MW = excelitem.Mvalue;
+                        DataFromExcel.dValue = excelitem.dvalue;
+                        DataFromExcel.bpValue = excelitem.bpvalue;
+                        DataFromExcel.mpValue = excelitem.mpvalue;
+                    }
+                }
+
                 double? tmp_V;
                 if (item.VValue == null||item.VValue=="") tmp_V = null;
                 else tmp_V = Double.Parse(item.VValue);
@@ -77,25 +108,63 @@ namespace WpfApp4.View
                 if (item.mValue == null || item.mValue == "") tmp_m = null;
                 else tmp_m = Double.Parse(item.mValue);
 
-                smMoleculeRow.Add(new MoleculeRow{ Name=item.Name, CAS=item.CAS, MWvalue=42, Vvalue=tmp_V, mvalue=tmp_m, nvalue=43, Denvalue=44, Mpvalue="45", Bpvalue="46", Ratio=47});
+                smMoleculeRow.Add(new MoleculeRow{ Name=item.Name, CAS=item.CAS, MWvalue=DataFromExcel.MW, Vvalue=tmp_V, mvalue=tmp_m, nvalue=new double(), Denvalue=DataFromExcel.dValue, Mpvalue=DataFromExcel.mpValue, Bpvalue=DataFromExcel.bpValue, Ratio=1});
             }
             gen.StartingMaterial = smMoleculeRow.ElementAt(0);
-            List<MoleculeRow> rMoleculeRow = new List<MoleculeRow>();
+            //List<MoleculeRow> rMoleculeRow = new List<MoleculeRow>();
             foreach (var item in reagentList)
             {
-                
+                if (!NameCASvalidate(item))
+                {
+                    var result = MessageBox.Show("Invalid reagent!");
+                    return;
 
-                gen.AddReagent(new MoleculeRow { Name = item.Name, CAS = item.CAS, MWvalue = 42, Vvalue = 43, mvalue = 44, nvalue = 43, Denvalue = 44, Mpvalue = "45", Bpvalue ="46", Ratio=Double.Parse(item.Ratio) });
+                }
+
+                foreach (var excelitem in readed)
+                {
+                    if (excelitem.Name == item.Name)
+                    {
+                        DataFromExcel.MW = excelitem.Mvalue;
+                        DataFromExcel.dValue = excelitem.dvalue;
+                        DataFromExcel.bpValue = excelitem.bpvalue;
+                        DataFromExcel.mpValue = excelitem.mpvalue;
+                        DataFromExcel.Vvalue = excelitem.Vvalue;
+                    }
+                }
+
+                gen.AddReagent(new MoleculeRow { Name = item.Name, CAS = item.CAS, MWvalue = DataFromExcel.MW, Vvalue = DataFromExcel.Vvalue, mvalue = null, nvalue = new double(), Denvalue = DataFromExcel.dValue, Mpvalue = DataFromExcel.mpValue, Bpvalue =DataFromExcel.bpValue, Ratio=Double.Parse(item.Ratio) });
             }
             
-            List<MoleculeRow> sMoleculeRow = new List<MoleculeRow>();
+            //List<MoleculeRow> sMoleculeRow = new List<MoleculeRow>();
             foreach (var item in solventList)
             {
+                if (!NameCASvalidate(item))
+                {
+                    var result = MessageBox.Show("Invalid solvent!");
+                    return;
 
+                }
 
-               gen.AddSolvent(new MoleculeRow { Name = item.Name, CAS = item.CAS, MWvalue = 42, Vvalue = Double.Parse(item.VValue), mvalue = 44, nvalue = 43, Denvalue = 44, Mpvalue = "45", Bpvalue = "46", Ratio = 47 });
+                foreach (var excelitem in readed)
+                {
+                    if (excelitem.Name == item.Name)
+                    {
+                        DataFromExcel.MW = excelitem.Mvalue;
+                        DataFromExcel.dValue = excelitem.dvalue;
+                        DataFromExcel.bpValue = excelitem.bpvalue;
+                        DataFromExcel.mpValue = excelitem.mpvalue;
+                        DataFromExcel.Vvalue = excelitem.Vvalue;
+                    }
+                }
+
+                gen.AddSolvent(new MoleculeRow { Name = item.Name, CAS = item.CAS, MWvalue = DataFromExcel.MW, Vvalue = Double.Parse(item.VValue), mvalue = null, nvalue = new double(), Denvalue = DataFromExcel.dValue, Mpvalue = DataFromExcel.mpValue, Bpvalue = DataFromExcel.bpValue, Ratio = null });
             }
-            gen.Product = new MoleculeRow { Name="product", CAS="", MWvalue=42, mvalue=43, Vvalue=44, Bpvalue="45", Denvalue=46, Mpvalue="47", nvalue=48, Ratio=2};
+            List<MoleculeRow> pMoleculeRow = new List<MoleculeRow>();
+            foreach (var item in productList)
+            {
+                gen.Product=(new MoleculeRow { Name = "", CAS = "", MWvalue = Double.Parse(item.MWValue), Vvalue = null, mvalue = null, nvalue =Double.Parse(item.nValue), Denvalue = null, Mpvalue = "", Bpvalue = "", Ratio = Double.Parse(item.Ratio) });
+            }
 
             gen.ProcedureText = txtProcedure.Text;
             gen.Yield = txtYield.Text;
@@ -118,6 +187,7 @@ namespace WpfApp4.View
 
         private void btnSMAdd_Click(object sender, RoutedEventArgs e)
         {
+            NameCASvalidate(new StartingMaterial { Name = txtSMAddName.Text, CAS = txtSMAddCAS.Text, mValue = txtSMAddmValue.Text, VValue = txtSMAddVValue.Text });
             smaterialList.Add(new StartingMaterial { Name = txtSMAddName.Text, CAS = txtSMAddCAS.Text, mValue=txtSMAddmValue.Text, VValue = txtSMAddVValue.Text });
         }
 
@@ -214,9 +284,30 @@ namespace WpfApp4.View
         
         private void btnHint_Click(object sender, RoutedEventArgs e)
         {
-            NameCASHint nchWindow = new NameCASHint();
+            NameCASHint nchWindow = new NameCASHint(readed);
             nchWindow.ShowDialog();
             nchWindow.Owner = this;
+        }
+
+        public bool NameCASvalidate(StartingMaterial sm)
+        {
+            if (readed.Any(item => item.Name == sm.Name)) return true;
+            return false;
+        }
+        public bool NameCASvalidate(Reagent r)
+        {
+            if (readed.Any(item => item.Name == r.Name)) return true;
+            return false;
+        }
+        public bool NameCASvalidate(Solvent s)
+        {
+            if (readed.Any(item => item.Name == s.Name)) return true;
+            return false;
+        }
+
+        private void btnPAdd_Click(object sender, RoutedEventArgs e)
+        {
+            productList.Add(new Product { MWValue = txtPAddMW.Text, Ratio = txtPAddRatio.Text, nValue = txtPAddnValue.Text });
         }
     }
     }
