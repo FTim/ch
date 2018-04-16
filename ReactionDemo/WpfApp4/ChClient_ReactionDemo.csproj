@@ -54,9 +54,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Reaction.cs" />
     <Compile Include="Model\Reagent.cs" />
     <Compile Include="Model\Solvent.cs" />
     <Compile Include="ViewModel\ReagentViewModel.cs" />
+    <Compile Include="ViewModel\SolventViewModel.cs" />
     <Compile Include="ViewModel\StartingMaterialViewModel.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
