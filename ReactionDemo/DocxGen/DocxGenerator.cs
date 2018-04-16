@@ -42,7 +42,14 @@ namespace DocxGen
             Solvents = new List<MoleculeRow>();
             ObservationImg = new List<string>();
         }
-        
+        public void Create()
+        {
+            report = DocX.Create(FilePath);
+        }
+        public void Save()
+        {
+            report.Save();
+        }
         public void GenerateReport()
         {
             //fill FilePath property first!
@@ -58,10 +65,10 @@ namespace DocxGen
             GenerateObservation();
 
             report.Save();
-            Console.WriteLine("Saved!/nOpening....");
-            System.Diagnostics.Process.Start(FilePath);
-            Console.WriteLine("Done");
-            Console.ReadKey();
+            //Console.WriteLine("Saved!/nOpening....");
+            //System.Diagnostics.Process.Start(FilePath);
+            //Console.WriteLine("Done");
+            //Console.ReadKey();
         }
 
         public void AddReagent(MoleculeRow reagent)
@@ -125,6 +132,8 @@ namespace DocxGen
                 item.CalculateSolventValues();
             }
             Product.CalculateProductValues();
+
+            //product számolás pls!
         }
 
         public void GenerateReaction()
@@ -139,8 +148,8 @@ namespace DocxGen
             report.InsertParagraph("Table of materials:\n").Bold().UnderlineStyle(UnderlineStyle.singleLine);
 
             //Material table
-            int rowcnt = 1 + Reagents.Count + Solvents.Count + 1;
-            //starting material-> 1x; reagent cnt; solvent cnt; product -> 1x
+            int rowcnt = 2 + Reagents.Count + Solvents.Count + 1;
+            //header -> x1; starting material-> 1x; reagent cnt; solvent cnt; product -> 1x
             Table MaterialTable = report.AddTable(rowcnt, 10); 
 
             //ugly but... meh...
@@ -157,7 +166,7 @@ namespace DocxGen
 
             //starting material
             InsertRow(MaterialTable, StartingMaterial, 1);
-
+            
             int actualrow = 2;
             //reagents
             foreach (MoleculeRow item in Reagents)
@@ -175,16 +184,16 @@ namespace DocxGen
 
             //product
             InsertRow(MaterialTable, Product, actualrow);
-                        
+                  
             //last row background
             foreach (Cell item in MaterialTable.Rows[rowcnt-1].Cells)
             {
                 item.FillColor = Color.LightGray;
             }
-
+            
             report.InsertTable(MaterialTable);
 
-            Console.WriteLine("Material table generated");
+            //Console.WriteLine("Material table generated");
         }
 
         public void InsertRow(Table tab, MoleculeRow molecule, int rowindex)

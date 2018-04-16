@@ -1,8 +1,0 @@
-D:\suli\vegy_jegyz\vs_demo\ch_01\InventoryReader\obj\Debug\InventoryReader.csprojResolveAssemblyReference.cache
-D:\suli\vegy_jegyz\vs_demo\ch_01\InventoryReader\obj\Debug\InventoryReader.csproj.CoreCompileInputs.cache
-D:\suli\vegy_jegyz\vs_demo\ch_01\InventoryReader\bin\Debug\InventoryReader.dll
-D:\suli\vegy_jegyz\vs_demo\ch_01\InventoryReader\bin\Debug\InventoryReader.pdb
-D:\suli\vegy_jegyz\vs_demo\ch_01\InventoryReader\bin\Debug\ExcelDataReader.dll
-D:\suli\vegy_jegyz\vs_demo\ch_01\InventoryReader\bin\Debug\ExcelDataReader.xml
-D:\suli\vegy_jegyz\vs_demo\ch_01\InventoryReader\obj\Debug\InventoryReader.dll
-D:\suli\vegy_jegyz\vs_demo\ch_01\InventoryReader\obj\Debug\InventoryReader.pdb

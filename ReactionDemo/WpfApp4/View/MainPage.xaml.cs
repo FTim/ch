@@ -24,6 +24,7 @@ namespace WpfApp4.View
     /// </summary>
     public partial class MainPage : Window
     {
+        public int asd;
         public ObservableCollection<StartingMaterial> smaterialList { get; set; }
         public ObservableCollection<Reagent> reagentList { get; set; }
         public ObservableCollection<Solvent> solventList { get; set; }
@@ -34,9 +35,11 @@ namespace WpfApp4.View
         
         public MainPage()
         {
+            asd = 42;
             smaterialList = new ObservableCollection<StartingMaterial>();
             reagentList = new ObservableCollection<Reagent>();
             solventList = new ObservableCollection<Solvent>();
+            ObservationImgPath = null;
             gen = new DocxGenerator();
             DataContext = this;
             InitializeComponent();
@@ -50,7 +53,7 @@ namespace WpfApp4.View
 
         private void btnSaveDocx_Click(object sender, RoutedEventArgs e)
         {
-            
+            gen.FilePath = ReportPath;
            
             gen.ReactionCode = txtReactionCode.Text;
             gen.Chemist = txtChemist.Text;
@@ -74,33 +77,33 @@ namespace WpfApp4.View
                 if (item.mValue == null || item.mValue == "") tmp_m = null;
                 else tmp_m = Double.Parse(item.mValue);
 
-                smMoleculeRow.Add(new MoleculeRow{ Name=item.Name, CAS=item.CAS, MWvalue=42, Vvalue=tmp_V, mvalue=tmp_m, nvalue=43, Denvalue=44, Mpvalue=45, Bpvalue=46, Ratio=47});
+                smMoleculeRow.Add(new MoleculeRow{ Name=item.Name, CAS=item.CAS, MWvalue=42, Vvalue=tmp_V, mvalue=tmp_m, nvalue=43, Denvalue=44, Mpvalue="45", Bpvalue="46", Ratio=47});
             }
-
+            gen.StartingMaterial = smMoleculeRow.ElementAt(0);
             List<MoleculeRow> rMoleculeRow = new List<MoleculeRow>();
             foreach (var item in reagentList)
             {
                 
 
-                rMoleculeRow.Add(new MoleculeRow { Name = item.Name, CAS = item.CAS, MWvalue = 42, Vvalue = 43, mvalue = 44, nvalue = 43, Denvalue = 44, Mpvalue = 45, Bpvalue = 46, Ratio=Double.Parse(item.Ratio) });
+                gen.AddReagent(new MoleculeRow { Name = item.Name, CAS = item.CAS, MWvalue = 42, Vvalue = 43, mvalue = 44, nvalue = 43, Denvalue = 44, Mpvalue = "45", Bpvalue ="46", Ratio=Double.Parse(item.Ratio) });
             }
-
+            
             List<MoleculeRow> sMoleculeRow = new List<MoleculeRow>();
             foreach (var item in solventList)
             {
 
 
-                smMoleculeRow.Add(new MoleculeRow { Name = item.Name, CAS = item.CAS, MWvalue = 42, Vvalue = Double.Parse(item.VValue), mvalue = 44, nvalue = 43, Denvalue = 44, Mpvalue = 45, Bpvalue = 46, Ratio = 47 });
+               gen.AddSolvent(new MoleculeRow { Name = item.Name, CAS = item.CAS, MWvalue = 42, Vvalue = Double.Parse(item.VValue), mvalue = 44, nvalue = 43, Denvalue = 44, Mpvalue = "45", Bpvalue = "46", Ratio = 47 });
             }
+            gen.Product = new MoleculeRow { Name="product", CAS="", MWvalue=42, mvalue=43, Vvalue=44, Bpvalue="45", Denvalue=46, Mpvalue="47", nvalue=48, Ratio=2};
 
             gen.ProcedureText = txtProcedure.Text;
             gen.Yield = txtYield.Text;
             gen.ObservationText = txtObservation.Text;
             List<string> obsimg = new List<string>();
             obsimg.Add(ObservationImgPath);
-            gen.ObservationImg =obsimg;
+            if(ObservationImgPath!=null)gen.ObservationImg =obsimg;
 
-            gen.FilePath = ReportPath;
             gen.GenerateReport();
             MessageBox.Show("Done!");          
         }
@@ -211,7 +214,9 @@ namespace WpfApp4.View
         
         private void btnHint_Click(object sender, RoutedEventArgs e)
         {
-
+            NameCASHint nchWindow = new NameCASHint();
+            nchWindow.ShowDialog();
+            nchWindow.Owner = this;
         }
     }
     }

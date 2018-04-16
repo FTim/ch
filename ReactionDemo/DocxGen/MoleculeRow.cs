@@ -18,9 +18,13 @@ namespace DocxGen
         public double? mvalue { get; set; } //double? nullozható
         public double? Vvalue { get; set; }
         public double Denvalue { get; set; }
-        public double Mpvalue { get; set; }
-        public double Bpvalue { get; set; }
+        public string Mpvalue { get; set; }
+        public string Bpvalue { get; set; }
 
+        public void CalculateStartingMaterialValues()
+        {
+            nvalue = (double)(mvalue / MWvalue);
+        }
         public void CalculateReagentValues()
         {
             //some magic happens here~
