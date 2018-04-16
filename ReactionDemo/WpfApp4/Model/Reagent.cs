@@ -10,8 +10,8 @@ namespace WpfApp4.Model
     {
         private string _name;
         private string _cas;
-        private string _ratio;
-        
+        private string _Ratio;
+
 
         public string Name
         {
@@ -41,15 +41,15 @@ namespace WpfApp4.Model
         {
             get
             {
-                return _ratio;
+                return _Ratio;
             }
             set
             {
-                _ratio = value;
+                _Ratio = value;
                 OnPropertyChanged("Ratio");
             }
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
