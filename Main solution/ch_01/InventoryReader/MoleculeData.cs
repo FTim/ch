@@ -12,11 +12,11 @@ namespace InventoryReader
         public string Location { get; set; }
         public string CAS { get; set; }
         public double Mvalue { get; set; }
-        public double mvalue { get; set; }
-        public double Vvalue { get; set; }
-        public double dvalue { get; set; }
-        public double mpvalue { get; set; }
-        public double bpvalue { get; set; }
-        public double purity { get; set; }
+        public double? mvalue { get; set; }
+        public double? Vvalue { get; set; }
+        public double? dvalue { get; set; }
+        public string mpvalue { get; set; }
+        public string bpvalue { get; set; }
+        public string purity { get; set; }
     }
 }

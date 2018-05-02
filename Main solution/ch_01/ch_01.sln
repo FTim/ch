@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryReader", "Inventor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBtoEF", "DBtoEF\DBtoEF.csproj", "{5C7202C0-B91F-4C62-BD80-DBDE17A3FC73}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChClient2", "ChClient2\ChClient2.csproj", "{8572FB37-B5C7-45FA-AE7C-E34065557697}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{5C7202C0-B91F-4C62-BD80-DBDE17A3FC73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C7202C0-B91F-4C62-BD80-DBDE17A3FC73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C7202C0-B91F-4C62-BD80-DBDE17A3FC73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8572FB37-B5C7-45FA-AE7C-E34065557697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8572FB37-B5C7-45FA-AE7C-E34065557697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8572FB37-B5C7-45FA-AE7C-E34065557697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8572FB37-B5C7-45FA-AE7C-E34065557697}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

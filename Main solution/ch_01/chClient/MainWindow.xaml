@@ -5,13 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:chClient"
         mc:Ignorable="d"
-        Title="Ch client" SizeToContent="Height" Width="300">
+        Title="Ch client" SizeToContent="Height" Width="300" Name="ChClientMainWindow">
     <StackPanel>
         <StackPanel HorizontalAlignment="Center" Height="100" VerticalAlignment="Top" Width="280" Background="LightBlue" Margin="0,10,0,10">
             <Button Content="New Project" Width="250" Margin="0,10,0,0" Name="NewProjectBtn" Click="NewProjectBtn_Click"/>
             <Button Content="Browsing All Projects" Width="250" Margin="0,10,0,0" Name="AllProjectBtn" Click="AllProjectBtn_Click"/>
             <Button Content="Browsing My Projects" Width="250" Margin="0,10,0,0" Name="MyProjectBtn" Click="MyProjectBtn_Click"/>
-            <StackPanel Height="100"/>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Center" Height="100" VerticalAlignment="Top" Width="280" Background="LightCoral" Margin="0,0,0,10">

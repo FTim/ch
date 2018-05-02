@@ -75,7 +75,10 @@ namespace chClient
         {
             ReactionDemo rd = new ReactionDemo();
             rd.Show();
-            rd.Visibility = Visibility.Visible;
+            //rd.Visibility = Visibility.Visible;
+            Focusable = false;
+            rd.Owner = this;
+            rd.Topmost = true;
         }
     }
 }

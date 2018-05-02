@@ -42,7 +42,14 @@ namespace DocxGen
             Solvents = new List<MoleculeRow>();
             ObservationImg = new List<string>();
         }
-        
+        public void Create()
+        {
+            report = DocX.Create(FilePath);
+        }
+        public void Save()
+        {
+            report.Save();
+        }
         public void GenerateReport()
         {
             //fill FilePath property first!
@@ -58,10 +65,10 @@ namespace DocxGen
             GenerateObservation();
 
             report.Save();
-            Console.WriteLine("Saved!/nOpening....");
-            System.Diagnostics.Process.Start(FilePath);
-            Console.WriteLine("Done");
-            Console.ReadKey();
+            //Console.WriteLine("Saved!/nOpening....");
+            //System.Diagnostics.Process.Start(FilePath);
+            //Console.WriteLine("Done");
+            //Console.ReadKey();
         }
 
         public void AddReagent(MoleculeRow reagent)
@@ -109,28 +116,28 @@ namespace DocxGen
             HeaderTable.SetBorder(TableBorderType.Left, nullBorder);
             HeaderTable.SetBorder(TableBorderType.Right, nullBorder);
             HeaderTable.SetBorder(TableBorderType.Top, nullBorder);
-            
+
             report.InsertTable(HeaderTable);
             Console.WriteLine("Header generated");
         }
 
         public void CalculateValues()
         {
+            StartingMaterial.CalculateStartingMaterialValues();
             foreach (MoleculeRow item in Reagents)
             {
-                item.CalculateReagentValues();
+                item.CalculateReagentValues(StartingMaterial);
             }
-            foreach (MoleculeRow item in Solvents)
-            {
-                item.CalculateSolventValues();
-            }
+
             Product.CalculateProductValues();
+
+            //product számolás pls!
         }
 
         public void GenerateReaction()
         {
             report.InsertParagraph("Reactions:\n").Bold().UnderlineStyle(UnderlineStyle.singleLine);
-            
+
             Xceed.Words.NET.Image reactionimg = report.AddImage(ReactionImgPath);
 
             Picture reactionpic = reactionimg.CreatePicture();
@@ -139,9 +146,9 @@ namespace DocxGen
             report.InsertParagraph("Table of materials:\n").Bold().UnderlineStyle(UnderlineStyle.singleLine);
 
             //Material table
-            int rowcnt = 1 + Reagents.Count + Solvents.Count + 1;
-            //starting material-> 1x; reagent cnt; solvent cnt; product -> 1x
-            Table MaterialTable = report.AddTable(rowcnt, 10); 
+            int rowcnt = 2 + Reagents.Count + Solvents.Count + 1;
+            //header -> x1; starting material-> 1x; reagent cnt; solvent cnt; product -> 1x
+            Table MaterialTable = report.AddTable(rowcnt, 10);
 
             //ugly but... meh...
             MaterialTable.Rows[0].Cells[0].Paragraphs[0].Append("Name").Bold();
@@ -175,16 +182,16 @@ namespace DocxGen
 
             //product
             InsertRow(MaterialTable, Product, actualrow);
-                        
+
             //last row background
-            foreach (Cell item in MaterialTable.Rows[rowcnt-1].Cells)
+            foreach (Cell item in MaterialTable.Rows[rowcnt - 1].Cells)
             {
                 item.FillColor = Color.LightGray;
             }
 
             report.InsertTable(MaterialTable);
 
-            Console.WriteLine("Material table generated");
+            //Console.WriteLine("Material table generated");
         }
 
         public void InsertRow(Table tab, MoleculeRow molecule, int rowindex)
@@ -226,3 +233,4 @@ namespace DocxGen
         }
     }
 }
+

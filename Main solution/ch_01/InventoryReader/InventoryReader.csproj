@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InventoryReader.cs" />
+    <Compile Include="InventoryReading.cs" />
     <Compile Include="MoleculeData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

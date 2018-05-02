@@ -5,9 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:chClient"
         mc:Ignorable="d"
-        Title="NameCASHint" SizeToContent="Height" Width="500">
-    <ScrollViewer HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="500">
-        <Grid Height="100" Width="100" Background="LightBlue"/>
+        Title="NameCASHint" Height="500" Width="300">
+    <ScrollViewer HorizontalAlignment="Left" Height="500">
+        <StackPanel Width="280" Margin="10,0,10,0">
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="170"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Search by name:" HorizontalAlignment="Left"/>
+                <TextBox Grid.Column="1" Name="MoleculeSearchTB" Width="135" KeyDown="MoleculeSearchTB_KeyDown"></TextBox>
+            </Grid>
+            <ListView Name="NameCASHintLW" Width="270" ItemsSource="{Binding ShownNameCAS, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0">
+                                <TextBlock Text="{Binding Name, Mode=TwoWay}"/>
+                            </Border>
+                            <Border Grid.Column="1">
+                                <TextBlock Text="{Binding CAS, Mode=TwoWay}"/>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackPanel>
     </ScrollViewer>
 
 </Window>

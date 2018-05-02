@@ -12,28 +12,42 @@ namespace DocxGen
         public string Name { get; set; }
         public string CAS { get; set; }
         public double MWvalue { get; set; }
-        public double Ratio { get; set; }
+        public double? Ratio { get; set; }
         public double nvalue { get; set; }
         //public bool MV { get; set; } //m=true; V=false ???
         public double? mvalue { get; set; } //double? nullozható
         public double? Vvalue { get; set; }
-        public double Denvalue { get; set; }
-        public double Mpvalue { get; set; }
-        public double Bpvalue { get; set; }
+        public double? Denvalue { get; set; }
+        public string Mpvalue { get; set; }
+        public string Bpvalue { get; set; }
 
-        public void CalculateReagentValues()
+        public void CalculateStartingMaterialValues()
         {
-            //some magic happens here~
+
+
+            if (mvalue == null)
+            {
+                double tmpm = Double.Parse(Vvalue.ToString());
+                tmpm = Double.Parse(Vvalue.ToString()) * Double.Parse(Denvalue.ToString());
+                nvalue = tmpm / MWvalue;
+            }
+            else
+                nvalue = (double)(mvalue / MWvalue);
+
+        }
+        public void CalculateReagentValues(MoleculeRow sm)
+        {
+            nvalue = sm.nvalue * Double.Parse(Ratio.ToString());
+            mvalue = nvalue * MWvalue;
+            if (Vvalue.HasValue) Vvalue = mvalue / Denvalue;
+            else Vvalue = null;
         }
 
-        public void CalculateSolventValues()
-        {
-            //magic~
-        }
+
 
         public void CalculateProductValues()
         {
-            //some other magic happens here~
+            mvalue = nvalue * MWvalue;
         }
     }
 }
