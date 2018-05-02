@@ -23,17 +23,17 @@ namespace DocxGen
 
         public void CalculateStartingMaterialValues()
         {
-            
-                
-                if (mvalue == null)
-                {
-                     double tmpm = Double.Parse(Vvalue.ToString());
-                     tmpm = Double.Parse(Vvalue.ToString()) * Double.Parse(Denvalue.ToString());
-                    nvalue = tmpm / MWvalue;
-                }
-                else
+
+
+            if (mvalue == null)
+            {
+                double tmpm = Double.Parse(Vvalue.ToString());
+                tmpm = Double.Parse(Vvalue.ToString()) * Double.Parse(Denvalue.ToString());
+                nvalue = tmpm / MWvalue;
+            }
+            else
                 nvalue = (double)(mvalue / MWvalue);
-            
+
         }
         public void CalculateReagentValues(MoleculeRow sm)
         {
@@ -43,7 +43,7 @@ namespace DocxGen
             else Vvalue = null;
         }
 
-        
+
 
         public void CalculateProductValues()
         {

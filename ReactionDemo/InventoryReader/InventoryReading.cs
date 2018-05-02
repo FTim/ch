@@ -22,7 +22,7 @@ namespace InventoryReader
             string tmp_mp;
             string tmp_bp;
             string tmp_purity;
-            
+
             using (var stream = File.Open(FilePath, FileMode.Open, FileAccess.Read))
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
@@ -32,17 +32,17 @@ namespace InventoryReader
 
                     while (reader.Read())
                     {
-                        
+
                         //check for the last empty row
-                        if (reader.GetValue(1)==null) break;
-                       
-                        if (reader.GetValue(5)==null) tmp_mvalue = null;
+                        if (reader.GetValue(1) == null) break;
+
+                        if (reader.GetValue(5) == null) tmp_mvalue = null;
                         else tmp_mvalue = Double.Parse(reader.GetValue(5).ToString());
 
-                        if (reader.GetValue(6)==null) tmp_Vvalue = null;
+                        if (reader.GetValue(6) == null) tmp_Vvalue = null;
                         else tmp_Vvalue = Double.Parse(reader.GetValue(6).ToString());
 
-                        if (reader.GetValue(7)==null) tmp_dvalue = null;
+                        if (reader.GetValue(7) == null) tmp_dvalue = null;
                         else tmp_dvalue = Double.Parse(reader.GetValue(7).ToString());
 
                         if (reader.GetValue(8) == null) tmp_mp = "";
@@ -58,25 +58,25 @@ namespace InventoryReader
                         {
                             Name = reader.GetValue(1).ToString(),
                             Location = reader.GetValue(2).ToString(),
-                            CAS= reader.GetValue(3).ToString(),
-                            Mvalue=Double.Parse(reader.GetValue(4).ToString()),
-                            mvalue=tmp_mvalue,
-                            Vvalue= tmp_Vvalue,
-                            dvalue= tmp_dvalue,
-                            mpvalue= tmp_mp,
-                            bpvalue= tmp_bp,
-                            purity= tmp_purity
+                            CAS = reader.GetValue(3).ToString(),
+                            Mvalue = Double.Parse(reader.GetValue(4).ToString()),
+                            mvalue = tmp_mvalue,
+                            Vvalue = tmp_Vvalue,
+                            dvalue = tmp_dvalue,
+                            mpvalue = tmp_mp,
+                            bpvalue = tmp_bp,
+                            purity = tmp_purity
                         });
                     }
-                    
+
                 }
             }
-           // Console.WriteLine("im so done");
+            // Console.WriteLine("im so done");
             return molecules;
 
         }
 
 
-        
+
     }
 }

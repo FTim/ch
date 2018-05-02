@@ -2,24 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using DocxGen;
 using InventoryReader;
-
 using WpfApp4.Model;
+using DocxGen;
 
 namespace WpfApp4.View
 {
-    
+
     /// <summary>
     /// Interaction logic for MainPage.xaml
     /// </summary>
@@ -39,6 +29,8 @@ namespace WpfApp4.View
         
         public MainPage()
         {
+           
+
             readed = new List<MoleculeData>();
             InventoryReading reader = new InventoryReading();
             reader.FilePath = String.Concat(System.IO.Directory.GetCurrentDirectory(), "\\Inventory.xlsx");
@@ -59,7 +51,6 @@ namespace WpfApp4.View
             ReagentsList.DataContext = this;
             SolventsList.DataContext = this;
             ProductsList.DataContext = this;
-
 
 
         }
@@ -205,7 +196,7 @@ namespace WpfApp4.View
 
             // Set filter for file extension and default file extension 
             dlg.DefaultExt = ".jpg";
-            dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg";
+            dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg| All Files (*.*)|*.*";
 
 
             // Display OpenFileDialog by calling ShowDialog method 

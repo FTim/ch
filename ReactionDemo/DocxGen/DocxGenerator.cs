@@ -116,7 +116,7 @@ namespace DocxGen
             HeaderTable.SetBorder(TableBorderType.Left, nullBorder);
             HeaderTable.SetBorder(TableBorderType.Right, nullBorder);
             HeaderTable.SetBorder(TableBorderType.Top, nullBorder);
-            
+
             report.InsertTable(HeaderTable);
             Console.WriteLine("Header generated");
         }
@@ -128,7 +128,7 @@ namespace DocxGen
             {
                 item.CalculateReagentValues(StartingMaterial);
             }
-            
+
             Product.CalculateProductValues();
 
             //product számolás pls!
@@ -137,7 +137,7 @@ namespace DocxGen
         public void GenerateReaction()
         {
             report.InsertParagraph("Reactions:\n").Bold().UnderlineStyle(UnderlineStyle.singleLine);
-            
+
             Xceed.Words.NET.Image reactionimg = report.AddImage(ReactionImgPath);
 
             Picture reactionpic = reactionimg.CreatePicture();
@@ -148,7 +148,7 @@ namespace DocxGen
             //Material table
             int rowcnt = 2 + Reagents.Count + Solvents.Count + 1;
             //header -> x1; starting material-> 1x; reagent cnt; solvent cnt; product -> 1x
-            Table MaterialTable = report.AddTable(rowcnt, 10); 
+            Table MaterialTable = report.AddTable(rowcnt, 10);
 
             //ugly but... meh...
             MaterialTable.Rows[0].Cells[0].Paragraphs[0].Append("Name").Bold();
@@ -164,7 +164,7 @@ namespace DocxGen
 
             //starting material
             InsertRow(MaterialTable, StartingMaterial, 1);
-            
+
             int actualrow = 2;
             //reagents
             foreach (MoleculeRow item in Reagents)
@@ -182,13 +182,13 @@ namespace DocxGen
 
             //product
             InsertRow(MaterialTable, Product, actualrow);
-                  
+
             //last row background
-            foreach (Cell item in MaterialTable.Rows[rowcnt-1].Cells)
+            foreach (Cell item in MaterialTable.Rows[rowcnt - 1].Cells)
             {
                 item.FillColor = Color.LightGray;
             }
-            
+
             report.InsertTable(MaterialTable);
 
             //Console.WriteLine("Material table generated");
