@@ -6,21 +6,27 @@
         xmlns:local="clr-namespace:WpfApp4.View"
         mc:Ignorable="d"
         Title="NameCASHint" Height="525" Width="500">
-    <Grid Margin="0,0,0,20">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="ExcelList" Grid.Row="1" Margin="12,7,0,0"  Width="480" Height="500" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <ListView x:Name="ExcelList" Grid.Row="1" Width="480" Height="430" HorizontalAlignment="Center" VerticalAlignment="Top">
 
             <ListView.View>
                 <GridView x:Name="ExcelListGrid">
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"  Width="300"/>
-                    <GridViewColumn Header="CAS" DisplayMemberBinding="{Binding CAS}"  Width="195" />
+                    <GridViewColumn Header="CAS" DisplayMemberBinding="{Binding CAS}"  Width="150" />
                     
                 </GridView>
             </ListView.View>
         </ListView>
+        
+            <Label Content="Search:" Margin="12,7,0,0" Grid.Row="2"/>
+            <TextBox Height="23" HorizontalAlignment="Left" Margin="100,7,0,0"  VerticalAlignment="Top" Width="178" Name="SearchTb" Grid.Row="2" KeyUp="SearchTb_KeyUp"/>
+        <Button Content="Search" Height="23" HorizontalAlignment="Left" Margin="300,7,0,0" VerticalAlignment="Top" Width="178" Name="SearchBtn" Click="SearchBtn_Click" Grid.Row="2"/>
+
     </Grid>
 </Window>

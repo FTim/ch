@@ -30,16 +30,27 @@ namespace DocxGen
                 double tmpm = Double.Parse(Vvalue.ToString());
                 tmpm = Double.Parse(Vvalue.ToString()) * Double.Parse(Denvalue.ToString());
                 nvalue = tmpm / MWvalue;
+
+                nvalue = Math.Round(nvalue, 3);
             }
             else
+            {
                 nvalue = (double)(mvalue / MWvalue);
+
+                nvalue = Math.Round(nvalue, 3);
+            }
 
         }
         public void CalculateReagentValues(MoleculeRow sm)
         {
             nvalue = sm.nvalue * Double.Parse(Ratio.ToString());
-            mvalue = nvalue * MWvalue;
-            if (Vvalue.HasValue) Vvalue = mvalue / Denvalue;
+
+            nvalue = Math.Round(nvalue, 3);
+
+            mvalue = Math.Round(nvalue * MWvalue, 3);
+
+
+            if (Vvalue.HasValue&&Denvalue.HasValue) Vvalue = Math.Round(Double.Parse(mvalue.ToString()) / Double.Parse(Denvalue.ToString()), 3);
             else Vvalue = null;
         }
 
@@ -47,7 +58,7 @@ namespace DocxGen
 
         public void CalculateProductValues()
         {
-            mvalue = nvalue * MWvalue;
+            mvalue = Math.Round(nvalue * MWvalue,3);
         }
     }
 }

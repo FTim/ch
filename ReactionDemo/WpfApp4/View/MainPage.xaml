@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ViewModel="clr-namespace:WpfApp4.ViewModel"
     x:Class="WpfApp4.View.MainPage"
-        Title="Reaction Demo" Height="485" Width="525" ResizeMode="NoResize">
-    <TabControl HorizontalAlignment="Left" VerticalAlignment="Top" TabStripPlacement="Top" IsTabStop="True" Height="485" Width="525">
+        Title="Reaction Demo" Height="485" Width="550"   >
+    <TabControl HorizontalAlignment="Left" VerticalAlignment="Top" TabStripPlacement="Top" IsTabStop="True" Height="485" Width="550">
         <TabItem Header="Header">
             <Grid Margin="0,0,0,20">
                 <Grid.RowDefinitions>
@@ -15,7 +15,7 @@
                 <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,63,0,0"  VerticalAlignment="Top" Width="178" x:Name="txtChiefchemist"  />
                 <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,91,0,0"  VerticalAlignment="Top" Width="178" x:Name="txtProject" />
                 <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,119,0,0"  VerticalAlignment="Top" Width="178" x:Name="txtLaboratory"  />
-                <DatePicker Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,147,0,0" VerticalAlignment="Top" Width="178" x:Name="datetimeStart"/>
+                <DatePicker Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,147,0,0" VerticalAlignment="Top" Width="178"  x:Name="datetimeStart"/>
                 <DatePicker Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,175,0,0" VerticalAlignment="Top" Width="178" x:Name="datetimeClosure"/>
                 <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,203,0,0"  VerticalAlignment="Top" Width="178" x:Name="txtPreviousStep" />
                 <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,231,0,0"  VerticalAlignment="Top" Width="178" x:Name="txtLiterature" />
@@ -30,6 +30,8 @@
                 <Label Content="Previous step" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,203,0,0" VerticalAlignment="Top" />
                 <Label Content="Literature" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,231,0,0" VerticalAlignment="Top" />
                 <Label Content="Reaction image" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,259,0,0" VerticalAlignment="Top" />
+
+                <Image Grid.Row="1" Margin="20,287,0,0" Width="200" MaxWidth="200" Height="100" MaxHeight="100" Stretch="Uniform" x:Name="ReactionIcon" HorizontalAlignment="Left"/>
 
             </Grid>
         </TabItem>
@@ -46,31 +48,37 @@
 
                     <ListView.View>
                         <GridView x:Name="StartingMaterialGrid">
-                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"  Width="200"/>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200"/>
                             <GridViewColumn Header="CAS" DisplayMemberBinding="{Binding CAS}"  Width="80" />
                             <GridViewColumn Header="m" DisplayMemberBinding="{Binding mValue}" Width="60" />
                             <GridViewColumn Header="V" DisplayMemberBinding="{Binding VValue}" Width="60" />
                         </GridView>
                     </ListView.View>
+                    
                 </ListView>
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" x:Name="txtSMName" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.Name, ElementName=StartingMaterialList}" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,35,0,0" x:Name="txtSMCAS" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.CAS, ElementName=StartingMaterialList}" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,63,0,0" x:Name="txtSMmValue" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.mValue, ElementName=StartingMaterialList}" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,91,0,0" x:Name="txtSMVValue" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.VValue, ElementName=StartingMaterialList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="73,380,0,0" x:Name="txtSMName" VerticalAlignment="Top" Width="199" Text="{Binding SelectedItem.Name, ElementName=StartingMaterialList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="273,380,0,0" x:Name="txtSMCAS" VerticalAlignment="Top" Width="79" Text="{Binding SelectedItem.CAS, ElementName=StartingMaterialList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="353,380,0,0" x:Name="txtSMmValue" VerticalAlignment="Top" Width="59" Text="{Binding SelectedItem.mValue, ElementName=StartingMaterialList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="413,380,0,0" x:Name="txtSMVValue" VerticalAlignment="Top" Width="59" Text="{Binding SelectedItem.VValue, ElementName=StartingMaterialList}" />
 
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,7,0,0" x:Name="txtSMAddName" VerticalAlignment="Top" Width="178"  />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,35,0,0" x:Name="txtSMAddCAS" VerticalAlignment="Top" Width="178" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,63,0,0" x:Name="txtSMAddmValue" VerticalAlignment="Top" Width="178"  />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,91,0,0" x:Name="txtSMAddVValue" VerticalAlignment="Top" Width="178"  />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" x:Name="txtSMAddName" VerticalAlignment="Top" Width="178"  />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,35,0,0" x:Name="txtSMAddCAS" VerticalAlignment="Top" Width="178" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,63,0,0" x:Name="txtSMAddmValue" VerticalAlignment="Top" Width="178"  />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,91,0,0" x:Name="txtSMAddVValue" VerticalAlignment="Top" Width="178"  />
                 <Label Content="Name" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,7,0,0"  VerticalAlignment="Top" />
                 <Label Content="CAS" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,35,0,0"  VerticalAlignment="Top" />
                 <Label Content="m" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" />
                 <Label Content="V" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,91,0,0"  VerticalAlignment="Top" />
-                
-                <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,119,0,0" x:Name="btnSMAdd" 
+
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,7,0,0"  VerticalAlignment="Top" Name="SMNameProblem" Foreground="Red"/>
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,35,0,0"  VerticalAlignment="Top" Name="SMCASProblem" Foreground="Red"/>
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,63,0,0" VerticalAlignment="Top" Name="SMmProblem" Foreground="Red"/>
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,91,0,0"  VerticalAlignment="Top" Name="SMVProblem" Foreground="Red"/>
+
+                <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0" x:Name="btnSMAdd" 
                 VerticalAlignment="Top" Width="178"
                  Click="btnSMAdd_Click"/>
-                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0"
+                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,145,0,0"
                 VerticalAlignment="Top" Width="178"
                  Click="btnHint_Click"/>
             </Grid>
@@ -97,26 +105,30 @@
                     </ListView.View>
                 </ListView>
 
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" x:Name="txtRName" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.Name, ElementName=ReagentsList}"/>
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,35,0,0" x:Name="txtRCAS" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.CAS, ElementName=ReagentsList}" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,63,0,0" x:Name="txtRRatio" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.Ratio, ElementName=ReagentsList}" />
 
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="73,380,0,0" x:Name="txtRName" VerticalAlignment="Top" Width="199" Text="{Binding SelectedItem.Name, ElementName=ReagentsList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="273,380,0,0" x:Name="txtRCAS" VerticalAlignment="Top" Width="79" Text="{Binding SelectedItem.CAS, ElementName=ReagentsList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="353,380,0,0" x:Name="txtRRatio" VerticalAlignment="Top" Width="59" Text="{Binding SelectedItem.Ratio, ElementName=ReagentsList}" />
 
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,7,0,0" x:Name="txtRAddName" VerticalAlignment="Top" Width="178" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,35,0,0" x:Name="txtRAddCAS" VerticalAlignment="Top" Width="178" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,63,0,0" x:Name="txtRAddRatio" VerticalAlignment="Top" Width="178" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" x:Name="txtRAddName" VerticalAlignment="Top" Width="178" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,35,0,0" x:Name="txtRAddCAS" VerticalAlignment="Top" Width="178" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,63,0,0" x:Name="txtRAddRatio" VerticalAlignment="Top" Width="178" />
 
                 <Label Content="Name" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,7,0,0" VerticalAlignment="Top" />
                 <Label Content="CAS" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,35,0,0" VerticalAlignment="Top" />
                 <Label Content="Ratio" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" />
 
-                
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,7,0,0"  VerticalAlignment="Top" Name="RNameProblem" Foreground="Red"/>
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,35,0,0"  VerticalAlignment="Top" Name="RCASProblem" Foreground="Red"/>
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,63,0,0" VerticalAlignment="Top" Name="RRatioProblem" Foreground="Red"/>
 
-                <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,119,0,0" x:Name="btnRAdd" 
+
+
+                <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0" x:Name="btnRAdd" 
                 VerticalAlignment="Top" Width="178"
                 Click="btnRAdd_Click"
                   />
-                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0"
+                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,145,0,0"
                 VerticalAlignment="Top" Width="178"
                  Click="btnHint_Click"/>
 
@@ -140,21 +152,27 @@
                     </ListView.View>
 
                 </ListView>
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" x:Name="txtSName" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.Name, ElementName=SolventsList}" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,35,0,0" x:Name="txtSCAS" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.CAS, ElementName=SolventsList}" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,63,0,0" x:Name="txtSmValue" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.VValue, ElementName=SolventsList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="73,380,0,0" x:Name="txtSName" VerticalAlignment="Top" Width="199" Text="{Binding SelectedItem.Name, ElementName=SolventsList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="273,380,0,0" x:Name="txtSCAS" VerticalAlignment="Top" Width="79" Text="{Binding SelectedItem.CAS, ElementName=SolventsList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="353,380,0,0" x:Name="txtSmValue" VerticalAlignment="Top" Width="59" Text="{Binding SelectedItem.VValue, ElementName=SolventsList}" />
 
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,7,0,0" x:Name="txtSAddName" VerticalAlignment="Top" Width="178"  />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,35,0,0" x:Name="txtSAddCAS" VerticalAlignment="Top" Width="178" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,63,0,0" x:Name="txtSAddVValue" VerticalAlignment="Top" Width="178"  />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" x:Name="txtSAddName" VerticalAlignment="Top" Width="178"  />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,35,0,0" x:Name="txtSAddCAS" VerticalAlignment="Top" Width="178" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,63,0,0" x:Name="txtSAddVValue" VerticalAlignment="Top" Width="178"  />
+                
                 <Label Content="Name" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,7,0,0"  VerticalAlignment="Top" />
                 <Label Content="CAS" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,35,0,0"  VerticalAlignment="Top" />
                 <Label Content="V" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" />
-                
-                <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,119,0,0" x:Name="btnSAdd" 
+
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,7,0,0"  VerticalAlignment="Top" Name="SNameProblem" Foreground="Red"/>
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,35,0,0"  VerticalAlignment="Top" Name="SCASProblem" Foreground="Red"/>
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,63,0,0" VerticalAlignment="Top" Name="SVProblem" Foreground="Red"/>
+
+
+                <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0" x:Name="btnSAdd" 
                 VerticalAlignment="Top" Width="178" Click="btnSAdd_Click"
                  />
-                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0"
+                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,145,0,0"
                 VerticalAlignment="Top" Width="178"
                  Click="btnHint_Click"/>
             </Grid>
@@ -177,22 +195,27 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" x:Name="txtPMW" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.MWValue, ElementName=ProductsList}" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,35,0,0" x:Name="txtPRatio" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.Ratio, ElementName=ProductsList}" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,63,0,0" x:Name="txtPnValue" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.nValue, ElementName=ProductsList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="73,380,0,0" x:Name="txtPMW" VerticalAlignment="Top" Width="129" Text="{Binding SelectedItem.MWValue, ElementName=ProductsList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="203,380,0,0" x:Name="txtPRatio" VerticalAlignment="Top" Width="129" Text="{Binding SelectedItem.Ratio, ElementName=ProductsList}" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="333,380,0,0" x:Name="txtPnValue" VerticalAlignment="Top" Width="129" Text="{Binding SelectedItem.nValue, ElementName=ProductsList}" />
                 
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,7,0,0" x:Name="txtPAddMW" VerticalAlignment="Top" Width="178"  />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,35,0,0" x:Name="txtPAddRatio" VerticalAlignment="Top" Width="178" />
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,63,0,0" x:Name="txtPAddnValue" VerticalAlignment="Top" Width="178"  />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" x:Name="txtPAddMW" VerticalAlignment="Top" Width="178"  />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,35,0,0" x:Name="txtPAddRatio" VerticalAlignment="Top" Width="178" />
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,63,0,0" x:Name="txtPAddnValue" VerticalAlignment="Top" Width="178"  />
+               
                 <Label Content="MW" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,7,0,0"  VerticalAlignment="Top" />
                 <Label Content="Ratio" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,35,0,0"  VerticalAlignment="Top" />
                 <Label Content="n" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" />
-                
 
-                <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="288,119,0,0" x:Name="btnPAdd" 
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,7,0,0"  VerticalAlignment="Top" Name="PMWProblem" Foreground="Red"/>
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,35,0,0"  VerticalAlignment="Top" Name="PRatioProblem" Foreground="Red"/>
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="288,63,0,0" VerticalAlignment="Top" Name="PnProblem" Foreground="Red"/>
+
+
+                <Button Content="Add" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0" x:Name="btnPAdd" 
                 VerticalAlignment="Top" Width="178"
                  Click="btnPAdd_Click"/>
-                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,119,0,0"
+                <Button Content="Name-CAS hints" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,145,0,0"
                 VerticalAlignment="Top" Width="178"
                  Click="btnHint_Click"/>
             </Grid>
@@ -204,20 +227,43 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBox Grid.Row="1" Height="46" HorizontalAlignment="Left" Margin="120,7,0,0"  VerticalAlignment="Top" Width="348" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" x:Name="txtProcedure"/>
-                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,63,0,0"  VerticalAlignment="Top" Width="178" x:Name="txtYield"/>
+                <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,63,0,0"  VerticalAlignment="Top" Width="348" x:Name="txtYield"/>
                 <TextBox Grid.Row="1" Height="46" HorizontalAlignment="Left" Margin="120,91,0,0"  VerticalAlignment="Top" Width="348" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" x:Name="txtObservation"  />
                 <Button Content="Add image..." Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,147,0,0" VerticalAlignment="Top" Width="178" x:Name="btnAddObservationImg" Click="btnAddObservationImg_Click"/>
                 <Label Content="Procedure" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,7,0,0" VerticalAlignment="Top" />
                 <Label Content="Yield" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0"  VerticalAlignment="Top" />
                 <Label Content="Observation" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,91,0,0"  VerticalAlignment="Top" />
                 <Label Content="Observation image" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,147,0,0" VerticalAlignment="Top" />
-                <Label Content="Docx location" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,175,0,0" VerticalAlignment="Top" />
-                <Label Content="Selected location: " Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,203,0,0" VerticalAlignment="Top" />
 
-                <Button Content="Select Docx location" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,175,0,0" VerticalAlignment="Top" Width="178" x:Name="btnSelectLocation" Click="btnSelectLocation_Click"/>
+                <Image Grid.Row="1" Margin="20,177,0,0" Width="200" MaxWidth="200" Height="100" MaxHeight="100" Stretch="Uniform" x:Name="ObservationIcon" HorizontalAlignment="Left"/>
 
-                <Button Content="Save Docx" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,259,0,0" VerticalAlignment="Top" Width="178" x:Name="btnSaveDocx" Click="btnSaveDocx_Click"/>
 
+            </Grid>
+        </TabItem>
+        <TabItem Header="Save Docx">
+            <Grid>
+                <CheckBox Content="Sketch" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" x:Name="SketchCB"/>
+                <Label Content="Docx location" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,35,0,0" VerticalAlignment="Top" />
+                <Label Content="Selected location: " Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" />
+                <Label Content="" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="120,91,0,0" VerticalAlignment="Top" x:Name="SaveLocationLabel"/>
+                <Button Content="Select Docx location" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,35,0,0" VerticalAlignment="Top" Width="178" x:Name="btnSelectLocation" Click="btnSelectLocation_Click"/>
+
+                <Label  Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="308,35,0,0"  VerticalAlignment="Top" Name="DocPoblems" Foreground="Red"/>
+
+                <Button Content="Save Docx" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,63,0,0" VerticalAlignment="Top" Width="178" x:Name="btnSaveDocx" Click="btnSaveDocx_Click"/>
+                <Button Content="Start new reaction" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="120,119,0,0" VerticalAlignment="Top" Width="178" x:Name="btnInit" Click="btnInit_Click"/>
+
+                <CheckBox Content="Clear header inputs" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="15,147,0,0" VerticalAlignment="Top" x:Name="ClrHeaderCB"/>
+                <CheckBox Content="Clear starting material" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="15,175,0,0" VerticalAlignment="Top" x:Name="ClrSMCB"/>
+                <CheckBox Content="Clear reagent list" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="15,203,0,0" VerticalAlignment="Top" x:Name="ClrRCB"/>
+                <CheckBox Content="Clear solvent list" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="15,231,0,0" VerticalAlignment="Top" x:Name="ClrSCB"/>
+                <CheckBox Content="Clear product" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="15,259,0,0" VerticalAlignment="Top" x:Name="ClrPCB"/>
+                <CheckBox Content="Clear procedure and observation inputs" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="15,287,0,0" VerticalAlignment="Top" x:Name="ClrProcCB"/>
+
+                <CheckBox Content="Clear input fields too" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="260,175,0,0" VerticalAlignment="Top" x:Name="ClrSMInputCB"/>
+                <CheckBox Content="Clear input fields too" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="260,203,0,0" VerticalAlignment="Top" x:Name="ClrRInputCB"/>
+                <CheckBox Content="Clear input fields too" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="260,231,0,0" VerticalAlignment="Top" x:Name="ClrSInputCB"/>
+                <CheckBox Content="Clear input fields too" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="260,259,0,0" VerticalAlignment="Top" x:Name="ClrPInputCB"/>
             </Grid>
         </TabItem>
     </TabControl>

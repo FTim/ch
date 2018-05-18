@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xceed.Words.NET;
 using System.Drawing;
 
@@ -50,19 +47,22 @@ namespace DocxGen
         {
             report.Save();
         }
-        public void GenerateReport()
+        public void GenerateReport(Boolean closed)
         {
             //fill FilePath property first!
             report = DocX.Create(FilePath);
             //fill headerproperties first!
-            GenerateHeader();
+            GenerateHeader(closed);
             //fill startingmaterial properties first & add reagents+solvents!
             CalculateValues();
             GenerateReaction();
-            //fill procedure properties first
-            GenerateProcedure();
-            //fill observation properties first
-            GenerateObservation();
+            if (closed)
+            {
+                //fill procedure properties first
+                GenerateProcedure();
+                //fill observation properties first
+                GenerateObservation();
+            }
 
             report.Save();
             //Console.WriteLine("Saved!/nOpening....");
@@ -71,6 +71,7 @@ namespace DocxGen
             //Console.ReadKey();
         }
 
+        
         public void AddReagent(MoleculeRow reagent)
         {
             Reagents.Add(reagent);
@@ -80,7 +81,7 @@ namespace DocxGen
         {
             Solvents.Add(solvent);
         }
-        public void GenerateHeader()
+        public void GenerateHeader(Boolean closed)
         {
             Table HeaderTable = report.AddTable(6, 4); //6 sor, 4 oszlop; fix méret
 
@@ -97,7 +98,7 @@ namespace DocxGen
             HeaderTable.Rows[2].Cells[0].Paragraphs[0].Append("Chiefchemist:").Bold().Alignment = Alignment.right;
             HeaderTable.Rows[2].Cells[1].Paragraphs[0].Append(Chiefchemist);
             HeaderTable.Rows[2].Cells[2].Paragraphs[0].Append("Date of closure:").Bold().Alignment = Alignment.right;
-            HeaderTable.Rows[2].Cells[3].Paragraphs[0].Append(ClosureDate.ToShortDateString()); //Date->string!!!
+            if(closed)HeaderTable.Rows[2].Cells[3].Paragraphs[0].Append(ClosureDate.ToShortDateString()); //Date->string!!!
 
             HeaderTable.Rows[3].Cells[0].Paragraphs[0].Append("Project:").Bold().Alignment = Alignment.right;
             HeaderTable.Rows[3].Cells[1].Paragraphs[0].Append(ProjectName);
@@ -139,8 +140,10 @@ namespace DocxGen
             report.InsertParagraph("Reactions:\n").Bold().UnderlineStyle(UnderlineStyle.singleLine);
 
             Xceed.Words.NET.Image reactionimg = report.AddImage(ReactionImgPath);
-
+            
             Picture reactionpic = reactionimg.CreatePicture();
+
+            
             report.InsertParagraph().AppendPicture(reactionpic);
 
             report.InsertParagraph("Table of materials:\n").Bold().UnderlineStyle(UnderlineStyle.singleLine);
@@ -150,6 +153,8 @@ namespace DocxGen
             //header -> x1; starting material-> 1x; reagent cnt; solvent cnt; product -> 1x
             Table MaterialTable = report.AddTable(rowcnt, 10);
 
+            float[] widths = new float[10] { 50, 50, 50, 50, 60, 45, 40, 40, 40, 40 };
+            MaterialTable.SetWidths(widths);
             //ugly but... meh...
             MaterialTable.Rows[0].Cells[0].Paragraphs[0].Append("Name").Bold();
             MaterialTable.Rows[0].Cells[1].Paragraphs[0].Append("Code").Bold();
@@ -181,6 +186,7 @@ namespace DocxGen
             }
 
             //product
+            
             InsertRow(MaterialTable, Product, actualrow);
 
             //last row background
