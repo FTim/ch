@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EBB2FA66-0F9F-411F-B416-2D6186CCB6EB}</ProjectGuid>
+    <ProjectGuid>{B337EDF9-8555-401C-9EA9-F17C88CA4184}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ChClient</RootNamespace>
     <AssemblyName>ChClient</AssemblyName>
@@ -13,8 +13,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,20 +35,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>flask_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\flask_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.4.0.1044, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.2.4.0.1044\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.4.1.1101, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.4.1.1101\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -68,17 +82,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\AddonInfo.cs" />
-    <Compile Include="Model\Product.cs" />
-    <Compile Include="Model\Reaction.cs" />
-    <Compile Include="Model\Reagent.cs" />
-    <Compile Include="Model\Solvent.cs" />
-    <Compile Include="Model\StartingMaterial.cs" />
-    <Compile Include="ViewModel\NewReactionViewModel.cs" />
-    <Compile Include="View\NewReactionWindow.xaml.cs">
-      <DependentUpon>NewReactionWindow.xaml</DependentUpon>
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\ReactionErrorInfo.cs" />
+    <Compile Include="Models\ReactionInfo.cs" />
+    <Compile Include="Models\Reagent.cs" />
+    <Compile Include="Models\SelectedMolecule.cs" />
+    <Compile Include="Models\Solvent.cs" />
+    <Compile Include="Models\StartingMaterial.cs" />
+    <Compile Include="Models\StartingMaterialErrorInfo.cs" />
+    <Compile Include="Services\ExcelReaderService.cs" />
+    <Compile Include="Services\FrameNavigationService.cs" />
+    <Compile Include="Services\IExcelReaderService.cs" />
+    <Compile Include="Services\IFrameNavigationService.cs" />
+    <Compile Include="Services\IOpenCustomDialogWindow.cs" />
+    <Compile Include="Services\IOpenFileDialogService.cs" />
+    <Compile Include="Services\ISelectMoleculeDialogService.cs" />
+    <Compile Include="Services\OpenFileDialogService.cs" />
+    <Compile Include="Services\SelectMoleculeDialogService.cs" />
+    <Compile Include="ViewModels\HomePageViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MaterialSelectWindowViewModel.cs" />
+    <Compile Include="ViewModels\NewReactionPageViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\MainWindow.xaml">
+    <Compile Include="Views\MaterialSelectWindow.xaml.cs">
+      <DependentUpon>MaterialSelectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewReactionPage.xaml.cs">
+      <DependentUpon>NewReactionPage.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -86,11 +122,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="View\MainWindow.xaml.cs">
+    <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\NewReactionWindow.xaml">
+    <Page Include="Views\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MaterialSelectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewReactionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -123,17 +167,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DocxGen\DocxGen.csproj">
-      <Project>{BF55D741-E800-41E6-B598-C1CECCE7820F}</Project>
-      <Name>DocxGen</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InventoryReader\InventoryReader.csproj">
-      <Project>{0693776D-EA41-4450-AA9A-838458047096}</Project>
-      <Name>InventoryReader</Name>
-    </ProjectReference>
+    <Resource Include="Assets\flask_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="flask_icon.ico" />
+    <ProjectReference Include="..\InventoryReader\InventoryReader.csproj">
+      <Project>{a389af44-c371-4675-901d-b9f54f5c8ebf}</Project>
+      <Name>InventoryReader</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

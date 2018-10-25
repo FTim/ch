@@ -55,10 +55,10 @@ namespace DocxGen
 
 
 
-        public void CalculateProductValues()
+        public void CalculateProductValues(MoleculeRow sm)
         {
-            mvalue = Math.Round(nvalue * MWvalue, 3);
+            nvalue = Math.Round(Double.Parse(Ratio.ToString()) * (Double.Parse(sm.nvalue.ToString())), 3);
+            mvalue = nvalue * MWvalue;
         }
     }
-
 }

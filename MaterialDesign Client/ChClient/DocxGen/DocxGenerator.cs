@@ -55,7 +55,7 @@ namespace DocxGen
             //fill FilePath property first!
             report = DocX.Create(FilePath);
             //fill headerproperties first!
-            GenerateHeader(!sketch);
+            GenerateHeader(sketch);
             //fill startingmaterial properties first & add reagents+solvents!
             CalculateValues();
             GenerateReaction();
@@ -84,7 +84,7 @@ namespace DocxGen
         {
             Solvents.Add(solvent);
         }
-        public void GenerateHeader(Boolean closed)
+        public void GenerateHeader(bool closed)
         {
             Table HeaderTable = report.AddTable(6, 4); //6 sor, 4 oszlop; fix méret
 
@@ -133,9 +133,25 @@ namespace DocxGen
                 item.CalculateReagentValues(StartingMaterial);
             }
 
-            Product.CalculateProductValues();
+            Product.CalculateProductValues(StartingMaterial);
 
             //product számolás pls!
+        }
+        public void CalculateStartingMaterial()
+        {
+            StartingMaterial.CalculateStartingMaterialValues();
+        }
+        public void CalculateReagents()
+        {
+            foreach (MoleculeRow item in Reagents)
+            {
+                item.CalculateReagentValues(StartingMaterial);
+            }
+        }
+
+        public void CalculateProduct()
+        {
+            Product.CalculateProductValues(StartingMaterial);
         }
 
         public void GenerateReaction()
@@ -160,15 +176,15 @@ namespace DocxGen
             MaterialTable.SetWidths(widths);
             //ugly but... meh...
             MaterialTable.Rows[0].Cells[0].Paragraphs[0].Append("Name").Bold();
-            MaterialTable.Rows[0].Cells[1].Paragraphs[0].Append("Code").Bold();
-            MaterialTable.Rows[0].Cells[2].Paragraphs[0].Append("MW").Bold();
+            MaterialTable.Rows[0].Cells[1].Paragraphs[0].Append("CAS").Bold();
+            MaterialTable.Rows[0].Cells[2].Paragraphs[0].Append("MW (g/mol)").Bold();
             MaterialTable.Rows[0].Cells[3].Paragraphs[0].Append("Ratio").Bold();
             MaterialTable.Rows[0].Cells[4].Paragraphs[0].Append("n (mmol)").Bold();
             MaterialTable.Rows[0].Cells[5].Paragraphs[0].Append("m (mg)").Bold();
             MaterialTable.Rows[0].Cells[6].Paragraphs[0].Append("V (uL)").Bold();
-            MaterialTable.Rows[0].Cells[7].Paragraphs[0].Append("Den.").Bold();
-            MaterialTable.Rows[0].Cells[8].Paragraphs[0].Append("Mp.").Bold();
-            MaterialTable.Rows[0].Cells[9].Paragraphs[0].Append("Bp.").Bold();
+            MaterialTable.Rows[0].Cells[7].Paragraphs[0].Append("Den. (g/ml)").Bold();
+            MaterialTable.Rows[0].Cells[8].Paragraphs[0].Append("Mp. (°C)").Bold();
+            MaterialTable.Rows[0].Cells[9].Paragraphs[0].Append("Bp. (°C)").Bold();
 
             //starting material
             InsertRow(MaterialTable, StartingMaterial, 1);
