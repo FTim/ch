@@ -2,14 +2,18 @@
     x:Class="ChClient.Views.NewReactionPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:converters="clr-namespace:ChClient.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:ChClient.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="NewReactionPageName"
     Title="NewReactionPage"
-    d:DesignHeight="650"
-    d:DesignWidth="800"
+    d:DesignHeight="950"
+    d:DesignWidth="720"
     Background="{DynamicResource MaterialDesignPaper}"
     DataContext="{Binding NewReactionViewModel, Source={StaticResource Locator}}"
     FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
@@ -17,8 +21,27 @@
     TextElement.FontWeight="Medium"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:VisibilityConverter x:Key="VisibilityConverter" />
+        <converters:MessageLevelConverter x:Key="MessageLevelConverter" />
+    </Page.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding GetResources, Mode=OneWay}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Grid>
-        <!--StackPanel
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
             Height="50"
             VerticalAlignment="Top"
             Background="{DynamicResource PrimaryHueMidBrush}"
@@ -31,6 +54,7 @@
                 VerticalAlignment="Top"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 materialDesign:ShadowAssist.ShadowEdges="None"
+                Command="{Binding Home}"
                 ToolTip="Home">
                 <materialDesign:PackIcon
                     Width="15"
@@ -48,23 +72,33 @@
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                 IsEnabled="True"
-                PlacementMode="BottomAndAlignLeftEdges"
-                StaysOpen="True"
+                PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
                 <materialDesign:PopupBox.ToggleContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FolderOpen" />
+                        <TextBlock Text=" Projects" />
+                    </StackPanel>
 
-                    <materialDesign:PackIcon
-                        Width="15"
-                        Height="15"
-                        Kind="FolderOpen" />
                 </materialDesign:PopupBox.ToggleContent>
                 <materialDesign:PopupBox.ToggleCheckedContent>
-                    Projects
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FolderOpen" />
+                        <TextBlock Text=" Projects" />
+
+                    </StackPanel>
                 </materialDesign:PopupBox.ToggleCheckedContent>
-                <StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <Button
                         Width="20"
                         Height="20"
+                        Command="{Binding NewProject}"
                         ToolTip="New project">
                         <materialDesign:PackIcon
                             Width="15"
@@ -74,6 +108,7 @@
                     <Button
                         Width="20"
                         Height="20"
+                        Command="{Binding BrowseAllProjects}"
                         ToolTip="Browse all projects">
                         <materialDesign:PackIcon
                             Width="15"
@@ -83,6 +118,7 @@
                     <Button
                         Width="20"
                         Height="20"
+                        Command="{Binding BrowseMyProjects}"
                         ToolTip="Browse my projects">
                         <materialDesign:PackIcon
                             Width="15"
@@ -93,150 +129,242 @@
             </materialDesign:PopupBox>
             <materialDesign:PopupBox
                 Width="80"
-                Height="32"
+                Height="Auto"
+                Margin="70,12,10,10"
                 HorizontalAlignment="Center"
+                VerticalAlignment="Top"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                PlacementMode="BottomAndAlignCentres"
+                IsEnabled="True"
+                PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
                 <materialDesign:PopupBox.ToggleContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FileDocument" />
+                        <TextBlock Text=" Reactions" />
+                    </StackPanel>
 
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="FileDocument" />
                 </materialDesign:PopupBox.ToggleContent>
                 <materialDesign:PopupBox.ToggleCheckedContent>
-                    Reactions
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FileDocument" />
+                        <TextBlock Text=" Reactions" />
+
+                    </StackPanel>
                 </materialDesign:PopupBox.ToggleCheckedContent>
-                <StackPanel>
-                    <Button ToolTip="New reaction">
-                        <materialDesign:PackIcon Kind="Pencil" />
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding NewReaction}"
+                        ToolTip="New reaction">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Pencil" />
                     </Button>
-                    <Button ToolTip="Browse all reactions">
-                        <materialDesign:PackIcon Kind="BookVariant" />
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseAllReactions}"
+                        ToolTip="Browse all reactions">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookVariant" />
                     </Button>
-                    <Button ToolTip="Browse my reactions">
-                        <materialDesign:PackIcon Kind="BookSecure" />
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseMyReactions}"
+                        ToolTip="Browse my reactions">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookSecure" />
                     </Button>
                 </StackPanel>
             </materialDesign:PopupBox>
             <materialDesign:PopupBox
                 Width="80"
-                Height="32"
+                Height="Auto"
+                Margin="70,12,10,10"
                 HorizontalAlignment="Center"
+                VerticalAlignment="Top"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                PlacementMode="BottomAndAlignCentres"
+                IsEnabled="True"
+                PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
                 <materialDesign:PopupBox.ToggleContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Archive" />
+                        <TextBlock Text=" Inventory" />
+                    </StackPanel>
 
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="Archive" />
                 </materialDesign:PopupBox.ToggleContent>
                 <materialDesign:PopupBox.ToggleCheckedContent>
-                    Inventory
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Archive" />
+                        <TextBlock Text=" Inventory" />
+
+                    </StackPanel>
                 </materialDesign:PopupBox.ToggleCheckedContent>
-                <StackPanel>
-                    <Button ToolTip="Inventory check">
-                        <materialDesign:PackIcon Kind="ClipboardCheck" />
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding AddNewMolecule}"
+                        ToolTip="Add new molecule">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="PlusBox" />
                     </Button>
-                    <Button ToolTip="Manual inventory update">
-                        <materialDesign:PackIcon Kind="PencilBox" />
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding ManualInventoryUpdate}"
+                        ToolTip="Manual inventory update">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="PencilBox" />
                     </Button>
-                    <Button ToolTip="Export as excel file">
-                        <materialDesign:PackIcon Kind="FileExcel" />
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding ExportExcel}"
+                        ToolTip="Export as excel file">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FileExcel" />
                     </Button>
                 </StackPanel>
             </materialDesign:PopupBox>
-        </-->
-
-        <dragablz:TabablzControl BorderThickness="0" FixedHeaderCount="3">
+        </StackPanel>
+        <dragablz:TabablzControl
+            Grid.Row="1"
+            BorderThickness="0"
+            FixedHeaderCount="3">
 
             <dragablz:TabablzControl.InterTabController>
                 <dragablz:InterTabController />
             </dragablz:TabablzControl.InterTabController>
 
             <TabItem Header="Header">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="250" />
-                            <ColumnDefinition MinWidth="160" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Grid
+                        MinWidth="700"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+
                         <StackPanel
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Margin="12"
-                            HorizontalAlignment="Left"
+                            MinWidth="700"
+                            Margin="12,20"
+                            HorizontalAlignment="Stretch"
                             VerticalAlignment="Top">
                             <TextBox
-                                Width="200"
+                                Width="650"
+                                MinWidth="200"
                                 Margin="4"
+                                HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Reaction code"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Text="{Binding Code, Mode=TwoWay}" />
                             <TextBox
-                                Width="200"
+                                Width="650"
+                                MinWidth="200"
                                 Margin="4"
+                                HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Chemist"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Text="{Binding Chemist, Mode=TwoWay}" />
                             <TextBox
-                                Width="200"
+                                Width="650"
+                                MinWidth="200"
                                 Margin="4"
+                                HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Chiefchemist"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Text="{Binding Chiefchemist, Mode=TwoWay}" />
                             <TextBox
-                                Width="200"
+                                Width="650"
+                                MinWidth="200"
                                 Margin="4"
+                                HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Project"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Text="{Binding Project, Mode=TwoWay}" />
                             <TextBox
-                                Width="200"
+                                Width="650"
+                                MinWidth="200"
                                 Margin="4"
+                                HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Laboratory"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Text="{Binding Laboratory, Mode=TwoWay}" />
                             <DatePicker
-                                Width="200"
-                                Margin="4,12,4,12"
+                                MinWidth="200"
+                                Margin="24,4"
+                                HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Date of start"
                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                 Text="{Binding StartDate, Mode=TwoWay}" />
                             <DatePicker
-                                Width="200"
-                                Margin="4,12,4,8"
+                                MinWidth="200"
+                                Margin="24,4"
+                                HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Date of closure"
                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                 Text="{Binding ClosureDate, Mode=TwoWay}" />
                             <TextBox
-                                Width="200"
+                                Width="650"
+                                MinWidth="200"
                                 Margin="4"
+                                HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Previous step"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Text="{Binding PreviousStep, Mode=TwoWay}" />
                             <TextBox
-                                Width="200"
+                                Width="650"
+                                MinWidth="200"
                                 Margin="4"
+                                HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Literature"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Text="{Binding Literature, Mode=TwoWay}" />
+
+                            <Image
+                                MaxWidth="600"
+                                MaxHeight="600"
+                                Margin="4"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                IsEnabled="True"
+                                Source="{Binding ReactionImgPath, Mode=TwoWay}"
+                                Stretch="Uniform" />
                             <Button
                                 Width="180"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
+                                Margin="12,20,12,0"
+                                HorizontalAlignment="Center"
                                 Command="{Binding SelectReactionImg}"
                                 Style="{StaticResource MaterialDesignRaisedLightButton}">
                                 <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -252,856 +380,1062 @@
                                 </Grid>
                             </Button>
                         </StackPanel>
-                        <StackPanel
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            MinWidth="150"
-                            Margin="12"
-                            VerticalAlignment="Top"
-                            Orientation="Vertical">
-                            <Image
-                                MaxWidth="500"
-                                MaxHeight="500"
-                                Margin="4"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                IsEnabled="True"
-                                Source="{Binding ReactionImgPath, Mode=TwoWay}"
-                                Stretch="Uniform" />
-                            <TextBlock
-                                MinWidth="200"
-                                Margin="4"
-                                VerticalAlignment="Top"
-                                Foreground="Red"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                Text="{Binding ReactionCodeError, Mode=TwoWay}" />
-                            <TextBlock
-                                MinWidth="200"
-                                Margin="4"
-                                VerticalAlignment="Top"
-                                Foreground="Red"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                Text="{Binding ClosureDateError}" />
-                            <TextBlock
-                                MinWidth="200"
-                                Margin="4"
-                                VerticalAlignment="Top"
-                                Foreground="Orange"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                Text="{Binding ClocureDateIgnore}" />
-                            <TextBlock
-                                MinWidth="200"
-                                Margin="4"
-                                VerticalAlignment="Top"
-                                Foreground="Red"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                Text="{Binding ReactionImageError}" />
-                        </StackPanel>
+
                     </Grid>
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="Starting Material">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
-                            <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="220" />
-                            <ColumnDefinition MinWidth="220" />
-                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Grid.Column="0"
+                                Margin="10,20"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top">
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddMaterialAsStartingMaterial}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="ShapePolygonPlus" />
+                                        <TextBlock Grid.Column="1" Text="Add material" />
+                                    </Grid>
+                                </Button>
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="Name"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMName, Mode=TwoWay}"
+                                    TextWrapping="WrapWithOverflow" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="CAS"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMCAS, Mode=TwoWay}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="Location"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMLocation, Mode=TwoWay}" />
+
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="m"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMmvalue, Mode=TwoWay}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="V"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMVvalue, Mode=TwoWay}" />
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddStartingMaterial}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="TableRowPlusBefore" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="4,0,0,0"
+                                            Text="Add" />
+                                    </Grid>
+
+                                </Button>
+                                <TextBlock
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    Text="Material amount will be decreased from the location above."
+                                    TextWrapping="WrapWithOverflow" />
+                                <TextBlock
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    Text="{Binding SMValueFound, Mode=TwoWay}"
+                                    TextWrapping="WrapWithOverflow" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Column="1"
+                                Margin="10,20"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                Visibility="{Binding Path=EditSMVisibility, Converter={StaticResource VisibilityConverter}}">
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding EditMaterialAsStartingMaterial}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="ShapePolygonPlus" />
+                                        <TextBlock Grid.Column="1" Text="Select another" />
+                                    </Grid>
+                                </Button>
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit name"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMNameEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit CAS"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMCASEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit location"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMLocationEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit m"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMmvalueEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit V"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SMVvalueEdit}" />
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddEditedSM}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="TableEdit" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="4,0,0,0"
+                                            Text="Save" />
+                                    </Grid>
+                                </Button>
+                                <TextBlock
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    Text="{Binding SMValueFoundEdit, Mode=TwoWay}"
+                                    TextWrapping="WrapWithOverflow" />
+                            </StackPanel>
+
+                        </Grid>
+                        <ListView
+                            Name="StartingMaterialListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding StartingMaterialList, Mode=TwoWay}"
+                            SelectedItem="{Binding SelectedSM, Mode=TwoWay}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="400"
+                                        DisplayMemberBinding="{Binding Name}"
+                                        Header="Name" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding CAS}"
+                                        Header="CAS" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding mValue}"
+                                        Header="m" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding VValue}"
+                                        Header="V" />
+                                    <GridViewColumn Width="120" Header="">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button
+                                                        Width="50"
+                                                        Margin="0,0,5,0"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding Path=DataContext.EditStartingMaterial, ElementName=StartingMaterialListView}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="Pencil" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button
+                                                        Width="50"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding Path=DataContext.DeleteStartingMaterial, ElementName=StartingMaterialListView}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="DeleteEmpty" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Reagents">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Grid.Column="0"
+                                Margin="10,20"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top">
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddMaterialAsReagent}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="ShapePolygonPlus" />
+                                        <TextBlock Grid.Column="1" Text="Add material" />
+                                    </Grid>
+                                </Button>
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="Name"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding RName, Mode=TwoWay}"
+                                    TextWrapping="WrapWithOverflow" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="CAS"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding RCAS, Mode=TwoWay}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="Location"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding RLocation, Mode=TwoWay}" />
+                                <TextBlock
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    Text="Material amount will be decreased from the location above."
+                                    TextWrapping="WrapWithOverflow" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="Ratio"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding RRatio, Mode=TwoWay}" />
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddReagent}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="TableRowPlusBefore" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="4,0,0,0"
+                                            Text="Add" />
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Column="1"
+                                Margin="10,20"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                Visibility="{Binding Path=EditRVisibility, Converter={StaticResource VisibilityConverter}}">
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding EditMaterialAsReagent}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="ShapePolygonPlus" />
+                                        <TextBlock Grid.Column="1" Text="Select another" />
+                                    </Grid>
+                                </Button>
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit name"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding RNameEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit CAS"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding RCASEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit location"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding RLocationEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit ratio"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding RRatioEdit}" />
+
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddEditedR}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="TableEdit" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="4,0,0,0"
+                                            Text="Save" />
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+
+                        </Grid>
+                        <ListView
+                            Name="ReagentListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding ReagentList, Mode=TwoWay}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="400"
+                                        DisplayMemberBinding="{Binding Name}"
+                                        Header="Name" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding CAS}"
+                                        Header="CAS" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding Ratio}"
+                                        Header="Ratio" />
+
+                                    <GridViewColumn Width="120" Header="">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button
+                                                        Width="50"
+                                                        Margin="0,0,5,0"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding Path=DataContext.EditReagent, ElementName=ReagentListView}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="Pencil" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button
+                                                        Width="50"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding Path=DataContext.DeleteReagent, ElementName=ReagentListView}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="DeleteEmpty" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Solvents">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Grid.Column="0"
+                                Margin="10,20"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top">
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddMaterialAsSolvent}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="ShapePolygonPlus" />
+                                        <TextBlock Grid.Column="1" Text="Add material" />
+                                    </Grid>
+                                </Button>
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="Name"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SName, Mode=TwoWay}"
+                                    TextWrapping="WrapWithOverflow" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="CAS"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SCAS, Mode=TwoWay}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="Location"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SLocation, Mode=TwoWay}" />
+                                <TextBlock
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    Text="Material amount will be decreased from the location above."
+                                    TextWrapping="WrapWithOverflow" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="V"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SVvalue, Mode=TwoWay}" />
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddSolvent}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="TableRowPlusBefore" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="4,0,0,0"
+                                            Text="Add" />
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Column="1"
+                                Margin="10,20"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                Visibility="{Binding Path=EditSVisibility, Converter={StaticResource VisibilityConverter}}">
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding EditMaterialAsSolvent}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="ShapePolygonPlus" />
+                                        <TextBlock Grid.Column="1" Text="Select another" />
+                                    </Grid>
+                                </Button>
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit name"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SNameEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit CAS"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SCASEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit location"
+                                    IsEnabled="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SLocationEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit V"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding SVvalueEdit}" />
+
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddEditedS}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="TableEdit" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="4,0,0,0"
+                                            Text="Save" />
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+
+                        </Grid>
+                        <ListView
+                            Name="SolventListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding SolventList, Mode=TwoWay}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="400"
+                                        DisplayMemberBinding="{Binding Name}"
+                                        Header="Name" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding CAS}"
+                                        Header="CAS" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding VValue}"
+                                        Header="V" />
+
+                                    <GridViewColumn Width="120" Header="">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button
+                                                        Width="50"
+                                                        Margin="0,0,5,0"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding Path=DataContext.EditSolvent, ElementName=SolventListView}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="Pencil" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button
+                                                        Width="50"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding Path=DataContext.DeleteSolvent, ElementName=SolventListView}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="DeleteEmpty" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Products">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Grid.Column="0"
+                                Margin="10,20"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top">
+
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="MW"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding PMWvalue, Mode=TwoWay}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:HintAssist.Hint="Ratio"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding PRatio, Mode=TwoWay}" />
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddProduct}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="TableRowPlusBefore" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="4,0,0,0"
+                                            Text="Add" />
+                                    </Grid>
+
+                                </Button>
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Column="1"
+                                Margin="10,20"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                Visibility="{Binding Path=EditPVisibility, Converter={StaticResource VisibilityConverter}}">
+
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit MW"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding PMWvalueEdit}" />
+                                <TextBox
+                                    Width="650"
+                                    MinWidth="200"
+                                    Margin="4"
+                                    materialDesign:HintAssist.Hint="Edit ratio"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Text="{Binding PRatioEdit}" />
+                                <Button
+                                    Width="180"
+                                    Margin="12,20"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding AddEditedP}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0" Kind="TableEdit" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="4,0,0,0"
+                                            Text="Save" />
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+
+                        </Grid>
+                        <ListView
+                            Name="ProductListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding ProductList, Mode=TwoWay}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="400"
+                                        DisplayMemberBinding="{Binding MW}"
+                                        Header="MW" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding Ratio}"
+                                        Header="Ratio" />
+                                    <GridViewColumn Width="120" Header="">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button
+                                                        Width="50"
+                                                        Margin="0,0,5,0"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding Path=DataContext.EditProduct, ElementName=ProductListView}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="Pencil" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button
+                                                        Width="50"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding Path=DataContext.DeleteProduct, ElementName=ProductListView}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="DeleteEmpty" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Procedure, observation">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Grid
+                        MinWidth="700"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+
                         <StackPanel
-                            Grid.Row="0"
-                            Margin="12"
-                            HorizontalAlignment="Left"
+                            MinWidth="700"
+                            Margin="12,20"
+                            HorizontalAlignment="Stretch"
                             VerticalAlignment="Top">
+                            <TextBlock
+                                Margin="4"
+                                Text="Check the Sketch option and leave the fields empty to skip this part in the report"
+                                TextWrapping="WrapWithOverflow" />
+                            <TextBox
+                                Width="650"
+                                MinWidth="200"
+                                Margin="4"
+                                HorizontalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Procedure"
+                                AcceptsReturn="True"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Text="{Binding Procedure, Mode=TwoWay}"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto" />
+                            <TextBox
+                                Width="650"
+                                MinWidth="200"
+                                Margin="4"
+                                HorizontalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Yield"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Text="{Binding Yield, Mode=TwoWay}" />
+                            <TextBox
+                                Width="650"
+                                MinWidth="200"
+                                Margin="4"
+                                HorizontalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Observation"
+                                AcceptsReturn="True"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Text="{Binding Observation, Mode=TwoWay}"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto" />
+
                             <Button
                                 Width="180"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Command="{Binding AddMaterialAsStartingMaterial}"
+                                Margin="12,20"
+                                HorizontalAlignment="Center"
+                                Command="{Binding SelectObservationImg}"
                                 Style="{StaticResource MaterialDesignRaisedLightButton}">
                                 <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <materialDesign:PackIcon Grid.Column="0" Kind="ShapePolygonPlus" />
-                                    <TextBlock Grid.Column="1" Text="Add material" />
+                                    <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="4,0,0,0"
+                                        Text="Add image" />
                                 </Grid>
                             </Button>
-
-
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Name"
-                                IsEnabled="False"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SMName, Mode=TwoWay}" />
-                            <TextBlock Margin="4" Text="CAS will be added" />
-
-                            <TextBox
-                                x:Name="StartingMaterialAddmTB"
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="m"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                            <TextBox
-                                x:Name="StartingMaterialAddVTB"
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="V"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                            <Button
-                                x:Name="StartingMaterialAddBtn"
-                                Width="180"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="TableRowPlusBefore" />
-                                    <TextBlock Text=" Add                      " />
-                                </StackPanel>
-                            </Button>
-
-                        </StackPanel>
-                        <StackPanel
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <TextBlock
-                                MinWidth="200"
-                                Margin="4"
-                                Foreground="Red"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                Text="{Binding StartingMaterialProblem, Mode=TwoWay}" />
-
-                        </StackPanel>
-                        <ListView
-                            Name="StartingMaterialListView"
-                            Grid.Row="1"
-                            MinWidth="400"
-                            Margin="16,4,4,4"
-                            HorizontalAlignment="Left"
-                            ItemsSource="{Binding StartingMaterialList, Mode=TwoWay}">
-                            <ListView.View>
-                                <GridView>
-
-                                    <GridViewColumn
-                                        Width="200"
-                                        DisplayMemberBinding="{Binding Name}"
-                                        Header="Name" />
-                                    <GridViewColumn
-                                        Width="80"
-                                        DisplayMemberBinding="{Binding CAS}"
-                                        Header="CAS" />
-                                    <GridViewColumn
-                                        Width="60"
-                                        DisplayMemberBinding="{Binding mValue}"
-                                        Header="m" />
-                                    <GridViewColumn
-                                        Width="60"
-                                        DisplayMemberBinding="{Binding VValue}"
-                                        Header="V" />
-                                    <GridViewColumn Width="200" Header="">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Button
-                                                        x:Name="StartingMaterialMod"
-                                                        Width="50"
-                                                        Margin="0,0,5,0"
-                                                        HorizontalAlignment="Left"
-                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                            <materialDesign:PackIcon Kind="Pencil" />
-
-                                                        </StackPanel>
-                                                    </Button>
-
-                                                    <Button
-                                                        x:Name="StartingMaterialDelBtn"
-                                                        Width="50"
-                                                        HorizontalAlignment="Left"
-                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                            <materialDesign:PackIcon Kind="DeleteEmpty" />
-
-                                                        </StackPanel>
-                                                    </Button>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                        <StackPanel
-                            Grid.Row="2"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Edit name"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SelectedItem.Name, ElementName=StartingMaterialListView}" />
-                            <!--  TextBox materialDesign:HintAssist.Hint="Edit CAS" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="200" Margin="4" Text="{Binding SelectedItem.CAS, ElementName=StartingMaterialListView}"/  -->
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Edit m"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SelectedItem.mValue, ElementName=StartingMaterialListView}" />
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Edit V"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SelectedItem.VValue, ElementName=StartingMaterialListView}" />
-
-                        </StackPanel>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="Reagents">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel
-                            Grid.Row="0"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <Button
-                                x:Name="ReagentAddNameBtn"
-                                Width="180"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Command="{Binding AddMaterialAsReagent}"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="ShapePolygonPlus" />
-                                    <TextBlock Text=" Add material        " />
-                                </StackPanel>
-                            </Button>
-
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Name"
-                                IsEnabled="False"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding RName, Mode=TwoWay}" />
-                            <TextBlock Margin="4" Text="CAS will be added" />
-                            <TextBox
-                                x:Name="ReagentAddRatioTB"
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Ratio"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-
-                            <Button
-                                x:Name="ReagentAddBtn"
-                                Width="180"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="TableRowPlusBefore" />
-                                    <TextBlock Text=" Add                      " />
-                                </StackPanel>
-                            </Button>
-
-                        </StackPanel>
-                        <StackPanel
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <TextBlock
-                                MinWidth="200"
-                                Margin="4"
-                                Foreground="Red"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                Text="{Binding ReagentProblem, Mode=TwoWay}" />
-
-                        </StackPanel>
-
-                        <ListView
-                            Name="ReagentListView"
-                            Grid.Row="1"
-                            MinWidth="400"
-                            Margin="16,4,4,4"
-                            HorizontalAlignment="Left"
-                            ItemsSource="{Binding ReagentList, Mode=TwoWay}">
-                            <ListView.View>
-                                <GridView>
-
-                                    <GridViewColumn
-                                        Width="200"
-                                        DisplayMemberBinding="{Binding Name}"
-                                        Header="Name" />
-                                    <GridViewColumn
-                                        Width="80"
-                                        DisplayMemberBinding="{Binding CAS}"
-                                        Header="CAS" />
-                                    <GridViewColumn
-                                        Width="80"
-                                        DisplayMemberBinding="{Binding Ratio}"
-                                        Header="Ratio" />
-                                    <GridViewColumn Width="200" Header="">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Button
-                                                        x:Name="ReagentMod"
-                                                        Width="50"
-                                                        Margin="0,0,5,0"
-                                                        HorizontalAlignment="Left"
-                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                            <materialDesign:PackIcon Kind="Pencil" />
-
-                                                        </StackPanel>
-                                                    </Button>
-
-                                                    <Button
-                                                        x:Name="ReagentDelBtn"
-                                                        Width="50"
-                                                        HorizontalAlignment="Left"
-                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                            <materialDesign:PackIcon Kind="DeleteEmpty" />
-
-                                                        </StackPanel>
-                                                    </Button>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                        <StackPanel
-                            Grid.Row="2"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Edit name"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SelectedItem.Name, ElementName=ReagentListView}" />
-                            <!--  TextBox materialDesign:HintAssist.Hint="Edit CAS" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="200" Margin="4" Text="{Binding SelectedItem.CAS, ElementName=ReagentListView}"/  -->
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Edit ratio"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SelectedItem.Ratio, ElementName=ReagentListView}" />
-
-                        </StackPanel>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="Solvents">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="220" />
-                            <ColumnDefinition MinWidth="220" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel
-                            Grid.Row="0"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <Button
-                                x:Name="SolventAddNameBtn"
-                                Width="180"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="ShapePolygonPlus" />
-                                    <TextBlock Text=" Add material        " />
-                                </StackPanel>
-                            </Button>
-
-                            <TextBox
-                                x:Name="SolventAddNameTB"
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Name"
-                                IsEnabled="False"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                            <TextBlock Margin="4" Text="CAS will be added" />
-                            <TextBox
-                                x:Name="SolventAddVTB"
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="V"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-
-                            <Button
-                                x:Name="SolventAddBtn"
-                                Width="180"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="TableRowPlusBefore" />
-                                    <TextBlock Text=" Add                      " />
-                                </StackPanel>
-                            </Button>
-
-                        </StackPanel>
-                        <StackPanel
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <TextBlock
-                                MinWidth="200"
-                                Margin="4"
-                                Foreground="Red"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                Text="{Binding SolventProblem, Mode=TwoWay}" />
-
-                        </StackPanel>
-                        <ListView
-                            Name="SolventListView"
-                            Grid.Row="1"
-                            MinWidth="400"
-                            Margin="16,4,4,4"
-                            HorizontalAlignment="Left"
-                            ItemsSource="{Binding SolventList, Mode=TwoWay}">
-                            <ListView.View>
-                                <GridView>
-
-                                    <GridViewColumn
-                                        Width="200"
-                                        DisplayMemberBinding="{Binding Name}"
-                                        Header="Name" />
-                                    <GridViewColumn
-                                        Width="80"
-                                        DisplayMemberBinding="{Binding CAS}"
-                                        Header="CAS" />
-                                    <GridViewColumn
-                                        Width="60"
-                                        DisplayMemberBinding="{Binding VValue}"
-                                        Header="V" />
-                                    <GridViewColumn Width="200" Header="">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Button
-                                                        x:Name="SolventMod"
-                                                        Width="50"
-                                                        Margin="0,0,5,0"
-                                                        HorizontalAlignment="Left"
-                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                            <materialDesign:PackIcon Kind="Pencil" />
-
-                                                        </StackPanel>
-                                                    </Button>
-
-                                                    <Button
-                                                        x:Name="SolventDelBtn"
-                                                        Width="50"
-                                                        HorizontalAlignment="Left"
-                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                            <materialDesign:PackIcon Kind="DeleteEmpty" />
-
-                                                        </StackPanel>
-                                                    </Button>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                        <StackPanel
-                            Grid.Row="2"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Edit name"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SelectedItem.Name, ElementName=SolventListView}" />
-                            <!--  TextBox materialDesign:HintAssist.Hint="Edit CAS" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="200" Margin="4" Text="{Binding SelectedItem.CAS, ElementName=SolventListView}"/  -->
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Edit V"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SelectedItem.VValue, ElementName=SolventListView}" />
-
-                        </StackPanel>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="Product(s)">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="220" />
-                            <ColumnDefinition MinWidth="220" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel
-                            Grid.Row="0"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <TextBox
-                                x:Name="ProductAddMWTB"
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="MW"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                            <TextBox
-                                x:Name="ProductAddRatioTB"
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Ratio"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                            <!--  TextBox materialDesign:HintAssist.Hint="n" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="200" Margin="4" x:Name="ProductAddnTB"/  -->
-
-                            <Button
-                                x:Name="ProductAddBtn"
-                                Width="180"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="TableRowPlusBefore" />
-                                    <TextBlock Text=" Add                      " />
-                                </StackPanel>
-                            </Button>
-                            <Button
-                                Width="180"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="CommentQuestionOutline" />
-                                    <TextBlock Text=" Name-CAS hints" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                        <StackPanel
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <TextBlock
-                                MinWidth="200"
-                                Margin="4"
-                                Foreground="Red"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                Text="{Binding ProductProblem, Mode=TwoWay}" />
-
-                        </StackPanel>
-                        <ListView
-                            Name="ProductListView"
-                            Grid.Row="1"
-                            MinWidth="400"
-                            Margin="16,4,4,4"
-                            HorizontalAlignment="Left"
-                            ItemsSource="{Binding ProductList, Mode=TwoWay}">
-                            <ListView.View>
-                                <GridView>
-
-                                    <GridViewColumn
-                                        Width="200"
-                                        DisplayMemberBinding="{Binding MWValue}"
-                                        Header="MW" />
-                                    <GridViewColumn
-                                        Width="80"
-                                        DisplayMemberBinding="{Binding Ratio}"
-                                        Header="Ratio" />
-                                    <!--  GridViewColumn DisplayMemberBinding="{Binding nValue}" Header="n" Width="60"/  -->
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                        <StackPanel
-                            Grid.Row="2"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Edit MW"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SelectedItem.MWValue, ElementName=ProductListView}" />
-                            <TextBox
-                                Width="200"
-                                Margin="4"
-                                materialDesign:HintAssist.Hint="Edit ratio"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding SelectedItem.Ratio, ElementName=ProductListView}" />
-                            <!--  TextBox materialDesign:HintAssist.Hint="Edit n" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="200" Margin="4" Text="{Binding SelectedItem.nValue, ElementName=ProductListView}"/  -->
-
-                        </StackPanel>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="Procedure, observation">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="250" />
-                            <ColumnDefinition MinWidth="150" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel
-                            Grid.Column="0"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <Label Margin="4,0,4,0" Content="Check the Sketch option and" />
-                            <Label Margin="4,0,4,0" Content="leave the fields empty to skip" />
-                            <Label Margin="4,0,4,0" Content="this part in the report" />
-
-                            <TextBox
-                                x:Name="ProcedureTB"
-                                Width="220"
-                                Height="80"
-                                Margin="4"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Stretch"
-                                materialDesign:HintAssist.Hint="Procedure"
-                                AcceptsReturn="True"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                            <TextBox
-                                x:Name="YieldTB"
-                                Width="220"
-                                Margin="4"
-                                HorizontalAlignment="Left"
-                                materialDesign:HintAssist.Hint="Yield"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                            <TextBox
-                                x:Name="ObservationTB"
-                                Width="220"
-                                Height="80"
-                                Margin="4"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Stretch"
-                                materialDesign:HintAssist.Hint="Observation"
-                                AcceptsReturn="True"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                            <Button
-                                x:Name="AddObservationImgBtn"
-                                Width="210"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="ImagePlus" />
-                                    <TextBlock Text=" Add observation image" />
-                                </StackPanel>
-                            </Button>
                             <CheckBox
+                                Width="650"
+                                MinWidth="200"
                                 Margin="4"
                                 Content="Sketch"
                                 IsChecked="{Binding IsSketch, Mode=TwoWay}"
                                 Style="{StaticResource MaterialDesignCheckBox}" />
 
-
-                        </StackPanel>
-                        <StackPanel
-                            Grid.Column="1"
-                            MinWidth="150"
-                            Margin="12">
-                            <TextBlock
-                                x:Name="ObservationImgProblemTB"
-                                MinWidth="200"
-                                Margin="4"
-                                Foreground="Red"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}" />
-                            <Image
-                                x:Name="ObservationImgImg"
+                            <ListView
+                                Name="ObservableImageListView"
                                 Grid.Row="1"
-                                Width="200"
-                                Height="200"
-                                Margin="4"
-                                HorizontalAlignment="Left"
-                                Stretch="Uniform" />
+                                MinWidth="700"
+                                Margin="16,12"
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding ObservationImgPaths, Mode=TwoWay}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Image">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Image
+                                                        MaxWidth="600"
+                                                        MaxHeight="600"
+                                                        HorizontalAlignment="Stretch"
+                                                        VerticalAlignment="Top"
+                                                        IsEnabled="True"
+                                                        Source="{Binding .}"
+                                                        Stretch="Uniform" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+
+
+                                        <GridViewColumn Width="120" Header="">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+
+                                                        <Button
+                                                            Width="50"
+                                                            HorizontalAlignment="Left"
+                                                            Command="{Binding Path=DataContext.DeleteObservationImg, ElementName=ObservableImageListView}"
+                                                            CommandParameter="{Binding .}"
+                                                            Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                                <materialDesign:PackIcon Kind="DeleteEmpty" />
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
                         </StackPanel>
 
                     </Grid>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Save Docx">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="320" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Grid
+                        MinWidth="700"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+
                         <StackPanel
-                            Grid.Column="0"
-                            Margin="12"
-                            HorizontalAlignment="Left"
+                            MinWidth="700"
+                            Margin="12,20"
+                            HorizontalAlignment="Stretch"
                             VerticalAlignment="Top">
                             <Button
                                 x:Name="SaveLocationBtn"
                                 Width="210"
                                 Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
+                                HorizontalAlignment="Center"
+                                Command="{Binding SelectSaveLocation}"
                                 Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="FolderStar" />
-                                    <TextBlock Text=" Select save location" />
-                                </StackPanel>
+                                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon Grid.Column="0" Kind="FolderStar" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="4,0,0,0"
+                                        Text="Select save location" />
+                                </Grid>
+
                             </Button>
                             <Button
                                 Width="210"
                                 Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
+                                HorizontalAlignment="Center"
                                 Command="{Binding SaveReaction}"
                                 Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Floppy" />
-                                    <TextBlock Text=" Save                         " />
-                                </StackPanel>
-                            </Button>
-                            <Button
-                                x:Name="NewReactionBtn"
-                                Width="210"
-                                Margin="4,8,8,8"
-                                HorizontalAlignment="Left"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="FileOutline" />
-                                    <TextBlock Text=" New reaction           " />
-                                </StackPanel>
-                            </Button>
-                            <CheckBox
-                                x:Name="ClearHeaderCB"
-                                Margin="4"
-                                Content="Clear header inputs"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
-                            <CheckBox
-                                x:Name="ClearStartingMaterialCB"
-                                Margin="4"
-                                Content="Clear starting material"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
-                            <CheckBox
-                                x:Name="ClearReagentCB"
-                                Margin="4"
-                                Content="Clear reagent list"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
-                            <CheckBox
-                                x:Name="ClearSolventCB"
-                                Margin="4"
-                                Content="Clear solvent list"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
-                            <CheckBox
-                                x:Name="ClearProductCB"
-                                Margin="4"
-                                Content="Clear product"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
-                            <CheckBox
-                                x:Name="ClearProcedureCB"
-                                Margin="4"
-                                Content="Clear procedure and observation inputs"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
+                                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon Grid.Column="0" Kind="Floppy" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="4,0,0,0"
+                                        Text="Save" />
+                                </Grid>
 
-                        </StackPanel>
-                        <StackPanel
-                            Grid.Column="1"
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <TextBlock
-                                x:Name="DocxLocationProblemTB"
-                                MinWidth="200"
-                                Margin="4"
-                                Foreground="Red"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}" />
-                            <TextBlock
-                                x:Name="DocxSaveProblemTB"
-                                MinWidth="200"
-                                Margin="4"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}" />
+                            </Button>
 
-                            <CheckBox
-                                x:Name="ClearStartingMaterialInputsCB"
-                                Margin="4,127,4,4"
-                                Content="Clear input fields too"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
-                            <CheckBox
-                                x:Name="ClearReagentInputsCB"
-                                Margin="4"
-                                Content="Clear input fields too"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
-                            <CheckBox
-                                x:Name="ClearSolventInputsCB"
-                                Margin="4"
-                                Content="Clear input fields too"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
-                            <CheckBox
-                                x:Name="ClearProductInputsCB"
-                                Margin="4"
-                                Content="Clear input fields too"
-                                IsChecked="True"
-                                Style="{StaticResource MaterialDesignCheckBox}" />
+
                         </StackPanel>
 
                     </Grid>
@@ -1109,5 +1443,17 @@
             </TabItem>
 
         </dragablz:TabablzControl>
+
+        <GroupBox Grid.Row="2" Height="180">
+            <ListView x:Name="ConsoleListView" ItemsSource="{Binding OutputMessages, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding Message}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </GroupBox>
+
     </Grid>
 </Page>

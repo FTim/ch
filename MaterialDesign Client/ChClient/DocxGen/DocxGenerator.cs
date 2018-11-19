@@ -27,7 +27,7 @@ namespace DocxGen
         public MoleculeRow StartingMaterial { get; set; }
         public List<MoleculeRow> Reagents;
         public List<MoleculeRow> Solvents;
-        public MoleculeRow Product { get; set; }
+        public List<MoleculeRow> Products;
 
         public string ProcedureText { get; set; }
 
@@ -40,16 +40,17 @@ namespace DocxGen
             //contsr->List init
             Reagents = new List<MoleculeRow>();
             Solvents = new List<MoleculeRow>();
+            Products = new List<MoleculeRow>();
             ObservationImg = new List<string>();
         }
         public void Create()
         {
             report = DocX.Create(FilePath);
         }
-        public void Save()
+        /*public void Save()
         {
             report.Save();
-        }
+        }*/
         public void GenerateReport(bool sketch)
         {
             //fill FilePath property first!
@@ -57,7 +58,7 @@ namespace DocxGen
             //fill headerproperties first!
             GenerateHeader(sketch);
             //fill startingmaterial properties first & add reagents+solvents!
-            CalculateValues();
+            //CalculateValues();
             GenerateReaction();
             if (!sketch)
             {
@@ -83,6 +84,10 @@ namespace DocxGen
         public void AddSolvent(MoleculeRow solvent)
         {
             Solvents.Add(solvent);
+        }
+        public void AddProduct(MoleculeRow product)
+        {
+            Products.Add(product);
         }
         public void GenerateHeader(bool closed)
         {
@@ -125,34 +130,23 @@ namespace DocxGen
             Console.WriteLine("Header generated");
         }
 
-        public void CalculateValues()
+        /*public void CalculateValues()
         {
             StartingMaterial.CalculateStartingMaterialValues();
             foreach (MoleculeRow item in Reagents)
             {
                 item.CalculateReagentValues(StartingMaterial);
             }
-
-            Product.CalculateProductValues(StartingMaterial);
-
-            //product számolás pls!
-        }
-        public void CalculateStartingMaterial()
-        {
-            StartingMaterial.CalculateStartingMaterialValues();
-        }
-        public void CalculateReagents()
-        {
-            foreach (MoleculeRow item in Reagents)
+            foreach (var item in Products)
             {
-                item.CalculateReagentValues(StartingMaterial);
+                item.CalculateProductValues(StartingMaterial);
             }
-        }
 
-        public void CalculateProduct()
-        {
-            Product.CalculateProductValues(StartingMaterial);
-        }
+            
+
+            
+        }*/
+        
 
         public void GenerateReaction()
         {
@@ -168,8 +162,8 @@ namespace DocxGen
             report.InsertParagraph("Table of materials:\n").Bold().UnderlineStyle(UnderlineStyle.singleLine);
 
             //Material table
-            int rowcnt = 2 + Reagents.Count + Solvents.Count + 1;
-            //header -> x1; starting material-> 1x; reagent cnt; solvent cnt; product -> 1x
+            int rowcnt = 2 + Reagents.Count + Solvents.Count + Products.Count;
+            //header -> x1; starting material-> 1x; reagent cnt; solvent cnt; product cnt
             Table MaterialTable = report.AddTable(rowcnt, 10);
 
             float[] widths = new float[10] { 50, 50, 50, 50, 60, 45, 40, 40, 40, 40 };
@@ -205,13 +199,20 @@ namespace DocxGen
             }
 
             //product
-
-            InsertRow(MaterialTable, Product, actualrow);
-
-            //last row background
-            foreach (Cell item in MaterialTable.Rows[rowcnt - 1].Cells)
+            foreach (var item in Products)
             {
-                item.FillColor = Color.LightGray;
+                InsertProductRow(MaterialTable, item, actualrow);
+                actualrow++;
+            }
+
+
+            //products row background
+            for (int i = Products.Count; i > 0; i--)
+            {
+                foreach (Cell item in MaterialTable.Rows[rowcnt - i].Cells)
+                {
+                    item.FillColor = Color.LightGray;
+                }
             }
 
             report.InsertTable(MaterialTable);
@@ -231,6 +232,16 @@ namespace DocxGen
             tab.Rows[rowindex].Cells[7].Paragraphs[0].Append(molecule.Denvalue.ToString());
             tab.Rows[rowindex].Cells[8].Paragraphs[0].Append(molecule.Mpvalue.ToString());
             tab.Rows[rowindex].Cells[9].Paragraphs[0].Append(molecule.Bpvalue.ToString());
+        }
+
+        public void InsertProductRow(Table tab, MoleculeRow molecule, int rowindex)
+        {
+            tab.Rows[rowindex].Cells[0].Paragraphs[0].Append("Product");
+            
+            tab.Rows[rowindex].Cells[2].Paragraphs[0].Append(molecule.MWvalue.ToString());
+            tab.Rows[rowindex].Cells[4].Paragraphs[0].Append(molecule.nvalue.ToString());
+            tab.Rows[rowindex].Cells[5].Paragraphs[0].Append(molecule.mvalue.ToString());
+            tab.Rows[rowindex].Cells[6].Paragraphs[0].Append(molecule.Vvalue.ToString());
         }
 
         public void GenerateProcedure()

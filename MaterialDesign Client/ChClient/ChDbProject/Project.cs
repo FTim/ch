@@ -27,7 +27,7 @@ namespace ChDbProject
         public string Goal { get; set; }
         public string Description { get; set; }
     
-        public virtual Person Person { get; set; }
+        public virtual Person Leader { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectPlan> ProjectPlans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

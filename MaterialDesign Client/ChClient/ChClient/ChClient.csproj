@@ -44,6 +44,12 @@
     <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -53,6 +59,9 @@
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -60,7 +69,9 @@
       <HintPath>..\packages\MaterialDesignThemes.2.4.1.1101\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -82,34 +93,75 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ByteArrayToImageSourceConverter.cs" />
+    <Compile Include="Converters\MessageLevelConverter.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
+    <Compile Include="Models\OutputMessage.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Project.cs" />
-    <Compile Include="Models\ReactionErrorInfo.cs" />
+    <Compile Include="Models\ProjectPlan.cs" />
     <Compile Include="Models\ReactionInfo.cs" />
     <Compile Include="Models\Reagent.cs" />
     <Compile Include="Models\SelectedMolecule.cs" />
     <Compile Include="Models\Solvent.cs" />
     <Compile Include="Models\StartingMaterial.cs" />
-    <Compile Include="Models\StartingMaterialErrorInfo.cs" />
+    <Compile Include="Services\DBService.cs" />
+    <Compile Include="Services\DocxGeneratorService.cs" />
     <Compile Include="Services\ExcelReaderService.cs" />
     <Compile Include="Services\FrameNavigationService.cs" />
+    <Compile Include="Services\IDBService.cs" />
+    <Compile Include="Services\IDocxGeneratorService.cs" />
     <Compile Include="Services\IExcelReaderService.cs" />
     <Compile Include="Services\IFrameNavigationService.cs" />
     <Compile Include="Services\IOpenCustomDialogWindow.cs" />
     <Compile Include="Services\IOpenFileDialogService.cs" />
     <Compile Include="Services\ISelectMoleculeDialogService.cs" />
+    <Compile Include="Services\ILogger.cs" />
+    <Compile Include="Services\Logger.cs" />
     <Compile Include="Services\OpenFileDialogService.cs" />
     <Compile Include="Services\SelectMoleculeDialogService.cs" />
+    <Compile Include="ViewModels\AddNewMoleculePageViewModel.cs" />
+    <Compile Include="ViewModels\BrowseProjectsPageViewModel.cs" />
+    <Compile Include="ViewModels\BrowseReactionsPageViewModel.cs" />
+    <Compile Include="ViewModels\DatabaseResetPageViewModel.cs" />
+    <Compile Include="ViewModels\ExportExcelPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ManageUsersPageViewModel.cs" />
+    <Compile Include="ViewModels\ManualInventoryUpdatePageViewModel.cs" />
     <Compile Include="ViewModels\MaterialSelectWindowViewModel.cs" />
+    <Compile Include="ViewModels\NewProjectPageViewModel.cs" />
     <Compile Include="ViewModels\NewReactionPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\AddNewMoleculePage.xaml.cs">
+      <DependentUpon>AddNewMoleculePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BrowseProjectsPage.xaml.cs">
+      <DependentUpon>BrowseProjectsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BrowseReactionsPage.xaml.cs">
+      <DependentUpon>BrowseReactionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DatabaseResetPage.xaml.cs">
+      <DependentUpon>DatabaseResetPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExportExcelPage.xaml.cs">
+      <DependentUpon>ExportExcelPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ManageUsersPage.xaml.cs">
+      <DependentUpon>ManageUsersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManualInventoryUpdatePage.xaml.cs">
+      <DependentUpon>ManualInventoryUpdatePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MaterialSelectWindow.xaml.cs">
       <DependentUpon>MaterialSelectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewProjectPage.xaml.cs">
+      <DependentUpon>NewProjectPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewReactionPage.xaml.cs">
       <DependentUpon>NewReactionPage.xaml</DependentUpon>
@@ -126,11 +178,43 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AddNewMoleculePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BrowseProjectsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BrowseReactionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DatabaseResetPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExportExcelPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ManageUsersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManualInventoryUpdatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MaterialSelectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewProjectPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,6 +254,14 @@
     <Resource Include="Assets\flask_icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChDbProject\ChDbProject.csproj">
+      <Project>{e2c45f1b-0758-4100-9b3a-0c75a25cbc32}</Project>
+      <Name>ChDbProject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DocxGen\DocxGen.csproj">
+      <Project>{360b5372-6df6-4910-9e1e-85138fc21fb1}</Project>
+      <Name>DocxGen</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InventoryReader\InventoryReader.csproj">
       <Project>{a389af44-c371-4675-901d-b9f54f5c8ebf}</Project>
       <Name>InventoryReader</Name>

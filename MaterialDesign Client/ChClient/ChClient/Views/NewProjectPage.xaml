@@ -1,0 +1,364 @@
+﻿<Page
+    x:Class="ChClient.Views.NewProjectPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:ChClient.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ChClient.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="NewProjectPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="{DynamicResource MaterialDesignPaper}"
+    DataContext="{Binding NewProjectViewModel, Source={StaticResource Locator}}"
+    FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+    TextElement.FontSize="14"
+    TextElement.FontWeight="Medium"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <converters:MessageLevelConverter x:Key="MessageLevelConverter" />
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            Height="50"
+            VerticalAlignment="Top"
+            Background="{DynamicResource PrimaryHueMidBrush}"
+            Orientation="Horizontal">
+
+            <Button
+                Width="Auto"
+                Height="Auto"
+                Margin="10"
+                VerticalAlignment="Top"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                materialDesign:ShadowAssist.ShadowEdges="None"
+                Command="{Binding Home}"
+                ToolTip="Home">
+                <materialDesign:PackIcon
+                    Width="15"
+                    Height="15"
+                    Kind="Home" />
+            </Button>
+            <materialDesign:PopupBox
+                Width="80"
+                Height="Auto"
+                Margin="10,12,10,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                materialDesign:ShadowAssist.ShadowEdges="None"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                IsEnabled="True"
+                PlacementMode="RightAndAlignMiddles"
+                Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
+                <materialDesign:PopupBox.ToggleContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FolderOpen" />
+                        <TextBlock Text=" Projects" />
+                    </StackPanel>
+
+                </materialDesign:PopupBox.ToggleContent>
+                <materialDesign:PopupBox.ToggleCheckedContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FolderOpen" />
+                        <TextBlock Text=" Projects" />
+
+                    </StackPanel>
+                </materialDesign:PopupBox.ToggleCheckedContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding NewProject}"
+                        ToolTip="New project">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Pencil" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseAllProjects}"
+                        ToolTip="Browse all projects">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookVariant" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseMyProjects}"
+                        ToolTip="Browse my projects">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookSecure" />
+                    </Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+            <materialDesign:PopupBox
+                Width="80"
+                Height="Auto"
+                Margin="70,12,10,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                materialDesign:ShadowAssist.ShadowEdges="None"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                IsEnabled="True"
+                PlacementMode="RightAndAlignMiddles"
+                Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
+                <materialDesign:PopupBox.ToggleContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FileDocument" />
+                        <TextBlock Text=" Reactions" />
+                    </StackPanel>
+
+                </materialDesign:PopupBox.ToggleContent>
+                <materialDesign:PopupBox.ToggleCheckedContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FileDocument" />
+                        <TextBlock Text=" Reactions" />
+
+                    </StackPanel>
+                </materialDesign:PopupBox.ToggleCheckedContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding NewReaction}"
+                        ToolTip="New reaction">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Pencil" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseAllReactions}"
+                        ToolTip="Browse all reactions">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookVariant" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseMyReactions}"
+                        ToolTip="Browse my reactions">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookSecure" />
+                    </Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+            <materialDesign:PopupBox
+                Width="80"
+                Height="Auto"
+                Margin="70,12,10,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                materialDesign:ShadowAssist.ShadowEdges="None"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                IsEnabled="True"
+                PlacementMode="RightAndAlignMiddles"
+                Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
+                <materialDesign:PopupBox.ToggleContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Archive" />
+                        <TextBlock Text=" Inventory" />
+                    </StackPanel>
+
+                </materialDesign:PopupBox.ToggleContent>
+                <materialDesign:PopupBox.ToggleCheckedContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Archive" />
+                        <TextBlock Text=" Inventory" />
+
+                    </StackPanel>
+                </materialDesign:PopupBox.ToggleCheckedContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding AddNewMolecule}"
+                        ToolTip="Add new molecule">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="PlusBox" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding ManualInventoryUpdate}"
+                        ToolTip="Manual inventory update">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="PencilBox" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding ExportExcel}"
+                        ToolTip="Export as excel file">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FileExcel" />
+                    </Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="1"
+            MinWidth="700"
+            Margin="12,20"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top">
+
+
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Project name"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding ProjectName, Mode=TwoWay}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Leader"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Leader, Mode=TwoWay}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Goal"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Goal, Mode=TwoWay}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Description"
+                AcceptsReturn="True"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Description, Mode=TwoWay}"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto" />
+
+            <Button
+                Width="180"
+                Margin="12,20"
+                HorizontalAlignment="Center"
+                Command="{Binding SelectProjectPlan}"
+                Style="{StaticResource MaterialDesignRaisedLightButton}">
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="4,0,0,0"
+                        Text="Add project plan" />
+                </Grid>
+            </Button>
+            <Button
+                Width="180"
+                Margin="12,0"
+                HorizontalAlignment="Center"
+                Command="{Binding AddProject}"
+                Style="{StaticResource MaterialDesignRaisedLightButton}">
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="4,0,0,0"
+                        Text="Add project" />
+                </Grid>
+            </Button>
+
+            <TextBlock
+                MinWidth="200"
+                Margin="4"
+                VerticalAlignment="Top"
+                Foreground="Green"
+                Style="{StaticResource MaterialDesignBody2TextBlock}"
+                Text="{Binding Added}" />
+            <Image
+                MaxWidth="600"
+                MaxHeight="600"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsEnabled="True"
+                Source="{Binding PlanImgPath, Mode=TwoWay}"
+                Stretch="Uniform" />
+
+        </StackPanel>
+
+        <GroupBox Grid.Row="2" Height="180">
+            <ListView x:Name="ConsoleListView" ItemsSource="{Binding OutputMessages, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding Message}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </GroupBox>
+
+    </Grid>
+</Page>

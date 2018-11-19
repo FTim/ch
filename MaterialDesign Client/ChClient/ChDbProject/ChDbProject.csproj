@@ -66,6 +66,9 @@
       <DependentUpon>ChModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="DbAccess.cs" />
+    <Compile Include="DTOs\MoleculeStaticDTO.cs" />
+    <Compile Include="DTOs\ProjectDTO.cs" />
+    <Compile Include="DTOs\ReactionDTO.cs" />
     <Compile Include="Location.cs">
       <DependentUpon>ChModel.tt</DependentUpon>
     </Compile>
@@ -108,32 +111,30 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="ChModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ChModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
     <None Include="ChModel.edmx.diagram">
       <DependentUpon>ChModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="ChModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ChModel.Context.cs</LastGenOutput>
       <DependentUpon>ChModel.edmx</DependentUpon>
+      <LastGenOutput>ChModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="ChModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ChModel.edmx</DependentUpon>
       <LastGenOutput>ChModel.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

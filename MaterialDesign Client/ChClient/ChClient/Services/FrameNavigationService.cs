@@ -9,13 +9,12 @@ using System.Windows.Media;
 
 namespace ChClient.Services
 {
-    public class FrameNavigationService : IFrameNavigationService, INotifyPropertyChanged
+    public class FrameNavigationService : IFrameNavigationService
     {
 
         #region NavigatonService
 
         private readonly Dictionary<string, Uri> _pagesByKey;
-        private readonly List<string> _historic;
         private string _currentPageKey;
 
         public object Parameter { get; private set; }
@@ -32,16 +31,13 @@ namespace ChClient.Services
                 }
 
                 _currentPageKey = value;
-                OnPropertyChanged("CurrentPageKey");
+                
             }
         }
+        
         public void GoBack()
         {
-            if (_historic.Count > 1)
-            {
-                _historic.RemoveAt(_historic.Count - 1);
-                NavigateTo(_historic.Last(), null);
-            }
+            //üres, nincs kimondottan "vissza" navigálás, helyette más
         }
 
         public void NavigateTo(string pageKey)
@@ -63,7 +59,6 @@ namespace ChClient.Services
                 frame.Source = _pagesByKey[pageKey];
             }
             Parameter = parameter;
-            _historic.Add(pageKey);
             CurrentPageKey = pageKey;
         }
 
@@ -112,21 +107,9 @@ namespace ChClient.Services
         }
         #endregion
 
-        #region NotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
-
         public FrameNavigationService()
         {
             _pagesByKey = new Dictionary<string, Uri>();
-            _historic = new List<string>();
         }
 
     }

@@ -16,10 +16,9 @@ namespace ChDbProject
     {
         public double MW { get; set; }
         public double Ratio { get; set; }
-        public string MoleculeCAS { get; set; }
+        public int ID { get; set; }
         public int ReactionID { get; set; }
     
-        public virtual MoleculeStatic MoleculeStatic { get; set; }
         public virtual Reaction Reaction { get; set; }
     }
 }

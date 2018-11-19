@@ -9,6 +9,7 @@ namespace ChClient.Services
 {
     public interface ISelectMoleculeDialogService
     {
+        void ConfigureAsync();
         SelectedMolecule ShowMoleculeSelectWindow();
     }
 }

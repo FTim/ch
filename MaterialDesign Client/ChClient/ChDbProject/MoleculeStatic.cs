@@ -18,7 +18,6 @@ namespace ChDbProject
         public MoleculeStatic()
         {
             this.LocationMolecules = new HashSet<LocationMolecule>();
-            this.Products = new HashSet<Product>();
             this.Reagents = new HashSet<Reagent>();
             this.Solvents = new HashSet<Solvent>();
             this.StartingMaterials = new HashSet<StartingMaterial>();
@@ -27,15 +26,13 @@ namespace ChDbProject
         public string Name { get; set; }
         public string CAS { get; set; }
         public double M_gpermol { get; set; }
-        public double d { get; set; }
-        public double mp { get; set; }
-        public double dp { get; set; }
-        public double purity { get; set; }
+        public Nullable<double> d { get; set; }
+        public string mp { get; set; }
+        public string bp { get; set; }
+        public string purity { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LocationMolecule> LocationMolecules { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reagent> Reagents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

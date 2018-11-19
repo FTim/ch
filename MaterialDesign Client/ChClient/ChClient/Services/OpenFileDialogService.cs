@@ -9,7 +9,6 @@ namespace ChClient.Services
     public class OpenFileDialogService : IOpenFileDialogService
     {
         
-
         public string ShowOpenFileDialog()
         {
             string result="";
@@ -39,5 +38,37 @@ namespace ChClient.Services
             return result;
         }
 
+        public string ShowSaveFileDialog()
+        {
+            // Create OpenFileDialog 
+            // Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+
+
+
+            // Set filter for file extension and default file extension 
+            sfd.DefaultExt = ".docx";
+            sfd.Filter = "Docx Files (*.docx)| All files (*.*)";
+
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            //Nullable<bool> result = dlg.ShowDialog();
+
+            Nullable<bool> result2 = sfd.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result2 == true)
+            {
+                // Open document 
+                return sfd.FileName;
+
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

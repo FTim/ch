@@ -35,7 +35,7 @@ namespace ChDbProject
         public Nullable<System.DateTime> ClosureDate { get; set; }
         public Nullable<int> PreviousStepID { get; set; }
         public string Literature { get; set; }
-        public bool Sketch { get; set; }
+        public Nullable<bool> Sketch { get; set; }
         public byte[] ReactionImg { get; set; }
         public string ProcedureText { get; set; }
         public string Yield { get; set; }

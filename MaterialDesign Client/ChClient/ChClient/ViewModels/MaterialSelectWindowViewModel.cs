@@ -41,12 +41,24 @@ namespace ChClient.ViewModels
         public void RefreshList()
         {
             FoundMolecules.Clear();
+            List<SelectedMolecule> tmp = new List<SelectedMolecule>();
             foreach (var item in AllMolecules)
             {
                 if (item.Name.ToUpper().Contains(_searchedtext.ToUpper()))
                 {
-                    FoundMolecules.Add(item);
+                    tmp.Add(item);
                 }
+                if (item.CAS.ToUpper().Contains(_searchedtext.ToUpper()))
+                {
+                    tmp.Add(item);
+                }
+
+            }
+            tmp = tmp.Distinct().ToList();
+            
+            foreach (var item in tmp)
+            {
+                FoundMolecules.Add(item);
             }
         }
     }

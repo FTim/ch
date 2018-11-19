@@ -12,14 +12,15 @@ namespace ChClient.Services
 {
     public class SelectMoleculeDialogService : ISelectMoleculeDialogService
     {
-        private IExcelReaderService _excelReaderService;
-        public SelectMoleculeDialogService(IExcelReaderService excelReaderService)
+        private IDBService _dbService;
+        public SelectMoleculeDialogService(IDBService dbService)
         {
-            _excelReaderService = excelReaderService;
+            _dbService = dbService;
+            ConfigureAsync();
         }
         public SelectedMolecule ShowMoleculeSelectWindow()
         {
-            Configure();
+            
             MaterialSelectWindow MoleculeSelect = new MaterialSelectWindow();
             MaterialSelectWindowViewModel dataContext=(MaterialSelectWindowViewModel)MoleculeSelect.DataContext;
             dataContext.SetAllMolecules(_allMolecules);
@@ -38,11 +39,12 @@ namespace ChClient.Services
         private List<SelectedMolecule> _allMolecules;
         public List<SelectedMolecule> FoundMolecules;
 
-        public void Configure()
+        public async void ConfigureAsync()
         {
             _allMolecules = new List<SelectedMolecule>();
+            _allMolecules = await _dbService.GetMoleculesAsync();
 
-            _allMolecules.AddRange(_excelReaderService.GetMoleculesAsync());
+            //_allMolecules.AddRange(_excelReaderService.GetMoleculesAsync());
         }
     }
 }

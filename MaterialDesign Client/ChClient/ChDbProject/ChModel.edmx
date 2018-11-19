@@ -28,10 +28,10 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CAS" Type="nvarchar" MaxLength="12" Nullable="false" />
           <Property Name="M_gpermol" Type="float" Nullable="false" />
-          <Property Name="d" Type="float" Nullable="false" />
-          <Property Name="mp" Type="float" Nullable="false" />
-          <Property Name="dp" Type="float" Nullable="false" />
-          <Property Name="purity" Type="float" Nullable="false" />
+          <Property Name="d" Type="float" />
+          <Property Name="mp" Type="nvarchar" MaxLength="20" />
+          <Property Name="bp" Type="nvarchar" MaxLength="20" />
+          <Property Name="purity" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="ObservationImg">
           <Key>
@@ -50,12 +50,11 @@
         </EntityType>
         <EntityType Name="Product">
           <Key>
-            <PropertyRef Name="MoleculeCAS" />
-            <PropertyRef Name="ReactionID" />
+            <PropertyRef Name="ID" />
           </Key>
           <Property Name="MW" Type="float" Nullable="false" />
           <Property Name="Ratio" Type="float" Nullable="false" />
-          <Property Name="MoleculeCAS" Type="nvarchar" MaxLength="12" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ReactionID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Project">
@@ -85,12 +84,12 @@
           <Property Name="ChemistID" Type="int" Nullable="false" />
           <Property Name="ChiefchemistID" Type="int" Nullable="false" />
           <Property Name="ProjectID" Type="int" Nullable="false" />
-          <Property Name="Laboratory" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Laboratory" Type="nvarchar" MaxLength="50" />
           <Property Name="StartDate" Type="datetime" Nullable="false" />
           <Property Name="ClosureDate" Type="datetime" />
           <Property Name="PreviousStepID" Type="int" />
           <Property Name="Literature" Type="nvarchar" MaxLength="50" />
-          <Property Name="Sketch" Type="bit" Nullable="false" />
+          <Property Name="Sketch" Type="bit" />
           <Property Name="ReactionImg" Type="image" Nullable="false" />
           <Property Name="ProcedureText" Type="nvarchar" MaxLength="2500" />
           <Property Name="Yield" Type="nvarchar" MaxLength="50" />
@@ -168,18 +167,6 @@
             </Principal>
             <Dependent Role="ObservationImg">
               <PropertyRef Name="ReactionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Product_MoleculeStatic">
-          <End Role="MoleculeStatic" Type="Self.MoleculeStatic" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MoleculeStatic">
-              <PropertyRef Name="CAS" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="MoleculeCAS" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -365,10 +352,6 @@
             <End Role="Reaction" EntitySet="Reaction" />
             <End Role="ObservationImg" EntitySet="ObservationImg" />
           </AssociationSet>
-          <AssociationSet Name="FK_Product_MoleculeStatic" Association="Self.FK_Product_MoleculeStatic">
-            <End Role="MoleculeStatic" EntitySet="MoleculeStatic" />
-            <End Role="Product" EntitySet="Product" />
-          </AssociationSet>
           <AssociationSet Name="FK_Product_Reaction" Association="Self.FK_Product_Reaction">
             <End Role="Reaction" EntitySet="Reaction" />
             <End Role="Product" EntitySet="Product" />
@@ -453,12 +436,11 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CAS" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="M_gpermol" Type="Double" Nullable="false" />
-          <Property Name="d" Type="Double" Nullable="false" />
-          <Property Name="mp" Type="Double" Nullable="false" />
-          <Property Name="dp" Type="Double" Nullable="false" />
-          <Property Name="purity" Type="Double" Nullable="false" />
+          <Property Name="d" Type="Double" />
+          <Property Name="mp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="bp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="purity" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LocationMolecules" Relationship="Self.FK_LocationMolecule_LocationMolecule" FromRole="MoleculeStatic" ToRole="LocationMolecule" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_Product_MoleculeStatic" FromRole="MoleculeStatic" ToRole="Product" />
           <NavigationProperty Name="Reagents" Relationship="Self.FK_Reagent_MoleculeStatic" FromRole="MoleculeStatic" ToRole="Reagent" />
           <NavigationProperty Name="Solvents" Relationship="Self.FK_Solvent_MoleculeStatic" FromRole="MoleculeStatic" ToRole="Solvent" />
           <NavigationProperty Name="StartingMaterials" Relationship="Self.FK_StartingMaterial_MoleculeStatic" FromRole="MoleculeStatic" ToRole="StartingMaterial" />
@@ -479,19 +461,17 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Projects" Relationship="Self.FK_Project_Person_Leader" FromRole="Person" ToRole="Project" />
-          <NavigationProperty Name="Reactions" Relationship="Self.FK_Reaction_Person_Chemist" FromRole="Person" ToRole="Reaction" />
-          <NavigationProperty Name="Reactions1" Relationship="Self.FK_Reaction_Person_Chiefchemist" FromRole="Person" ToRole="Reaction" />
+          <NavigationProperty Name="ChemistTo" Relationship="Self.FK_Reaction_Person_Chemist" FromRole="Person" ToRole="Reaction" />
+          <NavigationProperty Name="ChiefchemistTo" Relationship="Self.FK_Reaction_Person_Chiefchemist" FromRole="Person" ToRole="Reaction" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
-            <PropertyRef Name="MoleculeCAS" />
-            <PropertyRef Name="ReactionID" />
+            <PropertyRef Name="ID" />
           </Key>
           <Property Name="MW" Type="Double" Nullable="false" />
           <Property Name="Ratio" Type="Double" Nullable="false" />
-          <Property Name="MoleculeCAS" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ReactionID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="MoleculeStatic" Relationship="Self.FK_Product_MoleculeStatic" FromRole="Product" ToRole="MoleculeStatic" />
           <NavigationProperty Name="Reaction" Relationship="Self.FK_Product_Reaction" FromRole="Product" ToRole="Reaction" />
         </EntityType>
         <EntityType Name="Project">
@@ -503,7 +483,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Goal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Person" Relationship="Self.FK_Project_Person_Leader" FromRole="Project" ToRole="Person" />
+          <NavigationProperty Name="Leader" Relationship="Self.FK_Project_Person_Leader" FromRole="Project" ToRole="Person" />
           <NavigationProperty Name="ProjectPlans" Relationship="Self.FK_ProjectPlan_ProjectPlan_Project" FromRole="Project" ToRole="ProjectPlan" />
           <NavigationProperty Name="Reactions" Relationship="Self.FK_Reaction_Project" FromRole="Project" ToRole="Reaction" />
         </EntityType>
@@ -525,12 +505,12 @@
           <Property Name="ChemistID" Type="Int32" Nullable="false" />
           <Property Name="ChiefchemistID" Type="Int32" Nullable="false" />
           <Property Name="ProjectID" Type="Int32" Nullable="false" />
-          <Property Name="Laboratory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Laboratory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ClosureDate" Type="DateTime" Precision="3" />
           <Property Name="PreviousStepID" Type="Int32" />
           <Property Name="Literature" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Sketch" Type="Boolean" Nullable="false" />
+          <Property Name="Sketch" Type="Boolean" />
           <Property Name="ReactionImg" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <Property Name="ProcedureText" Type="String" MaxLength="2500" FixedLength="false" Unicode="true" />
           <Property Name="Yield" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -611,18 +591,6 @@
               <PropertyRef Name="CAS" />
             </Principal>
             <Dependent Role="LocationMolecule">
-              <PropertyRef Name="MoleculeCAS" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Product_MoleculeStatic">
-          <End Role="MoleculeStatic" Type="Self.MoleculeStatic" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MoleculeStatic">
-              <PropertyRef Name="CAS" />
-            </Principal>
-            <Dependent Role="Product">
               <PropertyRef Name="MoleculeCAS" />
             </Dependent>
           </ReferentialConstraint>
@@ -795,7 +763,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ChDbContext" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="chdbContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Locations" EntityType="Self.Location" />
           <EntitySet Name="LocationMolecules" EntityType="Self.LocationMolecule" />
           <EntitySet Name="MoleculeStatics" EntityType="Self.MoleculeStatic" />
@@ -816,10 +784,6 @@
           <AssociationSet Name="FK_LocationMolecule_LocationMolecule" Association="Self.FK_LocationMolecule_LocationMolecule">
             <End Role="MoleculeStatic" EntitySet="MoleculeStatics" />
             <End Role="LocationMolecule" EntitySet="LocationMolecules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Product_MoleculeStatic" Association="Self.FK_Product_MoleculeStatic">
-            <End Role="MoleculeStatic" EntitySet="MoleculeStatics" />
-            <End Role="Product" EntitySet="Products" />
           </AssociationSet>
           <AssociationSet Name="FK_Reagent_MoleculeStatic" Association="Self.FK_Reagent_MoleculeStatic">
             <End Role="MoleculeStatic" EntitySet="MoleculeStatics" />
@@ -883,7 +847,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="chdbModelStoreContainer" CdmEntityContainer="ChDbContext">
+        <EntityContainerMapping StorageEntityContainer="chdbModelStoreContainer" CdmEntityContainer="chdbContext">
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="chdbModel.Location">
               <MappingFragment StoreEntitySet="Location">
@@ -909,7 +873,7 @@
                 <ScalarProperty Name="M_gpermol" ColumnName="M_gpermol" />
                 <ScalarProperty Name="d" ColumnName="d" />
                 <ScalarProperty Name="mp" ColumnName="mp" />
-                <ScalarProperty Name="dp" ColumnName="dp" />
+                <ScalarProperty Name="bp" ColumnName="bp" />
                 <ScalarProperty Name="purity" ColumnName="purity" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -936,7 +900,7 @@
               <MappingFragment StoreEntitySet="Product">
                 <ScalarProperty Name="MW" ColumnName="MW" />
                 <ScalarProperty Name="Ratio" ColumnName="Ratio" />
-                <ScalarProperty Name="MoleculeCAS" ColumnName="MoleculeCAS" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ReactionID" ColumnName="ReactionID" />
               </MappingFragment>
             </EntityTypeMapping>

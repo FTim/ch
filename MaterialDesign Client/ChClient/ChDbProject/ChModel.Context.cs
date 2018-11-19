@@ -13,10 +13,10 @@ namespace ChDbProject
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ChDbContext : DbContext
+    public partial class chdbContext : DbContext
     {
-        public ChDbContext()
-            : base("name=ChDbContext")
+        public chdbContext()
+            : base("name=chdbContext")
         {
         }
     

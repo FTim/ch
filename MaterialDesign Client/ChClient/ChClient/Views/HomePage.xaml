@@ -7,7 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="HomePage"
-    d:DesignHeight="450"
+    d:DesignHeight="950"
     d:DesignWidth="800"
     Background="{DynamicResource MaterialDesignPaper}"
     DataContext="{Binding HomePageViewModel, Source={StaticResource Locator}}"
@@ -33,142 +33,296 @@
                         </TextBlock>
                     </DockPanel>
                 </materialDesign:ColorZone>
+                <GroupBox>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock Text="Current user: " />
+                            <TextBlock Foreground="{DynamicResource PrimaryHueDarkBrush}" Text="{Binding CurrentUser, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                            <Button
+                                Width="220"
+                                Margin="8"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding ChangeUser}"
+                                Style="{StaticResource MaterialDesignFlatButton}">
+                                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon Grid.Column="0" Kind="Account" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="4,0,0,0"
+                                        Text="Change user" />
+                                </Grid>
+                            </Button>
+                            <Button
+                                Grid.Column="1"
+                                Width="50"
+                                Margin="8"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding DatabaseReset}"
+                                Foreground="Red"
+                                Style="{StaticResource MaterialDesignFlatButton}">
+
+                                <materialDesign:PackIcon Kind="Database" />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+
                 <Expander
                     MaxWidth="500"
-                    Margin="16"
-                    HorizontalAlignment="Stretch">
+                    Margin="8"
+                    HorizontalAlignment="Stretch"
+                    IsExpanded="True">
                     <Expander.Header>
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="FolderOpen" />
-                            <TextBlock Text="   Projects" />
-                        </StackPanel>
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Column="0" Kind="FolderOpen" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                Text=" Projects" />
+                        </Grid>
+
                     </Expander.Header>
                     <StackPanel
                         Margin="16"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Center"
                         Orientation="Vertical"
                         TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
                         <Button
                             Width="220"
                             Margin="8"
+                            Command="{Binding NewProject}"
                             Style="{StaticResource MaterialDesignRaisedLightButton}">
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Pencil" />
-                                <TextBlock Text=" New project                " />
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="Pencil" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0"
+                                    Text="New project" />
+                            </Grid>
                         </Button>
                         <Button
                             Width="220"
                             Margin="8"
+                            Command="{Binding BrowseAllProjects}"
                             Style="{StaticResource MaterialDesignRaisedLightButton}">
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="BookVariant" />
-                                <TextBlock Text=" Browse all projects" />
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="BookVariant" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0"
+                                    Text="Browse all projects" />
+                            </Grid>
                         </Button>
                         <Button
                             Width="220"
                             Margin="8"
+                            Command="{Binding BrowseMyProjects}"
                             Style="{StaticResource MaterialDesignRaisedLightButton}">
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="BookSecure" />
-                                <TextBlock Text=" Browsing my projects" />
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="BookSecure" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0"
+                                    Text="Browse my projects" />
+                            </Grid>
                         </Button>
                     </StackPanel>
                 </Expander>
                 <Expander
                     MaxWidth="500"
-                    Margin="16"
-                    HorizontalAlignment="Stretch">
+                    Margin="8"
+                    HorizontalAlignment="Stretch"
+                    IsExpanded="True">
                     <Expander.Header>
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="FileDocument" />
-                            <TextBlock Text="   Reactions" />
-                        </StackPanel>
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Column="0" Kind="FileDocument" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                Text=" Reactions" />
+                        </Grid>
+
                     </Expander.Header>
                     <StackPanel
                         Margin="16"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Center"
                         Orientation="Vertical"
                         TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
                         <Button
                             Width="220"
                             Margin="8"
-                            Command="{Binding NewReactionCommand}"
+                            Command="{Binding NewReaction}"
                             Style="{StaticResource MaterialDesignRaisedLightButton}">
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Pencil" />
-                                <TextBlock Text=" New reaction                " />
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="Pencil" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0"
+                                    Text="New reaction" />
+                            </Grid>
+
                         </Button>
                         <Button
                             Width="220"
                             Margin="8"
+                            Command="{Binding BrowseAllReactions}"
                             Style="{StaticResource MaterialDesignRaisedLightButton}">
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="BookVariant" />
-                                <TextBlock Text=" Browsing all reactions" />
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="BookVariant" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0"
+                                    Text="Browse all reactions" />
+                            </Grid>
                         </Button>
                         <Button
                             Width="220"
                             Margin="8"
+                            Command="{Binding BrowseMyReactions}"
                             Style="{StaticResource MaterialDesignRaisedLightButton}">
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="BookSecure" />
-                                <TextBlock Text=" Browsing my reactions" />
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="BookSecure" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0"
+                                    Text="Browse my reactions" />
+                            </Grid>
                         </Button>
                     </StackPanel>
                 </Expander>
                 <Expander
                     MaxWidth="500"
-                    Margin="16"
-                    HorizontalAlignment="Stretch">
+                    Margin="8"
+                    HorizontalAlignment="Stretch"
+                    IsExpanded="True">
                     <Expander.Header>
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Archive" />
-                            <TextBlock Text="   Inventory" />
-                        </StackPanel>
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Column="0" Kind="Archive" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                Text=" Inventory" />
+                        </Grid>
+
                     </Expander.Header>
                     <StackPanel
                         Margin="16"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Center"
                         Orientation="Vertical"
                         TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
                         <Button
                             Width="220"
                             Margin="8"
+                            Command="{Binding AddNewMolecule}"
                             Style="{StaticResource MaterialDesignRaisedLightButton}">
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ClipboardCheck" />
-                                <TextBlock Text=" Inventory check                 " />
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="PlusBox" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0"
+                                    Text="Add new molecule" />
+                            </Grid>
+
                         </Button>
                         <Button
                             Width="220"
                             Margin="8"
+                            Command="{Binding ManualInventoryUpdate}"
                             Style="{StaticResource MaterialDesignRaisedLightButton}">
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="PencilBox" />
-                                <TextBlock Text=" Manual inventory update  " />
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="PencilBox" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0"
+                                    Text=" Manual inventory update" />
+                            </Grid>
                         </Button>
                         <Button
                             Width="220"
                             Margin="8"
+                            Command="{Binding ExportExcel}"
                             Style="{StaticResource MaterialDesignRaisedLightButton}">
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="FileExcel" />
-                                <TextBlock Text=" Export as excel file            " />
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="FileExcel" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0"
+                                    Text="Export as excel file" />
+                            </Grid>
                         </Button>
 
                     </StackPanel>
                 </Expander>
             </StackPanel>
         </ScrollViewer>
-        <materialDesign:Snackbar x:Name="SnackbarNotImplemented" MessageQueue="{materialDesign:MessageQueue}" />
+
     </Grid>
 </Page>

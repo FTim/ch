@@ -1,4 +1,5 @@
 ﻿using ChClient.Models;
+using InventoryReader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace ChClient.Services
 {
     public interface IExcelReaderService
     {
-        List<SelectedMolecule> GetMoleculesAsync();
+        //List<SelectedMolecule> GetMoleculesAsync();
+
+        List<MoleculeData> GetMoleculesFromInventoryFile();
     }
 }

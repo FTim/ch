@@ -10,15 +10,34 @@ namespace ChClient.Services
 {
     public class ExcelReaderService : IExcelReaderService
     {
-        public List<SelectedMolecule> GetMoleculesAsync()
+        
+        public List<MoleculeData> GetMoleculesFromInventoryFile()
+        {
+            InventoryReading reader = new InventoryReading();
+            List<MoleculeData> Readed = new List<MoleculeData>();
+            try
+            {
+                reader.FilePath = String.Concat(System.IO.Directory.GetCurrentDirectory(), "\\Resources\\Inventory.xlsx");
+                Readed = reader.ReadTo();
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Inventory.xlsx not accessible! Close opened Inventory and try again!");
+            }
+
+            return Readed;
+        }
+
+       /* public List<SelectedMolecule> GetMoleculesAsync()
         {
             List<SelectedMolecule> l = new List<SelectedMolecule>();
             l.AddRange(GetMoleculesFromExcel());
 
             return l;
-        }
+        }*/
 
-        private List<SelectedMolecule> GetMoleculesFromExcel()
+        /*private List<SelectedMolecule> GetMoleculesFromExcel()
         {
             InventoryReading reader = new InventoryReading();
             try
@@ -38,7 +57,7 @@ namespace ChClient.Services
             {
                 throw new Exception("Inventory.xlsx not accessible! Close opened Inventory and try again!");
             }
-        }
+        }*/
 
     }
 }

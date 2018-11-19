@@ -1,0 +1,153 @@
+﻿<Page
+    x:Class="ChClient.Views.ManageUsersPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:converters="clr-namespace:ChClient.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:ChClient.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="ManageUsersPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="{DynamicResource MaterialDesignPaper}"
+    DataContext="{Binding ManageUsersViewModel, Source={StaticResource Locator}}"
+    FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+    TextElement.FontSize="14"
+    TextElement.FontWeight="Medium"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding GetUsers, Mode=OneWay}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Page.Resources>
+
+
+        <converters:VisibilityConverter x:Key="VisibilityConverter" />
+    </Page.Resources>
+
+    <Grid>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <materialDesign:ColorZone
+                    Padding="16"
+                    DockPanel.Dock="Top"
+                    Mode="PrimaryMid">
+                    <DockPanel>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22">
+                            Ch Client
+                        </TextBlock>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Current user " />
+                        <TextBlock Text="{Binding CurrentUser}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Change current user to" />
+                        <TextBlock Text="{Binding SelectedUser}" />
+                        <ComboBox ItemsSource="{Binding Users}" SelectedValue="{Binding SelectedUser}" />
+
+
+                    </StackPanel>
+                </Grid>
+                <Button
+                    Width="220"
+                    Margin="8"
+                    Command="{Binding ConfirmUserChange}"
+                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0" Kind="Check" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="4,0,0,0"
+                            Text="OK" />
+                    </Grid>
+                </Button>
+
+                <Button
+                    Width="220"
+                    Margin="8"
+                    Command="{Binding Home}"
+                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0" Kind="Home" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="4,0,0,0"
+                            Text="Home" />
+                    </Grid>
+                </Button>
+                <Button
+                    Width="220"
+                    Margin="8"
+                    Command="{Binding AddNewUserVisibilityChange}"
+                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0" Kind="Home" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="4,0,0,0"
+                            Text="New user?" />
+                    </Grid>
+                </Button>
+                <StackPanel
+                    MinWidth="700"
+                    Margin="10,20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Visibility="{Binding Path=AddNewUserVisibility, Converter={StaticResource VisibilityConverter}}">
+                    <TextBlock Text="Add new user" />
+                    <TextBox Text="{Binding NewUser, Mode=TwoWay}" />
+                    <TextBlock Text="{Binding NewUserError, Mode=TwoWay}" />
+                    <Button
+                        Width="220"
+                        Margin="12,20,12,0"
+                        HorizontalAlignment="Center"
+                        Command="{Binding AddNewUser}"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                Text="Add user" />
+                        </Grid>
+                    </Button>
+
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</Page>

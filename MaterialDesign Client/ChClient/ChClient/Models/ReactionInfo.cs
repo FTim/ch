@@ -35,34 +35,119 @@ namespace ChClient.Models
         public ReactionInfo()
         {
             ObservationImgPaths = new List<string>();
-        }
+            Reagents = new List<Reagent>();
+            Solvents = new List<Solvent>();
+            Products = new List<Product>();
+    }
 
-        public ReactionErrorInfo ValidateHeader()
+        public List<OutputMessage> Validate(List<string> users, List<string> projectnames, List<string> reactioncodes)
         {
-            ReactionErrorInfo result = new ReactionErrorInfo();
+            List<OutputMessage> result = new List<OutputMessage>();
+           
+            if (string.IsNullOrEmpty(Code))
+            {
+                result.Add(new OutputMessage { Message = "Reaction code is required!", Level = "error" });
 
-            if (String.IsNullOrEmpty(Code))
-            {
-                result.ReactionCodeError = "Reaction code is required!";
             }
-            if (IsSketch)
+            if (string.IsNullOrEmpty(ReactionImgPath))
             {
-                result.ClosureDateIgnoreNote = "Sketch option checked, closure date wil not be in report!";
+                result.Add(new OutputMessage { Message = "Reaction image is required!", Level = "error" });
+            }
+            if (string.IsNullOrEmpty(Chemist))
+            {
+                result.Add(new OutputMessage { Message = "Chemist is required!", Level = "error" });
             }
             else
             {
+                
+                if (!users.Contains(Chemist))
+                {
+                    result.Add(new OutputMessage { Message = "Chemist is not in the database!", Level = "error" });
+                }
+            }
+            if (string.IsNullOrEmpty(Chiefchemist))
+            {
+                result.Add(new OutputMessage { Message = "Chiefchemist image is required!", Level = "error" });
+            }
+            else
+            {
+                if (!users.Contains(Chiefchemist))
+                {
+                    result.Add(new OutputMessage { Message = "Chiefchemist is not in the database!", Level = "error" });
+                }
+            }
+            if (string.IsNullOrEmpty(Project))
+            {
+                result.Add(new OutputMessage { Message = "Project is required!", Level = "error" });
+            }
+            else
+            {
+                if (!projectnames.Contains(Project))
+                {
+                    result.Add(new OutputMessage { Message = "Project is not in the database!", Level = "error" });
+                }
+            }
+
+            if (IsSketch)
+            {
+                result.Add(new OutputMessage { Message = "Sketch option checked, closure date, procedure, yield, observation will not be in report.", Level = "info" });
+            }
+            else
+            {
+                result.Add(new OutputMessage { Message = "Sketch option unchecked, closure date, procedure, yield, observation are required.", Level = "info" });
                 //start<closure -> res<0
                 //start=closure -> res=0
                 //start>closure -> res>0
                 if (DateTime.Compare(StartDate, ClosureDate) > 0)
                 {
-                    result.ClosureDateError = "Closure date is earlier than start date!";
+                    result.Add(new OutputMessage { Message = "Closure date is earlier than start date!", Level = "error" });
+                }
+
+                if (string.IsNullOrEmpty(Procedure))
+                {
+                    result.Add(new OutputMessage { Message = "Procedure is required!", Level = "error" });
+                }
+                if (string.IsNullOrEmpty(Yield))
+                {
+                    result.Add(new OutputMessage { Message = "Yield is required!", Level = "error" });
+
+                }
+                if (string.IsNullOrEmpty(Observation))
+                {
+                    result.Add(new OutputMessage { Message = "Observation is required!", Level = "error" });
                 }
             }
-            if (String.IsNullOrEmpty(ReactionImgPath))
+
+            if (string.IsNullOrEmpty(PreviousStep) || PreviousStep == "-")
             {
-                result.ReactionImageError = "Reaction image is required!";
+                result.Add(new OutputMessage { Message = "Previous step will be empty in report", Level = "info" });
             }
+            else
+            {
+                if (!reactioncodes.Contains(PreviousStep))
+                {
+                    result.Add(new OutputMessage { Message = "Previous step is not in the database!", Level = "error" });
+                }
+            }
+            if (string.IsNullOrEmpty(Literature) || Literature == "-")
+            {
+                result.Add(new OutputMessage { Message = "Literature will be empty in report", Level = "info" });
+            }
+            
+            if (StartingMaterial == null)
+            {
+                result.Add(new OutputMessage { Message = "No starting material added!", Level = "error" });
+            }
+            if (Products.Count < 1)
+            {
+                result.Add(new OutputMessage { Message = "No product added!", Level = "error" });
+            }
+
+            if (string.IsNullOrEmpty(SaveLocation))
+            {
+                result.Add(new OutputMessage { Message = "Using default location for save", Level = "info" });
+            }
+           
 
             return result;
         }
