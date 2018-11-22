@@ -27,6 +27,8 @@ namespace ChClient.ViewModels
             ProjectList = new ObservableCollection<Project>();
 
             GetProjects = new RelayCommand(GetProjectsCommand);
+
+            ViewProject = new RelayCommand<Project>(ViewProjectCommand);
         }
         private string _person;
         public string Person { get { return _person; } set { Set(ref _person, value); } }
@@ -118,6 +120,12 @@ namespace ChClient.ViewModels
             {
                 ProjectList.Add(item);
             }
+        }
+
+        public RelayCommand<Project> ViewProject { get; private set; }
+        private void ViewProjectCommand(Project viewThis)
+        {
+            _navigationService.NavigateTo("Project", viewThis);
         }
 
         public ObservableCollection<Project> ProjectList { get; set; }

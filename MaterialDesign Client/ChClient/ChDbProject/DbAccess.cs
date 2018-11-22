@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChDbProject.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -179,13 +180,14 @@ namespace ChDbProject
             {
                 using (var db = new chdbContext())
                 {
-                    var query = db.Projects.ToList();
+                    var query = db.Projects.Include(p=>p.ProjectPlans);
 
 
                     foreach (var item in query)
                     {
+                        
                         item.Leader = db.People.Where(p => p.ID == item.LeaderID).First();
-                        item.ProjectPlans = db.ProjectPlans.Where(pl => pl.ProjectID == item.ID).ToList();
+                        //item.ProjectPlans = db.ProjectPlans.Where(pl => pl.ProjectID == item.ID).ToList();
                         result.Add(item);
                     }
                 }
@@ -214,14 +216,14 @@ namespace ChDbProject
             
         }
 
-        public static async Task AddProject(string name, string leader, string goal, string description, byte[] planimg)
+        public static async Task AddProject(ProjectDTO projectDTO)
         {
 
             await Task.Run(() =>
             {
                 using (var db = new chdbContext())
                 {
-                    var plan = new ProjectPlan { img = planimg };
+                    //var plan = new ProjectPlan { img = projectDTO.PlanImg };
 
                     //Person Leader = new Person();
                     /*
@@ -232,11 +234,12 @@ namespace ChDbProject
                     .ToList()
                     .ForEach(n => Console.WriteLine(n));*/
 
-                    var Leader=db.People.Where(p => p.Name == leader).First();
+                    //var Leader=db.People.Where(p => p.Name == projectDTO.Leader).First();
 
+
+                    var project = projectDTO.TransformToProject();
                     
-                    var project = new Project { Name = name, LeaderID = Leader.ID, Goal = goal, Description = description};
-                    var projectplan = new ProjectPlan { img = planimg, Project=project };
+                    var projectplan = new ProjectPlan { img = projectDTO.PlanImg, Project=project };
 
                     db.Projects.Add(project);
                     db.ProjectPlans.Add(projectplan);
@@ -249,9 +252,71 @@ namespace ChDbProject
 
         }
 
-        public static async Task AddReaction() { }
+        public static async Task AddReaction(ReactionDTO reactionDTO)
+        {
+            await Task.Run(() =>
+            {
+                using (var db = new chdbContext())
+                {
+                    var reaction = reactionDTO.TransformToReaction();
 
+                    reaction.Chemist = db.People.Where(p => p.Name == reactionDTO.Chemist).First();
+                    reaction.Chiefchemist = db.People.Where(p => p.Name == reactionDTO.Chiefchemist).First();
+                    reaction.Project = db.Projects.Where(p => p.Name == reactionDTO.Project).First();
+                    if (!string.IsNullOrEmpty(reactionDTO.PreviousStep))
+                    {
+                        reaction.PreviousStep = db.Reactions.Where(r => r.ReactionCode == reactionDTO.PreviousStep).First();
+                    }
+                    if (!reaction.Sketch.Value)
+                    {
+                        foreach (var item in reactionDTO.ObservationImgs)
+                        {
+                            var tmp = new ObservationImg { img = item, Reaction = reaction };
+                            db.ObservationImgs.Add(tmp);
+                            reaction.ObservationImgs.Add(tmp);
+                        }
+                        
+                    }
+                    var tmpsm = reactionDTO.StartingMaterial.TransformToStartingMaterial();
+                    tmpsm.Reaction = reaction;
+                    db.StartingMaterials.Add(tmpsm);
+                    reaction.StartingMaterials.Add(tmpsm);
 
+                    foreach (var item in reactionDTO.Reagents)
+                    {
+                        var tmp = item.TransformToReagent();
+                        tmp.Reaction = reaction;
+
+                        db.Reagents.Add(tmp);
+                        reaction.Reagents.Add(tmp);
+                    }
+
+                    foreach (var item in reactionDTO.Solvents)
+                    {
+                        var tmp = item.TransformToSolvent();
+                        tmp.Reaction = reaction;
+
+                        db.Solvents.Add(tmp);
+                        reaction.Solvents.Add(tmp);
+                    }
+
+                    foreach (var item in reactionDTO.Products)
+                    {
+                        var tmp = item.TransformToProduct();
+                        tmp.Reaction = reaction;
+
+                        db.Products.Add(tmp);
+                        reaction.Products.Add(tmp);
+                    }
+                    db.Reactions.Add(reaction);
+
+                    db.SaveChanges();
+                }
+
+            });
+        }
+
+       
         public static void Reset()
         {
             

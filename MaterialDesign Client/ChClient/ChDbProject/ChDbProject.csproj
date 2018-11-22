@@ -66,6 +66,10 @@
       <DependentUpon>ChModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="DbAccess.cs" />
+    <Compile Include="DTOs\ProductDTO.cs" />
+    <Compile Include="DTOs\ReagentDTO.cs" />
+    <Compile Include="DTOs\SolventDTO.cs" />
+    <Compile Include="DTOs\StartingMaterialDTO.cs" />
     <Compile Include="DTOs\MoleculeStaticDTO.cs" />
     <Compile Include="DTOs\ProjectDTO.cs" />
     <Compile Include="DTOs\ReactionDTO.cs" />

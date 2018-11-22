@@ -19,6 +19,7 @@ namespace ChClient.Models
         public List<string> ProjectPlanImgPaths { get; set; }
         public List<byte[]> ProjectPlanByreArrays { get; set; }
         public byte[] LastPlan { get; set; }
+        public List<ReactionInfo> Reactions { get; set; }
 
         public Project()
         {

@@ -132,6 +132,7 @@
     <Compile Include="ViewModels\MaterialSelectWindowViewModel.cs" />
     <Compile Include="ViewModels\NewProjectPageViewModel.cs" />
     <Compile Include="ViewModels\NewReactionPageViewModel.cs" />
+    <Compile Include="ViewModels\ProjectPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\AddNewMoleculePage.xaml.cs">
       <DependentUpon>AddNewMoleculePage.xaml</DependentUpon>
@@ -165,6 +166,9 @@
     </Compile>
     <Compile Include="Views\NewReactionPage.xaml.cs">
       <DependentUpon>NewReactionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProjectPage.xaml.cs">
+      <DependentUpon>ProjectPage.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -222,6 +226,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ProjectPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -257,6 +265,10 @@
     <ProjectReference Include="..\ChDbProject\ChDbProject.csproj">
       <Project>{e2c45f1b-0758-4100-9b3a-0c75a25cbc32}</Project>
       <Name>ChDbProject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DocxDropboxUploader\DocxDropboxUploader.csproj">
+      <Project>{bcef73ab-fb6c-44a3-b32a-a496a258a0f0}</Project>
+      <Name>DocxDropboxUploader</Name>
     </ProjectReference>
     <ProjectReference Include="..\DocxGen\DocxGen.csproj">
       <Project>{360b5372-6df6-4910-9e1e-85138fc21fb1}</Project>

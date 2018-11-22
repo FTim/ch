@@ -155,7 +155,7 @@ namespace ChClient.ViewModels
             if (Validate())
             {
 
-                _dbService.AddProject(ProjectName, Leader, Goal, Description, PlanImgPath);
+                _dbService.AddProject(_ProjectInfo);
                 OutputMessages.Add(new OutputMessage { Message = ProjectName + " added!", Level = "" });
             }
            

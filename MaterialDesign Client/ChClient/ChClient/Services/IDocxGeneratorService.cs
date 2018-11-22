@@ -10,5 +10,7 @@ namespace ChClient.Services
     public interface IDocxGeneratorService
     {
         void GenerateSingleReaction(ReactionInfo reaction);
+
+        Task<string> UploadToDropboxAsync(string OSfilepath, string Cfolder, string filename);
     }
 }

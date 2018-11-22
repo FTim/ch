@@ -24,6 +24,7 @@ namespace ChClient.ViewModels
 
             SimpleIoc.Default.Register<NewProjectPageViewModel>();
             SimpleIoc.Default.Register<BrowseProjectsPageViewModel>();
+            SimpleIoc.Default.Register<ProjectPageViewModel>();
 
             SimpleIoc.Default.Register<NewReactionPageViewModel>();
             SimpleIoc.Default.Register<MaterialSelectWindowViewModel>();
@@ -58,6 +59,7 @@ namespace ChClient.ViewModels
 
             navigationService.Configure("NewProject", new Uri("../Views/NewProjectPage.xaml", UriKind.Relative));
             navigationService.Configure("BrowseProjects", new Uri("../Views/BrowseProjectsPage.xaml", UriKind.Relative));
+            navigationService.Configure("Project", new Uri("../Views/ProjectPage.xaml", UriKind.Relative));
 
             navigationService.Configure("NewReaction", new Uri("../Views/NewReactionPage.xaml", UriKind.Relative));
             navigationService.Configure("BrowseReactions", new Uri("../Views/BrowseReactionsPage.xaml", UriKind.Relative));
@@ -100,6 +102,15 @@ namespace ChClient.ViewModels
             get {
                 SimpleIoc ioc = ServiceLocator.Current as SimpleIoc;
                 return ioc.GetInstanceWithoutCaching<BrowseProjectsPageViewModel>(Guid.NewGuid().ToString());
+            }
+        }
+        public ProjectPageViewModel ProjectViewModel {
+            get {
+                //mindig új példány legyen
+                SimpleIoc ioc = ServiceLocator.Current as SimpleIoc;
+                return ioc.GetInstanceWithoutCaching<ProjectPageViewModel>(Guid.NewGuid().ToString());
+                //return ServiceLocator.Current.GetInstance<NewReactionPageViewModel>();
+
             }
         }
         public NewReactionPageViewModel NewReactionViewModel {

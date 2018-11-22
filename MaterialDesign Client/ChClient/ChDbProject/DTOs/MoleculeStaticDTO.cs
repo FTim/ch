@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChDbProject.DTOs
 {
-    class MoleculeStaticDTO
+    public class MoleculeStaticDTO
     {
     }
 }

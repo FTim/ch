@@ -1,5 +1,6 @@
 ﻿using ChClient.Models;
 using ChDbProject;
+using ChDbProject.DTOs;
 using InventoryReader;
 using System;
 using System.Collections.Generic;
@@ -76,15 +77,64 @@ namespace ChClient.Services
             
         }
 
-        public async Task AddReaction()
+        public async Task AddReaction(ReactionInfo reaction)
         {
+            ReactionDTO reactionDTO = new ReactionDTO
+            {
+                Code = reaction.Code,
+                Chemist = reaction.Chemist,
+                Chiefchemist = reaction.Chiefchemist,
+                Project = reaction.Project,
+                Laboratory = reaction.Laboratory,
+                StartDate = reaction.StartDate,
+                ClosureDate = reaction.ClosureDate,
+                PreviousStep = reaction.PreviousStep,
+                Literature = reaction.Literature,
+                IsSketch = reaction.IsSketch,
+                ReactionImg = convertImg(reaction.ReactionImgPath),
+                Procedure = reaction.Procedure,
+                Yield = reaction.Yield,
+                Observation = reaction.Observation
+            };
 
+            StartingMaterialDTO smDTO = new StartingMaterialDTO { MoleculeCAS = reaction.StartingMaterial.CAS, ReactionName = reaction.Code, mValue = reaction.StartingMaterial.mValue, nValue = reaction.StartingMaterial.nValue, VValue = reaction.StartingMaterial.VValue };
+
+            List<ReagentDTO> reagentDTOs = new List<ReagentDTO>();
+            foreach (var item in reaction.Reagents)
+            {
+                reagentDTOs.Add(new ReagentDTO { MoleculeCAS = item.CAS, ReactionName = reaction.Code, Ratio = item.Ratio });
+            }
+            List<SolventDTO> solventDTOs = new List<SolventDTO>();
+            foreach (var item in reaction.Solvents)
+            {
+                solventDTOs.Add(new SolventDTO { MoleculeCAS = item.CAS, ReactionName = reaction.Code, VValue = item.VValue });
+            }
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            foreach (var item in reaction.Products)
+            {
+                productDTOs.Add(new ProductDTO { ReactionName = reaction.Code, MW = item.mValue, Ratio = item.Ratio });
+            }
+            List<byte[]> observationImgs = new List<byte[]>();
+            foreach (var item in reaction.ObservationImgPaths)
+            {
+                observationImgs.Add(convertImg(item));
+            }
+
+            reactionDTO.StartingMaterial = smDTO;
+            reactionDTO.Reagents = reagentDTOs;
+            reactionDTO.Solvents = solventDTOs;
+            reactionDTO.Products = productDTOs;
+
+            reactionDTO.ObservationImgs = observationImgs;
+
+
+            await DbAccess.AddReaction(reactionDTO);
         }
 
-        public async Task AddProject(string name, string leader, string goal, string description, string planimg)
+        public async Task AddProject(Models.Project project)
         {
-            
-            await DbAccess.AddProject(name, leader, goal, description, convertImg(planimg));
+            //ProjectDTO projectDTO = new ProjectDTO();
+            await DbAccess.AddProject(new ProjectDTO { Name = project.Name, Leader = project.Leader, Goal = project.Goal, Description = project.Description , PlanImg = convertImg(project.CurrentPlan) });
         }
 
         public async Task AddUser(string name)

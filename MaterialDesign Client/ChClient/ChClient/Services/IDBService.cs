@@ -17,9 +17,9 @@ namespace ChClient.Services
 
         Task AddUser(string name);
 
-        Task AddProject(string name, string leader, string goal, string description, string planimg);
+        Task AddProject(Project project);
 
-        Task AddReaction();
+        Task AddReaction(ReactionInfo reaction);
 
         Task<List<Project>> GetProjects();
 

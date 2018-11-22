@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ChClient.Models;
+using DocxDropboxUploader;
 using DocxGen;
 
 namespace ChClient.Services
@@ -111,6 +112,13 @@ namespace ChClient.Services
 
             }
             
+        }
+
+        public async Task<string> UploadToDropboxAsync(string OSfilepath, string Cfolder, string filename)
+        {
+            string result;
+            result=await Task.Run(() => Uploader.Upload(OSfilepath, Cfolder, filename));
+            return result;
         }
     }
 }

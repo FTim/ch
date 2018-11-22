@@ -72,7 +72,7 @@ namespace ChClient.ViewModels
             SelectReactionImg = new RelayCommand(SelectReactionImgCommand);
             SelectObservationImg = new RelayCommand(SelectObservationImgCommand);
             SelectSaveLocation = new RelayCommand(SelectSaveLocationCommand);
-            SaveReaction = new RelayCommand(SaveReactionCommand);
+            SaveReaction = new RelayCommand(SaveReactionCommandAsync);
             DeleteObservationImg = new RelayCommand<string>(DeleteObservationImgCommand);
 
             AddMaterialAsStartingMaterial = new RelayCommand(AddMaterialAsStartingMaterialCommand);
@@ -165,7 +165,7 @@ namespace ChClient.ViewModels
             
         }
         public RelayCommand SaveReaction { get; private set; }
-        private void SaveReactionCommand()
+        private async void SaveReactionCommandAsync()
         {
             _ReactionInfo.StartingMaterial = StartingMaterialList.FirstOrDefault();
             _ReactionInfo.Reagents = ReagentList.ToList();
@@ -174,8 +174,16 @@ namespace ChClient.ViewModels
             _ReactionInfo.ObservationImgPaths = ObservationImgPaths.ToList();
             if (ValidateReactionData())
             {
-                //TODO: DB....
+                SaveSuccessful = "";
+                UploadVisibility = "visible";
+                SaveVisibility = "visible";
                 _docxGeneratorService.GenerateSingleReaction(_ReactionInfo);
+                SaveSuccessful = "Saved! ";
+                string dropboxresult= await _docxGeneratorService.UploadToDropboxAsync(_ReactionInfo.SaveLocation, _ReactionInfo.Project, _ReactionInfo.Code+".docx");
+                SaveSuccessful+=dropboxresult;
+                await _dbService.AddReaction(_ReactionInfo);
+                UploadVisibility = null;
+                SaveSuccessful += " Saved to database!";
             }
            
         }
@@ -749,6 +757,18 @@ namespace ChClient.ViewModels
 
         private string _editpvisibility;
         public string EditPVisibility { get { return _editpvisibility; } set { Set(ref _editpvisibility, value); } }
+        #endregion
+
+        #region Bindings - SaveResult
+        private string _savesuccessful;
+        //private string _uploadsuccessful;
+        private string _savevisibility;
+        private string _uploadvisibility;
+
+        public string SaveSuccessful { get { return _savesuccessful; } set { Set(ref _savesuccessful, value); } }
+       // public string UploadSuccessful { get { return _uploadsuccessful; } set { Set(ref _uploadsuccessful, value); } }
+        public string SaveVisibility { get { return _savevisibility; } set { Set(ref _savevisibility, value); } }
+        public string UploadVisibility { get { return _uploadvisibility; } set { Set(ref _uploadvisibility, value); } }
         #endregion
 
         #region Models

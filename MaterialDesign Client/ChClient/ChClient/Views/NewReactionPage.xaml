@@ -1435,6 +1435,9 @@
 
                             </Button>
 
+                            <ProgressBar IsIndeterminate="True" Visibility="{Binding Path=UploadVisibility, Converter={StaticResource VisibilityConverter}}" />
+                            <TextBlock Text="{Binding SaveSuccessful}" Visibility="{Binding Path=SaveVisibility, Converter={StaticResource VisibilityConverter}}" />
+
 
                         </StackPanel>
 

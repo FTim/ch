@@ -19,7 +19,7 @@ namespace ChClient.ViewModels
             _logService = logService;
             Person = navigationService.Parameter.ToString();
             ConfigNavigationCommands();
-
+           
         }
         public string Person { get; set; }
         private void ConfigNavigationCommands()
@@ -107,5 +107,7 @@ namespace ChClient.ViewModels
             _navigationService.NavigateTo("ExportExcel");
         }
         #endregion
+
+       
     }
 }
