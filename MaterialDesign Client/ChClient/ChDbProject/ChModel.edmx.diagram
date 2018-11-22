@@ -4,23 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="53c01bde301e485887a0df2a746d1e1b" Name="Diagram1" ZoomLevel="55">
-        <EntityTypeShape EntityType="chdbModel.Location" Width="1.5" PointX="11.5" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.LocationMolecule" Width="1.5" PointX="11.5" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.MoleculeStatic" Width="1.5" PointX="11.5" PointY="8.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.ObservationImg" Width="1.5" PointX="5.625" PointY="9.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.Person" Width="1.5" PointX="5.625" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.Product" Width="1.5" PointX="7.75" PointY="10.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.Project" Width="1.5" PointX="5.625" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.ProjectPlan" Width="1.5" PointX="3.875" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.Reaction" Width="1.5" PointX="7.75" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.Reagent" Width="1.5" PointX="9.5" PointY="6.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.Solvent" Width="1.5" PointX="9.5" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.StartingMaterial" Width="1.5" PointX="9.5" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="chdbModel.sysdiagram" Width="1.5" PointX="3.875" PointY="4.125" IsExpanded="true" />
+      <Diagram DiagramId="25fc7cd02a0e450ea0f12b36d7524083" Name="Diagram1">
+        <EntityTypeShape EntityType="chdbModel.Location" Width="1.5" PointX="11.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.LocationMolecule" Width="1.5" PointX="13.5" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.MoleculeStatic" Width="1.5" PointX="11.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.ObservationImg" Width="1.5" PointX="10.5" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.Person" Width="1.5" PointX="0.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.Product" Width="1.5" PointX="10.5" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.Project" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.ProjectPlan" Width="1.5" PointX="5.25" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.Reaction" Width="1.5" PointX="8.25" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.Reagent" Width="1.5" PointX="13.5" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.Solvent" Width="1.5" PointX="13.5" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="chdbModel.StartingMaterial" Width="1.5" PointX="13.5" PointY="12.25" IsExpanded="true" />
         <AssociationConnector Association="chdbModel.FK_LocationMolecule_Location" ManuallyRouted="false" />
         <AssociationConnector Association="chdbModel.FK_LocationMolecule_LocationMolecule" ManuallyRouted="false" />
-        <AssociationConnector Association="chdbModel.FK_Reagent_MoleculeStatic" ManuallyRouted="false" ></AssociationConnector>
+        <AssociationConnector Association="chdbModel.FK_Reagent_MoleculeStatic" ManuallyRouted="false" />
         <AssociationConnector Association="chdbModel.FK_Solvent_MoleculeStatic" ManuallyRouted="false" />
         <AssociationConnector Association="chdbModel.FK_StartingMaterial_MoleculeStatic" ManuallyRouted="false" />
         <AssociationConnector Association="chdbModel.FK_ObservationImg_Reaction" ManuallyRouted="false" />

@@ -13,10 +13,10 @@ namespace ChDbProject
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class chdbContext : DbContext
+    public partial class ChContext : DbContext
     {
-        public chdbContext()
-            : base("name=chdbContext")
+        public ChContext()
+            : base("name=ChContext")
         {
         }
     
@@ -37,6 +37,5 @@ namespace ChDbProject
         public virtual DbSet<Reagent> Reagents { get; set; }
         public virtual DbSet<Solvent> Solvents { get; set; }
         public virtual DbSet<StartingMaterial> StartingMaterials { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

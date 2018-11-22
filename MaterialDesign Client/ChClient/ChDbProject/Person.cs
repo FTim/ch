@@ -18,8 +18,8 @@ namespace ChDbProject
         public Person()
         {
             this.Projects = new HashSet<Project>();
-            this.ChemistTo = new HashSet<Reaction>();
-            this.ChiefchemistTo = new HashSet<Reaction>();
+            this.ChemistReactions = new HashSet<Reaction>();
+            this.ChiefChemistReactions = new HashSet<Reaction>();
         }
     
         public int ID { get; set; }
@@ -28,8 +28,8 @@ namespace ChDbProject
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reaction> ChemistTo { get; set; }
+        public virtual ICollection<Reaction> ChemistReactions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reaction> ChiefchemistTo { get; set; }
+        public virtual ICollection<Reaction> ChiefChemistReactions { get; set; }
     }
 }

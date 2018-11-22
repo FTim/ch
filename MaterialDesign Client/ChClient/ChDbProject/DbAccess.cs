@@ -13,7 +13,7 @@ namespace ChDbProject
         public static void AddLocation(string locationcode)
         {
             var newLocation = new Location() { Code = locationcode };
-            using (var db = new chdbContext())
+            using (var db = new ChContext())
             {
                 var query = db.Locations.Where(loc => loc.Code == locationcode).Select(loc=> loc.Code).ToList();
 
@@ -38,7 +38,7 @@ namespace ChDbProject
                 purity = purityparam
             };
 
-            using (var db = new chdbContext())
+            using (var db = new ChContext())
             {
                 var query = db.MoleculeStatics.Where(molec => molec.CAS == cas).Select(molec => molec.CAS).ToList();
 
@@ -53,7 +53,7 @@ namespace ChDbProject
         }
         public static void ConnectLocationMoleculestatic(string cas, string location, double? m, double? V)
         {
-            using (var db = new chdbContext())
+            using (var db = new ChContext())
             {
                 var thisMolecule = db.MoleculeStatics.Where(molec => molec.CAS == cas).FirstOrDefault();
                 var thisLocation = db.Locations.Where(loc => loc.Code == location).FirstOrDefault();
@@ -91,7 +91,7 @@ namespace ChDbProject
 
             await Task.Run(() =>
             {
-                using (var db = new chdbContext())
+                using (var db = new ChContext())
                 {
                     result = db.LocationMolecules.ToList();
 
@@ -114,7 +114,7 @@ namespace ChDbProject
             List<string> result = new List<string>();
             await Task.Run(() =>
              {
-                 using (var db = new chdbContext())
+                 using (var db = new ChContext())
                  {
                      var query = db.People.ToList();
                      
@@ -135,7 +135,7 @@ namespace ChDbProject
             List<string> result = new List<string>();
             await Task.Run(() =>
             {
-                using (var db = new chdbContext())
+                using (var db = new ChContext())
                 {
                     var query = db.Projects.ToList();
 
@@ -156,7 +156,7 @@ namespace ChDbProject
             List<string> result = new List<string>();
             await Task.Run(() =>
             {
-                using (var db = new chdbContext())
+                using (var db = new ChContext())
                 {
                     var query = db.Reactions.ToList();
 
@@ -178,7 +178,7 @@ namespace ChDbProject
             List<Project> result = new List<Project>();
             await Task.Run(() =>
             {
-                using (var db = new chdbContext())
+                using (var db = new ChContext())
                 {
                     var query = db.Projects.Include(p=>p.ProjectPlans);
 
@@ -203,7 +203,7 @@ namespace ChDbProject
             
             await Task.Run(() =>
             {
-                using (var db = new chdbContext())
+                using (var db = new ChContext())
                 {
                     var person = new Person { Name = name };
                     db.People.Add(person);
@@ -221,7 +221,7 @@ namespace ChDbProject
 
             await Task.Run(() =>
             {
-                using (var db = new chdbContext())
+                using (var db = new ChContext())
                 {
                     //var plan = new ProjectPlan { img = projectDTO.PlanImg };
 
@@ -256,7 +256,7 @@ namespace ChDbProject
         {
             await Task.Run(() =>
             {
-                using (var db = new chdbContext())
+                using (var db = new ChContext())
                 {
                     var reaction = reactionDTO.TransformToReaction();
 
@@ -320,7 +320,7 @@ namespace ChDbProject
         public static void Reset()
         {
             
-            using (var db = new chdbContext())
+            using (var db = new ChContext())
             {
                 db.Database.ExecuteSqlCommand("DELETE FROM LocationMolecule");
                 db.Database.ExecuteSqlCommand("DELETE FROM Location");

@@ -110,9 +110,6 @@
     <Compile Include="StartingMaterial.cs">
       <DependentUpon>ChModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>ChModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
