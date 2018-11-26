@@ -23,10 +23,12 @@ namespace ChClient.ViewModels
             ResetDb = new RelayCommand(ResetDbCommand);
             Question = new RelayCommand(QuestionCommand);
             Home = new RelayCommand(HomeCommand);
+            QuestionEnable = "enable";
         }
         private string _state;
         public string State { get { return _state; } set { Set(ref _state, value); } }
-
+        private string _questionenable;
+        public string QuestionEnable { get { return _questionenable; } set { Set(ref _questionenable, value); } }
         #region Bindings - Visibility
         private string _questionvisibility;
         public string QuestionVisibility { get { return _questionvisibility; } set { Set(ref _questionvisibility, value); } }
@@ -55,6 +57,8 @@ namespace ChClient.ViewModels
 
         private async void ResetDbCommand()
         {
+            QuestionVisibility = null;
+            QuestionEnable = null;
             InProgressVisibility = "visible";
             DoneVisibility = null;
             _dbService.ResetAll();

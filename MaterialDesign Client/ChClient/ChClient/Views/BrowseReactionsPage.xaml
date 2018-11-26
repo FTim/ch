@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:command="http://www.galasoft.ch/mvvmlight"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:ChClient.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -18,6 +19,12 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding GetReactions, Mode=OneWay}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
 
     <Grid>
         <Grid.RowDefinitions>
@@ -31,6 +38,7 @@
             VerticalAlignment="Top"
             Background="{DynamicResource PrimaryHueMidBrush}"
             Orientation="Horizontal">
+            <!--  THE ONE AND ONLY TRUE HERO NAVBAR  -->
 
             <Button
                 Width="Auto"
@@ -56,6 +64,7 @@
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
                 IsEnabled="True"
                 PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
@@ -115,13 +124,14 @@
             <materialDesign:PopupBox
                 Width="80"
                 Height="Auto"
-                Margin="70,12,10,10"
+                Margin="80,12,10,10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
                 IsEnabled="True"
                 PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
@@ -181,13 +191,14 @@
             <materialDesign:PopupBox
                 Width="80"
                 Height="Auto"
-                Margin="70,12,10,10"
+                Margin="80,12,10,10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
                 IsEnabled="True"
                 PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
@@ -245,13 +256,98 @@
                 </StackPanel>
             </materialDesign:PopupBox>
         </StackPanel>
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="Browse reactions page, yeeey!" />
-            <TextBlock Text="{Binding Person}" />
-        </StackPanel>
+
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock>
+                    <Run Text="Browse " />
+                    <Run Text="{Binding Mode}" />
+                    <Run Text=" reactions" />
+                </TextBlock>
+                <TextBlock>
+                    <Run Text="Current user: " />
+                    <Run Text="{Binding Person}" />
+                </TextBlock>
+
+                <ListView
+                    Name="ReactionsListView"
+                    Grid.Row="1"
+                    MinWidth="700"
+                    MaxWidth="1000"
+                    Margin="16,12"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding ReactionList, Mode=TwoWay}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn
+                                Width="150"
+                                DisplayMemberBinding="{Binding Code}"
+                                Header="Reaction code" />
+                            <GridViewColumn
+                                Width="150"
+                                DisplayMemberBinding="{Binding Chemist}"
+                                Header="Chemist" />
+                            <GridViewColumn
+                                Width="150"
+                                DisplayMemberBinding="{Binding Chiefchemist}"
+                                Header="Chiefchemist" />
+                            <GridViewColumn
+                                Width="100"
+                                DisplayMemberBinding="{Binding Laboratory}"
+                                Header="Laboratory" />
+                            <GridViewColumn
+                                Width="100"
+                                DisplayMemberBinding="{Binding StartDate, StringFormat=d}"
+                                Header="Start date" />
+
+                            <GridViewColumn Width="120" Header="Sketch">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsSketch}" IsEnabled="False" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="120" Header="">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button
+                                                Width="50"
+                                                Margin="0,0,5,0"
+                                                HorizontalAlignment="Left"
+                                                Command="{Binding Path=DataContext.ViewReaction, ElementName=ReactionsListView}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="Pencil" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button
+                                                Width="50"
+                                                HorizontalAlignment="Left"
+                                                Command="{Binding Path=DataContext.DeleteReaction, ElementName=ReactionsListView}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="DeleteEmpty" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
 
 
     </Grid>
+
 
 
 </Page>

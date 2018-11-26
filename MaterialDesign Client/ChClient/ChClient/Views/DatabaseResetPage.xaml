@@ -19,10 +19,14 @@
     mc:Ignorable="d">
     <Page.Resources>
         <converters:VisibilityConverter x:Key="VisibilityConverter" />
+        <converters:EnabledConverter x:Key="EnabledConverter" />
     </Page.Resources>
-    <StackPanel Width="500" Margin="50">
-        <TextBlock Text="It will delete everything in the database. . ." />
-        <Grid>
+    <StackPanel
+        Width="500"
+        Margin="50"
+        HorizontalAlignment="Center">
+        <TextBlock HorizontalAlignment="Center" Text="It will delete everything in the database. . ." />
+        <Grid HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -36,6 +40,7 @@
                 Command="{Binding Question}"
                 Content="Ok. . ."
                 Foreground="Red"
+                IsEnabled="{Binding QuestionEnable, Converter={StaticResource EnabledConverter}}"
                 Style="{StaticResource MaterialDesignFlatButton}" />
             <Button
                 Grid.Column="1"
@@ -45,10 +50,9 @@
                 VerticalAlignment="Center"
                 Command="{Binding Home}"
                 Content="Cancel"
+                IsEnabled="{Binding QuestionEnable, Converter={StaticResource EnabledConverter}}"
                 Style="{StaticResource MaterialDesignFlatButton}" />
         </Grid>
-
-
         <Button
             Width="220"
             Margin="8"
@@ -56,8 +60,9 @@
             VerticalAlignment="Center"
             Command="{Binding ResetDb}"
             Foreground="Red"
+            IsEnabled="{Binding QuestionEnable, Converter={StaticResource EnabledConverter}}"
             Style="{StaticResource MaterialDesignFlatButton}"
-            Visibility="{Binding Path=QuestionVisibility, Converter={StaticResource VisibilityConverter}}">
+            Visibility="{Binding Path=QuestionVisibility, Mode=TwoWay, Converter={StaticResource VisibilityConverter}}">
             <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -67,11 +72,34 @@
                 <TextBlock
                     Grid.Column="1"
                     Margin="4,0,0,0"
-                    Text="U dont want this..." />
+                    Text="Reset database" />
             </Grid>
         </Button>
         <ProgressBar IsIndeterminate="True" Visibility="{Binding Path=InProgressVisibility, Converter={StaticResource VisibilityConverter}}" />
-        <TextBlock Text="{Binding State, Mode=TwoWay}" Visibility="{Binding Path=DoneVisibility, Converter={StaticResource VisibilityConverter}}" />
+        <TextBlock
+            HorizontalAlignment="Center"
+            Text="{Binding State, Mode=TwoWay}"
+            Visibility="{Binding Path=DoneVisibility, Converter={StaticResource VisibilityConverter}}" />
+        <Button
+            Width="220"
+            Margin="8"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Command="{Binding Home}"
+            Style="{StaticResource MaterialDesignFlatButton}"
+            Visibility="{Binding Path=DoneVisibility, Converter={StaticResource VisibilityConverter}}">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <materialDesign:PackIcon Grid.Column="0" Kind="Home" />
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="4,0,0,0"
+                    Text="Back" />
+            </Grid>
+        </Button>
     </StackPanel>
 
 

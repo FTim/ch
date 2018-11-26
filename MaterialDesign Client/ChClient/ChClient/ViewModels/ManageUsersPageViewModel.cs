@@ -82,12 +82,12 @@ namespace ChClient.ViewModels
         {
             if (Users.Contains(NewUser))
             {
-                NewUserError = "Already registered";
+                NewUserError =NewUser+ " is already registered!";
             }
             else
             {
                 _dbService.AddUser(NewUser);
-                NewUserError = "Added!";
+                NewUserError = NewUser+" added!";
                 Users.Add(NewUser);
                 
             }

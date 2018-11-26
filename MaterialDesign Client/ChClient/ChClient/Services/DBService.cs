@@ -97,17 +97,17 @@ namespace ChClient.Services
                 Observation = reaction.Observation
             };
 
-            StartingMaterialDTO smDTO = new StartingMaterialDTO { MoleculeCAS = reaction.StartingMaterial.CAS, ReactionName = reaction.Code, mValue = reaction.StartingMaterial.mValue, nValue = reaction.StartingMaterial.nValue, VValue = reaction.StartingMaterial.VValue };
+            StartingMaterialDTO smDTO = new StartingMaterialDTO { MoleculeCAS = reaction.StartingMaterial.CAS, ReactionName = reaction.Code, mValue = reaction.StartingMaterial.mValue, nValue = reaction.StartingMaterial.nValue, VValue = reaction.StartingMaterial.VValue , Location=reaction.StartingMaterial.Location};
 
             List<ReagentDTO> reagentDTOs = new List<ReagentDTO>();
             foreach (var item in reaction.Reagents)
             {
-                reagentDTOs.Add(new ReagentDTO { MoleculeCAS = item.CAS, ReactionName = reaction.Code, Ratio = item.Ratio });
+                reagentDTOs.Add(new ReagentDTO { MoleculeCAS = item.CAS, ReactionName = reaction.Code, Ratio = item.Ratio , Location= item.Location, mValue=item.mValue, VValue=item.VValue});
             }
             List<SolventDTO> solventDTOs = new List<SolventDTO>();
             foreach (var item in reaction.Solvents)
             {
-                solventDTOs.Add(new SolventDTO { MoleculeCAS = item.CAS, ReactionName = reaction.Code, VValue = item.VValue });
+                solventDTOs.Add(new SolventDTO { MoleculeCAS = item.CAS, ReactionName = reaction.Code, VValue = item.VValue, Location=item.Location });
             }
             List<ProductDTO> productDTOs = new List<ProductDTO>();
             foreach (var item in reaction.Products)
@@ -152,6 +152,7 @@ namespace ChClient.Services
             {
                 Models.Project tmp = new Models.Project();
 
+                tmp.ProjectID = item.ID;
                 tmp.Name = item.Name;
                 tmp.Leader = item.Leader.Name;
                 tmp.Goal = item.Goal;
@@ -163,6 +164,106 @@ namespace ChClient.Services
                 }
                 tmp.LastPlan = item.ProjectPlans.Last().img;
                 //tmp.ProjectPlanImgPaths = tmpplans;
+
+                result.Add(tmp);
+            }
+
+            return result;
+        }
+
+        public async Task<List<Models.Project>> GetProjects(string leader)
+        {
+            var projects = await DbAccess.GetProjectsAsync(leader);
+
+            List<Models.Project> result = new List<Models.Project>();
+
+            foreach (var item in projects)
+            {
+                Models.Project tmp = new Models.Project();
+
+                tmp.ProjectID = item.ID;
+                tmp.Name = item.Name;
+                tmp.Leader = item.Leader.Name;
+                tmp.Goal = item.Goal;
+                tmp.Description = item.Description;
+                //List<string> tmpplans = new List<string>();
+                foreach (var planitem in item.ProjectPlans)
+                {
+                    tmp.ProjectPlanByreArrays.Add(planitem.img);
+                }
+                tmp.LastPlan = item.ProjectPlans.Last().img;
+                //tmp.ProjectPlanImgPaths = tmpplans;
+
+                result.Add(tmp);
+            }
+
+            return result;
+        }
+
+        public async Task<List<ReactionInfo>> GetReactions(int projectID)
+        {
+            var reactions = await DbAccess.GetReactionsAsync(projectID);
+
+            List<ReactionInfo> result = new List<ReactionInfo>();
+
+            foreach (var item in reactions)
+            {
+                ReactionInfo tmp = new ReactionInfo();
+                tmp.ReactionID = item.ID;
+                tmp.Code = item.ReactionCode;
+                tmp.Chemist = item.Chemist.Name;
+                tmp.Chiefchemist = item.Chiefchemist.Name;
+                tmp.Laboratory = item.Laboratory;
+                tmp.StartDate = item.StartDate;
+                tmp.IsSketch = item.Sketch.Value;
+                
+
+                result.Add(tmp);
+            }
+
+            return result;
+        }
+
+        public async Task<List<ReactionInfo>> GetReactions()
+        {
+            var reactions = await DbAccess.GetReactionsAsync();
+
+            List<ReactionInfo> result = new List<ReactionInfo>();
+
+            foreach (var item in reactions)
+            {
+                ReactionInfo tmp = new ReactionInfo();
+                tmp.ReactionID = item.ID;
+                tmp.Code = item.ReactionCode;
+                tmp.Chemist = item.Chemist.Name;
+                tmp.Chiefchemist = item.Chiefchemist.Name;
+                tmp.Laboratory = item.Laboratory;
+                tmp.StartDate = item.StartDate;
+                tmp.IsSketch = item.Sketch.Value;
+
+
+                result.Add(tmp);
+            }
+
+            return result;
+        }
+        public async Task<List<ReactionInfo>> GetReactions(string chemist)
+        {
+            var reactions = await DbAccess.GetReactionsAsync(chemist);
+
+            List<ReactionInfo> result = new List<ReactionInfo>();
+
+            foreach (var item in reactions)
+            {
+                ReactionInfo tmp = new ReactionInfo();
+                tmp.ReactionID = item.ID;
+                tmp.Code = item.ReactionCode;
+                tmp.Chemist = item.Chemist.Name;
+                tmp.Chiefchemist = item.Chiefchemist.Name;
+                tmp.Laboratory = item.Laboratory;
+                tmp.StartDate = item.StartDate;
+                tmp.IsSketch = item.Sketch.Value;
+
 
                 result.Add(tmp);
             }
@@ -207,6 +308,19 @@ namespace ChClient.Services
             return result;
         }
 
+        public async Task DeleteProjct(int id)
+        {
+            await DbAccess.DeleteProject(id);
+        }
+        public async Task DeleteReaction(int id)
+        {
+            await DbAccess.DeleteReaction(id);
+        }
+        public async Task ModifyMoleculeAvailable(string CAS, string location, double? mValue, double? vValue)
+        {
+            await DbAccess.ModifyMoleculeAvailable(CAS, location, mValue, vValue);
+        }
+
         public void ResetAll()
         {
             DbAccess.Reset();
@@ -218,8 +332,83 @@ namespace ChClient.Services
             return imgToByte;
         }
 
-        
+        public async Task<ReactionInfo> GetReactionAsync(int reactionId)
+        {
+            var tmp = await DbAccess.GetReactionAsync(reactionId);
+            ReactionInfo result = new ReactionInfo(){ Code = tmp.Code, Chemist = tmp.Chemist, Chiefchemist = tmp.Chiefchemist, Project = tmp.Project, Laboratory = tmp.Laboratory, StartDate = tmp.StartDate, PreviousStep = tmp.PreviousStep, Observation = tmp.Observation, Procedure = tmp.Procedure, Yield = tmp.Yield, IsSketch = tmp.IsSketch, Literature = tmp.Literature, ReactionImgByteArray = tmp.ReactionImg };
 
-        
+            if(!tmp.IsSketch) result.ClosureDate = tmp.ClosureDate;
+
+
+            return result;
+        }
+
+        public async Task<Models.StartingMaterial> GetStartingMaterial(int reactionId)
+        {
+            var tmp = await DbAccess.GetStartingMaterialAsync(reactionId);
+            Models.StartingMaterial result = new Models.StartingMaterial();
+
+            result.CAS = tmp.MoleculeCAS;
+            result.Name = tmp.Name;
+            if (tmp.mValue.HasValue) result.mValue = tmp.mValue.Value;
+            if (tmp.VValue.HasValue) result.VValue = tmp.VValue.Value;
+
+            return result;
+        }
+
+        public async Task<List<Models.Reagent>> GetReagents(int reactionId)
+        {
+            var tmp = await DbAccess.GetReagentsAsync(reactionId);
+            List<Models.Reagent> result = new List<Models.Reagent>();
+
+            foreach (var item in tmp)
+            {
+                Models.Reagent tmpr = new Models.Reagent() { CAS = item.MoleculeCAS, Ratio = item.Ratio, Name = item.Name };
+                result.Add(tmpr);
+            }
+
+            
+
+            return result;
+        }
+
+        public async Task<List<Models.Solvent>> GetSolvents(int reactionId)
+        {
+            var tmp = await DbAccess.GetSolventsAsync(reactionId);
+            List<Models.Solvent> result = new List<Models.Solvent>();
+
+            foreach (var item in tmp)
+            {
+                Models.Solvent tmpr = new Models.Solvent() { CAS = item.MoleculeCAS, VValue=item.VValue, Name = item.Name };
+                result.Add(tmpr);
+            }
+
+
+
+            return result;
+        }
+
+        public async Task<List<Models.Product>> GetProducts(int reactionId)
+        {
+            var tmp = await DbAccess.GetProductsAsync(reactionId);
+            List<Models.Product> result = new List<Models.Product>();
+
+            foreach (var item in tmp)
+            {
+                Models.Product tmpr = new Models.Product() { MW=item.MW, Ratio=item.Ratio};
+                result.Add(tmpr);
+            }
+
+
+
+            return result;
+        }
+
+        public async Task<List<byte[]>> GetObsImgs(int reactionId)
+        {
+            var result = await DbAccess.GetObsImgByteArraysAsync(reactionId);
+            
+            return result;
+        }
     }
 }

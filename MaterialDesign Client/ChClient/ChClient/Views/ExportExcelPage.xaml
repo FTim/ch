@@ -28,6 +28,7 @@
             VerticalAlignment="Top"
             Background="{DynamicResource PrimaryHueMidBrush}"
             Orientation="Horizontal">
+            <!--  THE ONE AND ONLY TRUE HERO NAVBAR  -->
 
             <Button
                 Width="Auto"
@@ -53,6 +54,7 @@
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
                 IsEnabled="True"
                 PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
@@ -112,13 +114,14 @@
             <materialDesign:PopupBox
                 Width="80"
                 Height="Auto"
-                Margin="70,12,10,10"
+                Margin="80,12,10,10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
                 IsEnabled="True"
                 PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
@@ -178,13 +181,14 @@
             <materialDesign:PopupBox
                 Width="80"
                 Height="Auto"
-                Margin="70,12,10,10"
+                Margin="80,12,10,10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
                 IsEnabled="True"
                 PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">

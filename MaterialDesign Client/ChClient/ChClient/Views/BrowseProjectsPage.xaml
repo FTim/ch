@@ -26,8 +26,6 @@
     </i:Interaction.Triggers>
 
     <Page.Resources>
-
-
         <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
     </Page.Resources>
     <Grid>
@@ -42,6 +40,7 @@
             VerticalAlignment="Top"
             Background="{DynamicResource PrimaryHueMidBrush}"
             Orientation="Horizontal">
+            <!--  THE ONE AND ONLY TRUE HERO NAVBAR  -->
 
             <Button
                 Width="Auto"
@@ -67,6 +66,7 @@
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
                 IsEnabled="True"
                 PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
@@ -126,13 +126,14 @@
             <materialDesign:PopupBox
                 Width="80"
                 Height="Auto"
-                Margin="70,12,10,10"
+                Margin="80,12,10,10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
                 IsEnabled="True"
                 PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
@@ -192,13 +193,14 @@
             <materialDesign:PopupBox
                 Width="80"
                 Height="Auto"
-                Margin="70,12,10,10"
+                Margin="80,12,10,10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 materialDesign:ShadowAssist.ShadowEdges="None"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
                 IsEnabled="True"
                 PlacementMode="RightAndAlignMiddles"
                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
@@ -256,81 +258,92 @@
                 </StackPanel>
             </materialDesign:PopupBox>
         </StackPanel>
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="Browse projects page, yeeey!" />
-            <TextBlock Text="{Binding Person}" />
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock>
+                    <Run Text="Browse " />
+                    <Run Text="{Binding Mode}" />
+                    <Run Text=" projects" />
+                </TextBlock>
+                <TextBlock>
+                    <Run Text="Current user: " />
+                    <Run Text="{Binding Person}" />
+                </TextBlock>
 
-            <ListView
-                Name="ProjectListView"
-                Grid.Row="1"
-                MinWidth="700"
-                Margin="16,12"
-                HorizontalAlignment="Stretch"
-                ItemsSource="{Binding ProjectList, Mode=TwoWay}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn
-                            Width="400"
-                            DisplayMemberBinding="{Binding Name}"
-                            Header="Name" />
-                        <GridViewColumn
-                            Width="100"
-                            DisplayMemberBinding="{Binding Leader}"
-                            Header="Leader" />
-                        <GridViewColumn
-                            Width="100"
-                            DisplayMemberBinding="{Binding Goal}"
-                            Header="Goal" />
+                <ListView
+                    Name="ProjectListView"
+                    Grid.Row="1"
+                    MinWidth="700"
+                    Margin="16,12"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding ProjectList, Mode=TwoWay}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn
+                                Width="400"
+                                DisplayMemberBinding="{Binding Name}"
+                                Header="Name" />
+                            <GridViewColumn
+                                Width="100"
+                                DisplayMemberBinding="{Binding Leader}"
+                                Header="Leader" />
+                            <GridViewColumn
+                                Width="100"
+                                DisplayMemberBinding="{Binding Goal}"
+                                Header="Goal" />
 
-                        <GridViewColumn Header="Last plan">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Image
-                                        MaxWidth="600"
-                                        MaxHeight="600"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Top"
-                                        IsEnabled="True"
-                                        Source="{Binding LastPlan, Converter={StaticResource ByteArrayToImageSourceConverter}, Mode=TwoWay}"
-                                        Stretch="Uniform" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
+                            <GridViewColumn Header="Last plan">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image
+                                            MaxWidth="600"
+                                            MaxHeight="600"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Top"
+                                            IsEnabled="True"
+                                            Source="{Binding LastPlan, Converter={StaticResource ByteArrayToImageSourceConverter}, Mode=TwoWay}"
+                                            Stretch="Uniform" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
-                        <GridViewColumn Width="120" Header="">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button
-                                            Width="50"
-                                            Margin="0,0,5,0"
-                                            HorizontalAlignment="Left"
-                                            Command="{Binding Path=DataContext.ViewProject, ElementName=ProjectListView}"
-                                            CommandParameter="{Binding}"
-                                            Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                <materialDesign:PackIcon Kind="Pencil" />
-                                            </StackPanel>
-                                        </Button>
-                                        <Button
-                                            Width="50"
-                                            HorizontalAlignment="Left"
-                                            Command="{Binding Path=DataContext.DeleteProject, ElementName=ProjectListView}"
-                                            CommandParameter="{Binding}"
-                                            Style="{StaticResource MaterialDesignRaisedLightButton}">
-                                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                <materialDesign:PackIcon Kind="DeleteEmpty" />
-                                            </StackPanel>
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </StackPanel>
-
+                            <GridViewColumn Width="120" Header="">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button
+                                                Width="50"
+                                                Margin="0,0,5,0"
+                                                HorizontalAlignment="Left"
+                                                Command="{Binding Path=DataContext.ViewProject, ElementName=ProjectListView}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="Pencil" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button
+                                                Width="50"
+                                                HorizontalAlignment="Left"
+                                                Command="{Binding Path=DataContext.DeleteProject, ElementName=ProjectListView}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="DeleteEmpty" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
 
     </Grid>
 </Page>

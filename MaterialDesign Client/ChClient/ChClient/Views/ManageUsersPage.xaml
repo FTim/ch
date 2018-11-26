@@ -47,14 +47,17 @@
                         </TextBlock>
                     </DockPanel>
                 </materialDesign:ColorZone>
-                <Grid>
+                <Grid Margin="10" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="350" />
+                        <ColumnDefinition Width="350" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="Current user " />
-                        <TextBlock Text="{Binding CurrentUser}" />
+                        <TextBlock>
+                            <Run Text="Current user: " />
+                            <Run Text="{Binding CurrentUser, Mode=TwoWay}" />
+                        </TextBlock>
+
                     </StackPanel>
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="Change current user to" />

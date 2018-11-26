@@ -19,7 +19,7 @@ namespace ChDbProject.DTOs
         {
             Project result = new Project();
             result.Name = Name;
-            result.Leader = new Person { Name = Leader };
+            
             result.Goal = Goal;
             result.Description = Description;
             return result;

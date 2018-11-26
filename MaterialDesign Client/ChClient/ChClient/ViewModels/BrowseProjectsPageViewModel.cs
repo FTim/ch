@@ -21,7 +21,9 @@ namespace ChClient.ViewModels
             _navigationService = navigationService;
             _logService = logService;
             _dbService = dbService;
-            Person = navigationService.Parameter.ToString();
+            NavigationServiceParameter tmp = (NavigationServiceParameter)navigationService.Parameter;
+            Person = tmp.Person;
+            Mode = tmp.Mode;
             ConfigNavigationCommands();
 
             ProjectList = new ObservableCollection<Project>();
@@ -29,13 +31,19 @@ namespace ChClient.ViewModels
             GetProjects = new RelayCommand(GetProjectsCommand);
 
             ViewProject = new RelayCommand<Project>(ViewProjectCommand);
+            DeleteProject = new RelayCommand<Project>(DeleteProjectCommand);
         }
         private string _person;
         public string Person { get { return _person; } set { Set(ref _person, value); } }
-        
+
+        private string _mode;
+        public string Mode { get { return _mode; } set { Set(ref _mode, value); } }
+
 
         private void ConfigNavigationCommands()
         {
+            CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person;
+
             Home = new RelayCommand(HomeCommand);
             NewReaction = new RelayCommand(NewReactionCommand);
             BrowseAllProjects = new RelayCommand(BrowseAllProjectsCommand);
@@ -49,64 +57,78 @@ namespace ChClient.ViewModels
         }
 
         #region Commands - Navigation
+        private string _currentuser;
+        public string CurrentUser { get { return _currentuser; } set { Set(ref _currentuser, value); } }
         public RelayCommand Home { get; private set; }
         private void HomeCommand()
         {
             _navigationService.NavigateTo("Home");
         }
 
+
         public RelayCommand NewProject { get; private set; }
         private void NewProjectCommand()
         {
-            _navigationService.NavigateTo("NewProject");
+            _logService.Write(this, "Navigate to: New Project page");
+            _navigationService.NavigateTo("NewProject", new NavigationServiceParameter { Person = CurrentUser });
         }
 
         public RelayCommand BrowseAllProjects { get; private set; }
         private void BrowseAllProjectsCommand()
         {
-            _navigationService.NavigateTo("BrowseProjects", "all");
+            _logService.Write(this, "Navigate to: Browse All Projects page");
+            _navigationService.NavigateTo("BrowseProjects", new NavigationServiceParameter { Person = CurrentUser, Mode = "all" });
         }
 
         public RelayCommand BrowseMyProjects { get; private set; }
         private void BrowseMyProjectsCommand()
         {
-            _navigationService.NavigateTo("BrowseProjects", "my");
+            _logService.Write(this, "Navigate to: Browse My Projects page");
+            _navigationService.NavigateTo("BrowseProjects", new NavigationServiceParameter { Person = CurrentUser, Mode = "my" });
         }
 
         public RelayCommand NewReaction { get; private set; }
         private void NewReactionCommand()
         {
-            _navigationService.NavigateTo("NewReaction");
+            _logService.Write(this, "Navigate to: New Reaction page");
+            _navigationService.NavigateTo("NewReaction", new NavigationServiceParameter { Person = CurrentUser });
         }
 
         public RelayCommand BrowseAllReactions { get; private set; }
         private void BrowseAllReactionsCommand()
         {
-            _navigationService.NavigateTo("BrowseReactions", "all");
+            _logService.Write(this, "Navigate to: Browse All Reactions page");
+            _navigationService.NavigateTo("BrowseReactions", new NavigationServiceParameter { Person = CurrentUser, Mode = "all" });
+            //_navigationService.NavigateTo("BrowseReactions", "all");
         }
 
         public RelayCommand BrowseMyReactions { get; private set; }
         private void BrowseMyReactionsCommand()
         {
-            _navigationService.NavigateTo("BrowseReactions", "my");
+            _logService.Write(this, "Navigate to: Browse My Reactions page");
+            _navigationService.NavigateTo("BrowseReactions", new NavigationServiceParameter { Person = CurrentUser, Mode = "my" });
+            //_navigationService.NavigateTo("BrowseReactions", "my");
         }
 
         public RelayCommand AddNewMolecule { get; private set; }
         private void AddNewMoleculeCommand()
         {
-            _navigationService.NavigateTo("AddNewMolecule");
+            _logService.Write(this, "Navigate to: Add New Molecule page");
+            _navigationService.NavigateTo("AddNewMolecule", new NavigationServiceParameter { Person = CurrentUser });
         }
 
         public RelayCommand ManualInventoryUpdate { get; private set; }
         private void ManualInventoryUpdateCommand()
         {
-            _navigationService.NavigateTo("ManualInventoryUpdate");
+            _logService.Write(this, "Navigate to: Manual Inventory Update page");
+            _navigationService.NavigateTo("ManualInventoryUpdate", new NavigationServiceParameter { Person = CurrentUser });
         }
 
         public RelayCommand ExportExcel { get; private set; }
         private void ExportExcelCommand()
         {
-            _navigationService.NavigateTo("ExportExcel");
+            _logService.Write(this, "Navigate to: Export Excel page");
+            _navigationService.NavigateTo("ExportExcel", new NavigationServiceParameter { Person = CurrentUser });
         }
         #endregion
 
@@ -115,7 +137,14 @@ namespace ChClient.ViewModels
         {
             ProjectList.Clear();
             List<Project> tmp = new List<Project>();
-            tmp= await _dbService.GetProjects();
+            if (Mode == "my")
+            {
+                tmp = await _dbService.GetProjects(Person);
+            }
+            else
+            {
+                tmp = await _dbService.GetProjects();
+            }
             foreach (var item in tmp)
             {
                 ProjectList.Add(item);
@@ -125,10 +154,18 @@ namespace ChClient.ViewModels
         public RelayCommand<Project> ViewProject { get; private set; }
         private void ViewProjectCommand(Project viewThis)
         {
-            _navigationService.NavigateTo("Project", viewThis);
+            _navigationService.NavigateTo("Project", new NavigationServiceParameter() { Person = CurrentUser, ObjParam = viewThis });
         }
 
         public ObservableCollection<Project> ProjectList { get; set; }
+
+        public RelayCommand<Project> DeleteProject { get; set; }
+        private async void DeleteProjectCommand(Project deleteThis)
+        {
+
+            await _dbService.DeleteProjct(deleteThis.ProjectID);
+            ProjectList.Remove(deleteThis);
+        }
 
     }
 }

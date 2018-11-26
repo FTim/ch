@@ -11,6 +11,7 @@ namespace ChClient.Models
 {
     public class Project
     {
+        public int ProjectID { get; set; }
         public string Name { get; set; }
         public string Leader { get; set; }
         public string Goal { get; set; }

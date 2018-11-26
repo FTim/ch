@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="25fc7cd02a0e450ea0f12b36d7524083" Name="Diagram1">
+      <Diagram DiagramId="25fc7cd02a0e450ea0f12b36d7524083" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="chdbModel.Location" Width="1.5" PointX="11.25" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="chdbModel.LocationMolecule" Width="1.5" PointX="13.5" PointY="3.375" IsExpanded="true" />
         <EntityTypeShape EntityType="chdbModel.MoleculeStatic" Width="1.5" PointX="11.25" PointY="3.875" IsExpanded="true" />

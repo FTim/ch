@@ -8,9 +8,13 @@ namespace ChDbProject.DTOs
 {
     public class ReagentDTO
     {
+        public string Name { get; set; }
+        public string Location { get; set; }
         public string MoleculeCAS { get; set; }
         public string ReactionName { get; set; }
         public double Ratio { get; set; }
+        public double? mValue { get; set; }
+        public double? VValue { get; set; }
 
         public Reagent TransformToReagent()
         {

@@ -15,6 +15,7 @@ namespace ChClient.Converters
         
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if (value == null) return null;
             BitmapImage biImg = new BitmapImage();
             MemoryStream ms = new MemoryStream(value as byte[]);
             biImg.BeginInit();

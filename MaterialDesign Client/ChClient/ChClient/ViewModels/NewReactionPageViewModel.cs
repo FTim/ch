@@ -19,7 +19,7 @@ namespace ChClient.ViewModels
         private IFrameNavigationService _navigationService;
         private IOpenFileDialogService _openFileDialogService;
         private ISelectMoleculeDialogService _selectMoleculeDialogService;
-        private ILogger _loggerService;
+        private ILogger _logService;
         private IDBService _dbService;
         private IDocxGeneratorService _docxGeneratorService;
 
@@ -30,7 +30,7 @@ namespace ChClient.ViewModels
             _navigationService = navigationService;
             _openFileDialogService = openFileDialogService;
             _selectMoleculeDialogService = selectMoleculeDialogService;
-            _loggerService = loggerService;
+            _logService = loggerService;
             _dbService = dBService;
             _docxGeneratorService = docxGeneratorService;
 
@@ -103,20 +103,7 @@ namespace ChClient.ViewModels
 
             
         }
-        private void ConfigNavigationCommands()
-        {
-            Home = new RelayCommand(HomeCommand);
-            NewReaction = new RelayCommand(NewReactionCommand);
-            BrowseAllProjects = new RelayCommand(BrowseAllProjectsCommand);
-            BrowseMyProjects = new RelayCommand(BrowseMyProjectsCommand);
-            NewProject = new RelayCommand(NewProjectCommand);
-            BrowseAllReactions = new RelayCommand(BrowseAllReactionsCommand);
-            BrowseMyReactions = new RelayCommand(BrowseMyReactionsCommand);
-            AddNewMolecule = new RelayCommand(AddNewMoleculeCommand);
-            ManualInventoryUpdate = new RelayCommand(ManualInventoryUpdateCommand);
-            ExportExcel = new RelayCommand(ExportExcelCommand);
-            GetResources = new RelayCommand(GetResourcesCommand);
-        }
+        
         #region Commands - Logic
         #region Commands - Logic - Reaction
         public RelayCommand SelectReactionImg { get; private set; }
@@ -124,9 +111,9 @@ namespace ChClient.ViewModels
         {
             var resu = _openFileDialogService.ShowOpenFileDialog();
             ReactionImgPath = resu;
-            OutputMessage tmp = new OutputMessage { Message = ReactionImgPath + " added as Reaction Image", Level = "red" };
+            OutputMessage tmp = new OutputMessage { Message = ReactionImgPath + " added as Reaction Image", Level = "" };
             OutputMessages.Add(tmp);
-            _loggerService.Write(this, tmp.Message, tmp.Level);
+            _logService.Write(this, tmp.Message, tmp.Level);
         }
         public RelayCommand SelectObservationImg { get; private set; }
         private void SelectObservationImgCommand()
@@ -161,7 +148,7 @@ namespace ChClient.ViewModels
             SaveLocation = resu;
             OutputMessage tmp = new OutputMessage { Message = SaveLocation + " added as Save Location", Level = "" };
             OutputMessages.Add(tmp);
-            _loggerService.Write(this, tmp.Message, tmp.Level);
+            _logService.Write(this, tmp.Message, tmp.Level);
             
         }
         public RelayCommand SaveReaction { get; private set; }
@@ -178,12 +165,25 @@ namespace ChClient.ViewModels
                 UploadVisibility = "visible";
                 SaveVisibility = "visible";
                 _docxGeneratorService.GenerateSingleReaction(_ReactionInfo);
+                OutputMessages.Add(new OutputMessage { Message = "Document saved!", Level = "" });
                 SaveSuccessful = "Saved! ";
-                string dropboxresult= await _docxGeneratorService.UploadToDropboxAsync(_ReactionInfo.SaveLocation, _ReactionInfo.Project, _ReactionInfo.Code+".docx");
+                string dropboxresult;
+                try
+                {
+                    dropboxresult = await _docxGeneratorService.UploadToDropboxAsync(_ReactionInfo.SaveLocation, _ReactionInfo.Project, _ReactionInfo.Code + ".docx");
+                    OutputMessages.Add(new OutputMessage { Message = dropboxresult, Level = "" });
+                }
+                catch
+                {
+                    dropboxresult = "Cannot upload to Dropbox! Check internet connection! ";
+                    OutputMessages.Add(new OutputMessage { Message = dropboxresult, Level = "info" });
+                }
+                
                 SaveSuccessful+=dropboxresult;
                 await _dbService.AddReaction(_ReactionInfo);
                 UploadVisibility = null;
-                SaveSuccessful += " Saved to database!";
+                SaveSuccessful += "Saved to database!";
+                OutputMessages.Add(new OutputMessage { Message = "Saved to database!", Level = "" });
             }
            
         }
@@ -285,6 +285,7 @@ namespace ChClient.ViewModels
         private void EditSM(StartingMaterial editThis)
         {
             _selectedsm = editThis;
+            _editedsm = _selectedsm;
             EditSMVisibility = "edit";
             SMNameEdit = editThis.Name;
             SMCASEdit = editThis.CAS;
@@ -524,7 +525,27 @@ namespace ChClient.ViewModels
 
         #endregion
 
+        private void ConfigNavigationCommands()
+        {
+            CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person;
+
+            Home = new RelayCommand(HomeCommand);
+            NewReaction = new RelayCommand(NewReactionCommand);
+            BrowseAllProjects = new RelayCommand(BrowseAllProjectsCommand);
+            BrowseMyProjects = new RelayCommand(BrowseMyProjectsCommand);
+            NewProject = new RelayCommand(NewProjectCommand);
+            BrowseAllReactions = new RelayCommand(BrowseAllReactionsCommand);
+            BrowseMyReactions = new RelayCommand(BrowseMyReactionsCommand);
+            AddNewMolecule = new RelayCommand(AddNewMoleculeCommand);
+            ManualInventoryUpdate = new RelayCommand(ManualInventoryUpdateCommand);
+            ExportExcel = new RelayCommand(ExportExcelCommand);
+
+            GetResources = new RelayCommand(GetResourcesCommand);
+        }
+
         #region Commands - Navigation
+        private string _currentuser;
+        public string CurrentUser { get { return _currentuser; } set { Set(ref _currentuser, value); } }
         public RelayCommand GetResources { get; private set; }
         private async void GetResourcesCommand()
         {
@@ -536,63 +557,73 @@ namespace ChClient.ViewModels
         public RelayCommand Home { get; private set; }
         private void HomeCommand()
         {
-            
             _navigationService.NavigateTo("Home");
         }
+
 
         public RelayCommand NewProject { get; private set; }
         private void NewProjectCommand()
         {
-           
-            _navigationService.NavigateTo("NewProject");
+            _logService.Write(this, "Navigate to: New Project page");
+            _navigationService.NavigateTo("NewProject", new NavigationServiceParameter { Person = CurrentUser });
         }
 
         public RelayCommand BrowseAllProjects { get; private set; }
         private void BrowseAllProjectsCommand()
         {
-            _navigationService.NavigateTo("BrowseProjects", "all");
+            _logService.Write(this, "Navigate to: Browse All Projects page");
+            _navigationService.NavigateTo("BrowseProjects", new NavigationServiceParameter { Person = CurrentUser, Mode = "all" });
         }
 
         public RelayCommand BrowseMyProjects { get; private set; }
         private void BrowseMyProjectsCommand()
         {
-            _navigationService.NavigateTo("BrowseProjects", "my");
+            _logService.Write(this, "Navigate to: Browse My Projects page");
+            _navigationService.NavigateTo("BrowseProjects", new NavigationServiceParameter { Person = CurrentUser, Mode = "my" });
         }
 
         public RelayCommand NewReaction { get; private set; }
         private void NewReactionCommand()
         {
-            _navigationService.NavigateTo("NewReaction");
+            _logService.Write(this, "Navigate to: New Reaction page");
+            _navigationService.NavigateTo("NewReaction", new NavigationServiceParameter { Person = CurrentUser });
         }
 
         public RelayCommand BrowseAllReactions { get; private set; }
         private void BrowseAllReactionsCommand()
         {
-            _navigationService.NavigateTo("BrowseReactions", "all");
+            _logService.Write(this, "Navigate to: Browse All Reactions page");
+            _navigationService.NavigateTo("BrowseReactions", new NavigationServiceParameter { Person = CurrentUser, Mode = "all" });
+            //_navigationService.NavigateTo("BrowseReactions", "all");
         }
 
         public RelayCommand BrowseMyReactions { get; private set; }
         private void BrowseMyReactionsCommand()
         {
-            _navigationService.NavigateTo("BrowseReactions", "my");
+            _logService.Write(this, "Navigate to: Browse My Reactions page");
+            _navigationService.NavigateTo("BrowseReactions", new NavigationServiceParameter { Person = CurrentUser, Mode = "my" });
+            //_navigationService.NavigateTo("BrowseReactions", "my");
         }
 
         public RelayCommand AddNewMolecule { get; private set; }
         private void AddNewMoleculeCommand()
         {
-            _navigationService.NavigateTo("AddNewMolecule");
+            _logService.Write(this, "Navigate to: Add New Molecule page");
+            _navigationService.NavigateTo("AddNewMolecule", new NavigationServiceParameter { Person = CurrentUser });
         }
 
         public RelayCommand ManualInventoryUpdate { get; private set; }
         private void ManualInventoryUpdateCommand()
         {
-            _navigationService.NavigateTo("ManualInventoryUpdate");
+            _logService.Write(this, "Navigate to: Manual Inventory Update page");
+            _navigationService.NavigateTo("ManualInventoryUpdate", new NavigationServiceParameter { Person = CurrentUser });
         }
 
         public RelayCommand ExportExcel { get; private set; }
         private void ExportExcelCommand()
         {
-            _navigationService.NavigateTo("ExportExcel");
+            _logService.Write(this, "Navigate to: Export Excel page");
+            _navigationService.NavigateTo("ExportExcel", new NavigationServiceParameter { Person = CurrentUser });
         }
         #endregion
 
@@ -761,12 +792,12 @@ namespace ChClient.ViewModels
 
         #region Bindings - SaveResult
         private string _savesuccessful;
-        //private string _uploadsuccessful;
+        
         private string _savevisibility;
         private string _uploadvisibility;
 
         public string SaveSuccessful { get { return _savesuccessful; } set { Set(ref _savesuccessful, value); } }
-       // public string UploadSuccessful { get { return _uploadsuccessful; } set { Set(ref _uploadsuccessful, value); } }
+       
         public string SaveVisibility { get { return _savevisibility; } set { Set(ref _savevisibility, value); } }
         public string UploadVisibility { get { return _uploadvisibility; } set { Set(ref _uploadvisibility, value); } }
         #endregion
@@ -788,7 +819,7 @@ namespace ChClient.ViewModels
             {
                 if (item.Level == "error") result = false;
                 OutputMessages.Add(item);
-                _loggerService.Write(this, item.Message, item.Level);
+                _logService.Write(this, item.Message, item.Level);
             }
             try
             {
@@ -829,14 +860,14 @@ namespace ChClient.ViewModels
             {
                 if (item.Level == "error") result = false;
                 OutputMessages.Add(item);
-                _loggerService.Write(this, item.Message, item.Level);
+                _logService.Write(this, item.Message, item.Level);
             }
             return result;
         }
         private bool ValidateEditedStartingMaterial()
         {
             bool result = true;
-            _editedsm = new StartingMaterial();
+            //_editedsm = _selectedsm;
             _editedsm.Name = SMNameEdit;
             _editedsm.CAS = SMCASEdit;
             _editedsm.Location = SMLocationEdit;
@@ -851,7 +882,7 @@ namespace ChClient.ViewModels
             {
                 if (item.Level == "error") result = false;
                 OutputMessages.Add(item);
-                _loggerService.Write(this, item.Message, item.Level);
+                _logService.Write(this, item.Message, item.Level);
             }
             return result;
 
@@ -876,21 +907,21 @@ namespace ChClient.ViewModels
             {
                 if (item.Level == "error") result = false;
                 OutputMessages.Add(item);
-                _loggerService.Write(this, item.Message, item.Level);
+                _logService.Write(this, item.Message, item.Level);
             }
             return result;
         }
         private bool ValidateEditedReagent()
         {
             bool result = true;
-            //_editedr = new Reagent();
+            _editedr = new Reagent();
             _editedr.Name = RNameEdit;
             _editedr.CAS = RCASEdit;
             _editedr.Location = RLocationEdit;
             _editedr.RatioString = RRatioEdit;
 
 
-            OutputMessages.Add(new OutputMessage { Message = "Validate reagent inputs", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Validate edited reagent inputs", Level = "" });
             List<OutputMessage> tmp = new List<OutputMessage>();
             tmp = _editedr.Validate();
 
@@ -898,7 +929,7 @@ namespace ChClient.ViewModels
             {
                 if (item.Level == "error") result = false;
                 OutputMessages.Add(item);
-                _loggerService.Write(this, item.Message, item.Level);
+                _logService.Write(this, item.Message, item.Level);
             }
             return result;
         }
@@ -912,7 +943,7 @@ namespace ChClient.ViewModels
             _news.VValueString = SVvalue;
 
 
-            OutputMessages.Add(new OutputMessage { Message = "Validate reagent inputs", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Validate solvent inputs", Level = "" });
             List<OutputMessage> tmp = new List<OutputMessage>();
             tmp = _news.Validate();
 
@@ -920,7 +951,7 @@ namespace ChClient.ViewModels
             {
                 if (item.Level == "error") result = false;
                 OutputMessages.Add(item);
-                _loggerService.Write(this, item.Message, item.Level);
+                _logService.Write(this, item.Message, item.Level);
             }
             return result;
         }
@@ -934,7 +965,7 @@ namespace ChClient.ViewModels
             _editeds.VValueString = SVvalueEdit;
 
 
-            OutputMessages.Add(new OutputMessage { Message = "Validate reagent inputs", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Validate edited solvent inputs", Level = "" });
             List<OutputMessage> tmp = new List<OutputMessage>();
             tmp = _editeds.Validate();
 
@@ -942,7 +973,7 @@ namespace ChClient.ViewModels
             {
                 if (item.Level == "error") result = false;
                 OutputMessages.Add(item);
-                _loggerService.Write(this, item.Message, item.Level);
+                _logService.Write(this, item.Message, item.Level);
             }
             return result;
         }
@@ -954,7 +985,7 @@ namespace ChClient.ViewModels
             _newp.MWString = PMWvalue;
             _newp.RatioString = PRatio;
 
-            OutputMessages.Add(new OutputMessage { Message = "Validate reagent inputs", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Validate product inputs", Level = "" });
             List<OutputMessage> tmp = new List<OutputMessage>();
             tmp = _newp.Validate();
 
@@ -962,7 +993,7 @@ namespace ChClient.ViewModels
             {
                 if (item.Level == "error") result = false;
                 OutputMessages.Add(item);
-                _loggerService.Write(this, item.Message, item.Level);
+                _logService.Write(this, item.Message, item.Level);
             }
             return result;
         }
@@ -974,7 +1005,7 @@ namespace ChClient.ViewModels
             _editedp.MWString = PMWvalueEdit;
             _editedp.RatioString = PRatioEdit;
 
-            OutputMessages.Add(new OutputMessage { Message = "Validate reagent inputs", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Validate edited product inputs", Level = "" });
             List<OutputMessage> tmp = new List<OutputMessage>();
             tmp = _editedp.Validate();
 
@@ -982,7 +1013,7 @@ namespace ChClient.ViewModels
             {
                 if (item.Level == "error") result = false;
                 OutputMessages.Add(item);
-                _loggerService.Write(this, item.Message, item.Level);
+                _logService.Write(this, item.Message, item.Level);
             }
             return result;
         }

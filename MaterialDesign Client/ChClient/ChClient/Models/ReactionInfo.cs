@@ -5,7 +5,7 @@ namespace ChClient.Models
 {
     public class ReactionInfo
     {
-        
+        public int ReactionID { get; set; }
         public string Code { get; set; }
         public string Chemist { get; set; }
         public string Chiefchemist { get; set; }
@@ -31,7 +31,12 @@ namespace ChClient.Models
 
         public string SaveLocation { get; set; }
 
-        
+
+
+        public byte[] ReactionImgByteArray { get; set; }
+        public List<byte[]> ObservationImgByteArrays { get; set; }
+
+
         public ReactionInfo()
         {
             ObservationImgPaths = new List<string>();
@@ -145,6 +150,7 @@ namespace ChClient.Models
 
             if (string.IsNullOrEmpty(SaveLocation))
             {
+                SaveLocation= Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+"\\"+Code+".docx";
                 result.Add(new OutputMessage { Message = "Using default location for save", Level = "info" });
             }
            

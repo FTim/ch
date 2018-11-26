@@ -44,6 +44,11 @@ namespace ChClient.Models
             if (Double.TryParse(VValueString, out tmpv))
             {
                 VValue = tmpv;
+                if (VValue > VAvailable)
+                {
+                    result.Add(new OutputMessage { Message = "Not enough resources!", Level = "error" });
+
+                }
             }
             else
             {

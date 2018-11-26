@@ -1,0 +1,707 @@
+﻿<Page
+    x:Class="ChClient.Views.ReactionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:converters="clr-namespace:ChClient.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:ChClient.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="ProjectPage"
+    d:DesignHeight="3950"
+    d:DesignWidth="800"
+    Background="{DynamicResource MaterialDesignPaper}"
+    DataContext="{Binding ReactionViewModel, Source={StaticResource Locator}}"
+    FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+    TextElement.FontSize="14"
+    TextElement.FontWeight="Medium"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <converters:VisibilityConverter x:Key="VisibilityConverter" />
+        <converters:MessageLevelConverter x:Key="MessageLevelConverter" />
+        <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        <converters:EnabledConverter x:Key="EnabledConverter" />
+    </Page.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding GetResources, Mode=OneWay}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            Height="50"
+            VerticalAlignment="Top"
+            Background="{DynamicResource PrimaryHueMidBrush}"
+            Orientation="Horizontal">
+            <!--  THE ONE AND ONLY TRUE HERO NAVBAR  -->
+
+            <Button
+                Width="Auto"
+                Height="Auto"
+                Margin="10"
+                VerticalAlignment="Top"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                materialDesign:ShadowAssist.ShadowEdges="None"
+                Command="{Binding Home}"
+                ToolTip="Home">
+                <materialDesign:PackIcon
+                    Width="15"
+                    Height="15"
+                    Kind="Home" />
+            </Button>
+            <materialDesign:PopupBox
+                Width="80"
+                Height="Auto"
+                Margin="10,12,10,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                materialDesign:ShadowAssist.ShadowEdges="None"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
+                IsEnabled="True"
+                PlacementMode="RightAndAlignMiddles"
+                Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
+                <materialDesign:PopupBox.ToggleContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FolderOpen" />
+                        <TextBlock Text=" Projects" />
+                    </StackPanel>
+
+                </materialDesign:PopupBox.ToggleContent>
+                <materialDesign:PopupBox.ToggleCheckedContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FolderOpen" />
+                        <TextBlock Text=" Projects" />
+
+                    </StackPanel>
+                </materialDesign:PopupBox.ToggleCheckedContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding NewProject}"
+                        ToolTip="New project">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Pencil" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseAllProjects}"
+                        ToolTip="Browse all projects">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookVariant" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseMyProjects}"
+                        ToolTip="Browse my projects">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookSecure" />
+                    </Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+            <materialDesign:PopupBox
+                Width="80"
+                Height="Auto"
+                Margin="80,12,10,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                materialDesign:ShadowAssist.ShadowEdges="None"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
+                IsEnabled="True"
+                PlacementMode="RightAndAlignMiddles"
+                Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
+                <materialDesign:PopupBox.ToggleContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FileDocument" />
+                        <TextBlock Text=" Reactions" />
+                    </StackPanel>
+
+                </materialDesign:PopupBox.ToggleContent>
+                <materialDesign:PopupBox.ToggleCheckedContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FileDocument" />
+                        <TextBlock Text=" Reactions" />
+
+                    </StackPanel>
+                </materialDesign:PopupBox.ToggleCheckedContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding NewReaction}"
+                        ToolTip="New reaction">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Pencil" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseAllReactions}"
+                        ToolTip="Browse all reactions">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookVariant" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding BrowseMyReactions}"
+                        ToolTip="Browse my reactions">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="BookSecure" />
+                    </Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+            <materialDesign:PopupBox
+                Width="80"
+                Height="Auto"
+                Margin="80,12,10,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                materialDesign:ShadowAssist.ShadowEdges="None"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                FontSize="12"
+                IsEnabled="True"
+                PlacementMode="RightAndAlignMiddles"
+                Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}">
+                <materialDesign:PopupBox.ToggleContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Archive" />
+                        <TextBlock Text=" Inventory" />
+                    </StackPanel>
+
+                </materialDesign:PopupBox.ToggleContent>
+                <materialDesign:PopupBox.ToggleCheckedContent>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Archive" />
+                        <TextBlock Text=" Inventory" />
+
+                    </StackPanel>
+                </materialDesign:PopupBox.ToggleCheckedContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding AddNewMolecule}"
+                        ToolTip="Add new molecule">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="PlusBox" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding ManualInventoryUpdate}"
+                        ToolTip="Manual inventory update">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="PencilBox" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Command="{Binding ExportExcel}"
+                        ToolTip="Export as excel file">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="FileExcel" />
+                    </Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+        </StackPanel>
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Expander
+                    MinWidth="700"
+                    MaxWidth="1000"
+                    HorizontalAlignment="Center"
+                    Header="Header"
+                    IsExpanded="True">
+                    <StackPanel
+                        MinWidth="700"
+                        Margin="12,20"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top">
+
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Reaction code"
+                            IsEnabled="False"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Code, Mode=TwoWay}" />
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Chemist"
+                            IsEnabled="False"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Chemist, Mode=TwoWay}" />
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Chiefchemist"
+                            IsEnabled="False"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Chiefchemist, Mode=TwoWay}" />
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Project"
+                            IsEnabled="False"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Project, Mode=TwoWay}" />
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Laboratory"
+                            IsEnabled="False"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Laboratory, Mode=TwoWay}" />
+                        <DatePicker
+                            MinWidth="200"
+                            Margin="24,4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Date of start"
+                            IsEnabled="False"
+                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                            Text="{Binding StartDate, Mode=TwoWay}" />
+                        <TextBlock>Closure date show today's date if the reaction is sketch. Modify sketch to set and save correct closure date!</TextBlock>
+                        <DatePicker
+                            MinWidth="200"
+                            Margin="24,4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Date of closure"
+                            IsEnabled="{Binding FinishSketchEnabled, Converter={StaticResource EnabledConverter}}"
+                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                            Text="{Binding ClosureDate, Mode=TwoWay}" />
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Previous step"
+                            IsEnabled="False"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding PreviousStep, Mode=TwoWay}" />
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Literature"
+                            IsEnabled="False"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Literature, Mode=TwoWay}" />
+
+                        <Image
+                            MaxWidth="600"
+                            MaxHeight="600"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            IsEnabled="True"
+                            Source="{Binding ReactionImgByteArray, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                            Stretch="Uniform" />
+
+
+
+                    </StackPanel>
+                </Expander>
+                <Expander
+                    MinWidth="700"
+                    MaxWidth="1000"
+                    HorizontalAlignment="Center"
+                    Header="Materials"
+                    IsExpanded="True">
+                    <StackPanel
+                        MinWidth="700"
+                        Margin="12,20"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top">
+                        <TextBlock Text="StartingMaterial" />
+                        <ListView
+                            Name="StartingMaterialListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            MaxWidth="1000"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding StartingMaterial, Mode=TwoWay}"
+                            SelectedItem="{Binding SelectedSM, Mode=TwoWay}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="400"
+                                        DisplayMemberBinding="{Binding Name}"
+                                        Header="Name" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding CAS}"
+                                        Header="CAS" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding mValue}"
+                                        Header="m" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding VValue}"
+                                        Header="V" />
+
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <TextBlock Text="Reagents" />
+                        <ListView
+                            Name="ReagentListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            MaxWidth="1000"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding Reagents, Mode=TwoWay}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="400"
+                                        DisplayMemberBinding="{Binding Name}"
+                                        Header="Name" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding CAS}"
+                                        Header="CAS" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding Ratio}"
+                                        Header="Ratio" />
+
+
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                        <TextBlock Text="Solvents" />
+                        <ListView
+                            Name="SolventListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            MaxWidth="1000"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding Solvents, Mode=TwoWay}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="400"
+                                        DisplayMemberBinding="{Binding Name}"
+                                        Header="Name" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding CAS}"
+                                        Header="CAS" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding VValue}"
+                                        Header="V" />
+
+
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                        <TextBlock Text="Products" />
+                        <ListView
+                            Name="ProductListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            MaxWidth="1000"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding Products, Mode=TwoWay}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="400"
+                                        DisplayMemberBinding="{Binding MW}"
+                                        Header="MW" />
+                                    <GridViewColumn
+                                        Width="100"
+                                        DisplayMemberBinding="{Binding Ratio}"
+                                        Header="Ratio" />
+
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+
+                </Expander>
+
+                <Expander
+                    MinWidth="700"
+                    MaxWidth="1000"
+                    HorizontalAlignment="Center"
+                    Header="Procedure, observation"
+                    IsExpanded="True">
+                    <StackPanel>
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Procedure"
+                            AcceptsReturn="True"
+                            IsEnabled="{Binding FinishSketchEnabled, Converter={StaticResource EnabledConverter}}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Procedure, Mode=TwoWay}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Yield"
+                            IsEnabled="{Binding FinishSketchEnabled, Converter={StaticResource EnabledConverter}}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Yield, Mode=TwoWay}" />
+                        <TextBox
+                            Width="650"
+                            MinWidth="200"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Observation"
+                            AcceptsReturn="True"
+                            IsEnabled="{Binding FinishSketchEnabled, Converter={StaticResource EnabledConverter}}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Observation, Mode=TwoWay}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+
+
+
+
+                        <ListView
+                            Name="ObservableImageListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding ObservationImgs}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Image">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image
+                                                    MaxWidth="600"
+                                                    MaxHeight="600"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Top"
+                                                    IsEnabled="True"
+                                                    Source="{Binding ., Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                    Stretch="Uniform" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+
+                                    <GridViewColumn Width="120" Header="">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+
+                                                    <Button
+                                                        Width="50"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding Path=DataContext.DeleteObservationImg, ElementName=ObservableImageListView}"
+                                                        CommandParameter="{Binding .}"
+                                                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="DeleteEmpty" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                </StackPanel>
+
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+
+                </Expander>
+                <Button
+                    Width="180"
+                    Margin="12,0"
+                    HorizontalAlignment="Center"
+                    Command="{Binding SaveDocx}"
+                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="4,0,0,0"
+                            Text="Save docx" />
+
+                    </Grid>
+                </Button>
+                <Button
+                    Width="180"
+                    Margin="12,20"
+                    HorizontalAlignment="Center"
+                    Command="{Binding FinishSketch}"
+                    IsEnabled="{Binding IsSketch}"
+                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="4,0,0,0"
+                            Text="Finish sketch" />
+                    </Grid>
+                </Button>
+                <StackPanel Visibility="{Binding Path=SketchAvailable, Converter={StaticResource VisibilityConverter}}">
+                    <Button
+                        Width="180"
+                        Margin="12,20"
+                        HorizontalAlignment="Center"
+                        Command="{Binding SelectObservationImg}"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                Text="Add obs. image" />
+                        </Grid>
+                    </Button>
+
+                    <Button
+                        Width="180"
+                        Margin="12,0"
+                        HorizontalAlignment="Center"
+                        Command="{Binding SaveReaction}"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}">
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                Text="Save reaction" />
+
+                        </Grid>
+                    </Button>
+
+
+                </StackPanel>
+                <TextBlock
+                    MinWidth="200"
+                    Margin="4"
+                    VerticalAlignment="Top"
+                    Foreground="Green"
+                    Style="{StaticResource MaterialDesignBody2TextBlock}"
+                    Text="{Binding Added}" />
+
+
+
+
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <GroupBox Grid.Row="2" Height="180">
+            <ListView x:Name="ConsoleListView" ItemsSource="{Binding OutputMessages, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding Message}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </GroupBox>
+
+    </Grid>
+</Page>

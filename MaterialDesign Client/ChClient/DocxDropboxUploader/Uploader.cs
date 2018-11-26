@@ -28,11 +28,11 @@ namespace DocxDropboxUploader
 
                 if (tmp.Matches.Count == 0)
                 {
-                    return "Not uploaded...";
+                    return "Not uploaded... ";
                 }
                 else
                 {
-                    return "Uploaded!";
+                    return "Uploaded file to Dropbox! ";
                 }
                 
             }

@@ -29,6 +29,7 @@ namespace ChClient.ViewModels
             SimpleIoc.Default.Register<NewReactionPageViewModel>();
             SimpleIoc.Default.Register<MaterialSelectWindowViewModel>();
             SimpleIoc.Default.Register<BrowseReactionsPageViewModel>();
+            SimpleIoc.Default.Register<ReactionPageViewModel>();
 
             SimpleIoc.Default.Register<AddNewMoleculePageViewModel>();
             SimpleIoc.Default.Register<ManualInventoryUpdatePageViewModel>();
@@ -63,6 +64,7 @@ namespace ChClient.ViewModels
 
             navigationService.Configure("NewReaction", new Uri("../Views/NewReactionPage.xaml", UriKind.Relative));
             navigationService.Configure("BrowseReactions", new Uri("../Views/BrowseReactionsPage.xaml", UriKind.Relative));
+            navigationService.Configure("Reaction", new Uri("../Views/ReactionPage.xaml", UriKind.Relative));
 
             navigationService.Configure("AddNewMolecule", new Uri("../Views/AddNewMoleculePage.xaml", UriKind.Relative));
             navigationService.Configure("ManualInventoryUpdate", new Uri("../Views/ManualInventoryUpdatePage.xaml", UriKind.Relative));
@@ -109,6 +111,15 @@ namespace ChClient.ViewModels
                 //mindig új példány legyen
                 SimpleIoc ioc = ServiceLocator.Current as SimpleIoc;
                 return ioc.GetInstanceWithoutCaching<ProjectPageViewModel>(Guid.NewGuid().ToString());
+                //return ServiceLocator.Current.GetInstance<NewReactionPageViewModel>();
+
+            }
+        }
+        public ReactionPageViewModel ReactionViewModel {
+            get {
+                //mindig új példány legyen
+                SimpleIoc ioc = ServiceLocator.Current as SimpleIoc;
+                return ioc.GetInstanceWithoutCaching<ReactionPageViewModel>(Guid.NewGuid().ToString());
                 //return ServiceLocator.Current.GetInstance<NewReactionPageViewModel>();
 
             }
