@@ -16,6 +16,10 @@ namespace ChDbProject.DTOs
         public double? mValue { get; set; }
         public double? VValue { get; set; }
 
+        public string mp { get; set; }
+        public string bp { get; set; }
+        public double? den { get; set; }
+
         public Reagent TransformToReagent()
         {
             Reagent result = new Reagent();

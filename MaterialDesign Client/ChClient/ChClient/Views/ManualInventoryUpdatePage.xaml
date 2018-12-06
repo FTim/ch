@@ -437,7 +437,7 @@
             <ListView x:Name="ConsoleListView" ItemsSource="{Binding OutputMessages, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding Message}" />
+                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding FullMessage}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

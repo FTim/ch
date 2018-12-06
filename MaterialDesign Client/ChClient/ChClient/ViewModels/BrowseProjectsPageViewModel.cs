@@ -32,7 +32,12 @@ namespace ChClient.ViewModels
 
             ViewProject = new RelayCommand<Project>(ViewProjectCommand);
             DeleteProject = new RelayCommand<Project>(DeleteProjectCommand);
+
+            OutputMessages = new ObservableCollection<OutputMessage>();
         }
+
+        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
+
         private string _person;
         public string Person { get { return _person; } set { Set(ref _person, value); } }
 
@@ -43,7 +48,7 @@ namespace ChClient.ViewModels
         private void ConfigNavigationCommands()
         {
             CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person;
-
+            
             Home = new RelayCommand(HomeCommand);
             NewReaction = new RelayCommand(NewReactionCommand);
             BrowseAllProjects = new RelayCommand(BrowseAllProjectsCommand);
@@ -135,16 +140,20 @@ namespace ChClient.ViewModels
         public RelayCommand GetProjects { get;  private set; }
         private async void GetProjectsCommand()
         {
+            
             ProjectList.Clear();
             List<Project> tmp = new List<Project>();
             if (Mode == "my")
             {
+                OutputMessages.Add(new OutputMessage { Message = "Loading "+CurrentUser+"'s project(s)...", Level = "" });
                 tmp = await _dbService.GetProjects(Person);
             }
             else
             {
+                OutputMessages.Add(new OutputMessage { Message = "Loading all project(s)...", Level = "" });
                 tmp = await _dbService.GetProjects();
             }
+            OutputMessages.Add(new OutputMessage { Message = tmp.Count+" project(s) loaded!", Level = "" });
             foreach (var item in tmp)
             {
                 ProjectList.Add(item);
@@ -162,10 +171,23 @@ namespace ChClient.ViewModels
         public RelayCommand<Project> DeleteProject { get; set; }
         private async void DeleteProjectCommand(Project deleteThis)
         {
+            try
+            {
+                OutputMessages.Add(new OutputMessage { Message = "Deleting reaction(s)...", Level = "" });
+                await _dbService.DeleteProjct(deleteThis.ProjectID);
+                ProjectList.Remove(deleteThis);
+                OutputMessages.Add(new OutputMessage { Message = "Reaction(s) deleted!", Level = "" });
 
-            await _dbService.DeleteProjct(deleteThis.ProjectID);
-            ProjectList.Remove(deleteThis);
+            }
+            catch (Exception e)
+            {
+                //output: error msg
+                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "error" });
+            }
+            
+            
+
+
         }
-
     }
 }

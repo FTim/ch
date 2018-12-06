@@ -293,30 +293,63 @@
                                 materialDesign:HintAssist.Hint="Reaction code"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Text="{Binding Code, Mode=TwoWay}" />
-                            <TextBox
+                            <!--
+                                TextBox
                                 Width="650"
                                 MinWidth="200"
                                 Margin="4"
                                 HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Chemist"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding Chemist, Mode=TwoWay}" />
-                            <TextBox
+                                Text="{Binding Chemist, Mode=TwoWay}" /
+                            -->
+                            <ComboBox
+                                Width="650"
+                                MinWidth="200"
+                                Margin="4"
+                                HorizontalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Chemist"
+                                ItemsSource="{Binding Users}"
+                                SelectedItem="{Binding ChemistSelected}"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+                            <!--
+                                TextBox
                                 Width="650"
                                 MinWidth="200"
                                 Margin="4"
                                 HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Chiefchemist"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding Chiefchemist, Mode=TwoWay}" />
-                            <TextBox
+                                Text="{Binding Chiefchemist, Mode=TwoWay}" /
+                            -->
+                            <ComboBox
+                                Width="650"
+                                MinWidth="200"
+                                Margin="4"
+                                HorizontalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Chiefchemist"
+                                ItemsSource="{Binding Users}"
+                                SelectedItem="{Binding ChiefchemistSelected}"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+                            <!--
+                                TextBox
                                 Width="650"
                                 MinWidth="200"
                                 Margin="4"
                                 HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Project"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding Project, Mode=TwoWay}" />
+                                Text="{Binding Project, Mode=TwoWay}" /
+                            -->
+                            <ComboBox
+                                Width="650"
+                                MinWidth="200"
+                                Margin="4"
+                                HorizontalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Project"
+                                ItemsSource="{Binding Projects}"
+                                SelectedItem="{Binding ProjectSelected}"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
                             <TextBox
                                 Width="650"
                                 MinWidth="200"
@@ -339,14 +372,25 @@
                                 materialDesign:HintAssist.Hint="Date of closure"
                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                 Text="{Binding ClosureDate, Mode=TwoWay}" />
-                            <TextBox
+                            <!--
+                                TextBox
                                 Width="650"
                                 MinWidth="200"
                                 Margin="4"
                                 HorizontalAlignment="Stretch"
                                 materialDesign:HintAssist.Hint="Previous step"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding PreviousStep, Mode=TwoWay}" />
+                                Text="{Binding PreviousStep, Mode=TwoWay}" /
+                            -->
+                            <ComboBox
+                                Width="650"
+                                MinWidth="200"
+                                Margin="4"
+                                HorizontalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Previous step"
+                                ItemsSource="{Binding ReactionCodes}"
+                                SelectedItem="{Binding PreviousstepSelected}"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
                             <TextBox
                                 Width="650"
                                 MinWidth="200"
@@ -1419,6 +1463,10 @@
                                 </Grid>
 
                             </Button>
+                            <CheckBox
+                                HorizontalAlignment="Center"
+                                Content="Upload to dropbox"
+                                IsChecked="{Binding DropboxUpload, Mode=TwoWay}" />
                             <Button
                                 Width="210"
                                 Margin="4,8,8,8"
@@ -1440,7 +1488,10 @@
                             </Button>
 
                             <ProgressBar IsIndeterminate="True" Visibility="{Binding Path=UploadVisibility, Converter={StaticResource VisibilityConverter}}" />
-                            <TextBlock Text="{Binding SaveSuccessful}" Visibility="{Binding Path=SaveVisibility, Converter={StaticResource VisibilityConverter}}" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{Binding SaveSuccessful}"
+                                Visibility="{Binding Path=SaveVisibility, Converter={StaticResource VisibilityConverter}}" />
 
 
                         </StackPanel>
@@ -1455,7 +1506,7 @@
             <ListView x:Name="ConsoleListView" ItemsSource="{Binding OutputMessages, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding Message}" />
+                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding FullMessage}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

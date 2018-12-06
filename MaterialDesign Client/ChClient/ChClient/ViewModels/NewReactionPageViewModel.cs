@@ -65,6 +65,10 @@ namespace ChClient.ViewModels
 
             ConfigLogicCommands();
             ConfigNavigationCommands();
+
+            Users = new ObservableCollection<string>();
+            Projects = new ObservableCollection<string>();
+            ReactionCodes = new ObservableCollection<string>();
         }
 
         private void ConfigLogicCommands()
@@ -144,13 +148,15 @@ namespace ChClient.ViewModels
         public RelayCommand SelectSaveLocation { get; private set; }
         private void SelectSaveLocationCommand()
         {
-            var resu = _openFileDialogService.ShowSaveFileDialog();
+            var resu = _openFileDialogService.ShowSaveFileDialog(".docx", "Docx Files (*.docx)| All files (*.*)");
             SaveLocation = resu;
             OutputMessage tmp = new OutputMessage { Message = SaveLocation + " added as Save Location", Level = "" };
             OutputMessages.Add(tmp);
             _logService.Write(this, tmp.Message, tmp.Level);
             
         }
+
+        
         public RelayCommand SaveReaction { get; private set; }
         private async void SaveReactionCommandAsync()
         {
@@ -167,23 +173,28 @@ namespace ChClient.ViewModels
                 _docxGeneratorService.GenerateSingleReaction(_ReactionInfo);
                 OutputMessages.Add(new OutputMessage { Message = "Document saved!", Level = "" });
                 SaveSuccessful = "Saved! ";
-                string dropboxresult;
-                try
-                {
-                    dropboxresult = await _docxGeneratorService.UploadToDropboxAsync(_ReactionInfo.SaveLocation, _ReactionInfo.Project, _ReactionInfo.Code + ".docx");
-                    OutputMessages.Add(new OutputMessage { Message = dropboxresult, Level = "" });
-                }
-                catch
-                {
-                    dropboxresult = "Cannot upload to Dropbox! Check internet connection! ";
-                    OutputMessages.Add(new OutputMessage { Message = dropboxresult, Level = "info" });
-                }
                 
-                SaveSuccessful+=dropboxresult;
+                
+                
                 await _dbService.AddReaction(_ReactionInfo);
                 UploadVisibility = null;
                 SaveSuccessful += "Saved to database!";
                 OutputMessages.Add(new OutputMessage { Message = "Saved to database!", Level = "" });
+                if (DropboxUpload)
+                {
+                    string dropboxresult;
+                    try
+                    {
+                        dropboxresult = await _docxGeneratorService.UploadToDropboxAsync(_ReactionInfo.SaveLocation, _ReactionInfo.Project, _ReactionInfo.Code + ".docx");
+                        OutputMessages.Add(new OutputMessage { Message = dropboxresult, Level = "" });
+                    }
+                    catch
+                    {
+                        dropboxresult = "Cannot upload to Dropbox! Check internet connection! ";
+                        OutputMessages.Add(new OutputMessage { Message = dropboxresult, Level = "info" });
+                    }
+                    SaveSuccessful += dropboxresult;
+                }
             }
            
         }
@@ -525,6 +536,22 @@ namespace ChClient.ViewModels
 
         #endregion
 
+        public ObservableCollection<string> Users { get; set; }
+        public ObservableCollection<string> Projects { get; set; }
+        public ObservableCollection<string> ReactionCodes { get; set; }
+        private string _chemistselected;
+        public string ChemistSelected { get { return _chemistselected; } set { Set(ref _chemistselected, value); _ReactionInfo.Chemist = value; } }
+
+        private string _chiefchemistselected;
+        public string ChiefchemistSelected { get { return _chiefchemistselected; } set { Set(ref _chiefchemistselected, value); _ReactionInfo.Chiefchemist = value; } }
+
+        private string _projectselected;
+        public string ProjectSelected { get { return _projectselected; } set { Set(ref _projectselected, value); _ReactionInfo.Project = value; } }
+
+        private string _previousstepselected;
+        public string PreviousstepSelected { get { return _previousstepselected; } set { Set(ref _previousstepselected, value); _ReactionInfo.PreviousStep = value; } }
+
+
         private void ConfigNavigationCommands()
         {
             CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person;
@@ -553,6 +580,21 @@ namespace ChClient.ViewModels
             projects = await _dbService.GetProjectNamesAsync();
             reactioncodes = await _dbService.GetReactionCodesAsync();
             _selectMoleculeDialogService.ConfigureAsync();
+            
+            foreach (var item in users)
+            {
+                Users.Add(item);
+            }
+            foreach (var item in projects)
+            {
+                Projects.Add(item);
+            }
+            //nincs prev.step.
+            ReactionCodes.Add("-");
+            foreach (var item in reactioncodes)
+            {
+                ReactionCodes.Add(item);
+            }
         }
         public RelayCommand Home { get; private set; }
         private void HomeCommand()
@@ -791,6 +833,9 @@ namespace ChClient.ViewModels
         #endregion
 
         #region Bindings - SaveResult
+        private bool _dropboxupload;
+        public bool DropboxUpload { get { return _dropboxupload; } set { Set(ref _dropboxupload, value); } }
+
         private string _savesuccessful;
         
         private string _savevisibility;
@@ -821,24 +866,28 @@ namespace ChClient.ViewModels
                 OutputMessages.Add(item);
                 _logService.Write(this, item.Message, item.Level);
             }
-            try
+            if (result)
             {
-                
-                _ReactionInfo.StartingMaterial.CalculateValues();
-                
-                foreach (var item in ProductList)
+                try
                 {
-                    item.CalculateValues(_ReactionInfo.StartingMaterial);
+
+                    _ReactionInfo.StartingMaterial.CalculateValues();
+
+                    foreach (var item in ProductList)
+                    {
+                        item.CalculateValues(_ReactionInfo.StartingMaterial);
+                    }
+                    foreach (var item in ReagentList)
+                    {
+                        item.CalculateValues(_ReactionInfo.StartingMaterial);
+                    }
                 }
-                foreach (var item in ReagentList)
+                catch (Exception e)
                 {
-                    item.CalculateValues(_ReactionInfo.StartingMaterial);
+                    OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "error" });
+                    result = false;
                 }
-            }
-            catch (Exception e)
-            {
-                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "error" });
-                result = false;
+
             }
             return result;
         }

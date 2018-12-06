@@ -46,7 +46,7 @@ namespace ChClient.ViewModels
             SimpleIoc.Default.Register<IExcelReaderService, ExcelReaderService>();
             SimpleIoc.Default.Register<IDBService, DBService>();
             SimpleIoc.Default.Register<IDocxGeneratorService, DocxGeneratorService>();
-
+            SimpleIoc.Default.Register<IExcelWriterService, ExcelWriterService>();
             
 
         }

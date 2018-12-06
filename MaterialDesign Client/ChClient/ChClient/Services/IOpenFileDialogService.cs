@@ -9,6 +9,7 @@ namespace ChClient.Services
     public interface IOpenFileDialogService
     {
         string ShowSaveFileDialog();
+        string ShowSaveFileDialog(string defaultext, string filter);
         string ShowOpenFileDialog();
     }
 }

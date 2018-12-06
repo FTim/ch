@@ -223,6 +223,65 @@ namespace ChDbProject
             return result;
         }
 
+        public static async Task UpdateProject(int id, ProjectDTO projectDTO)
+        {
+            await Task.Run(() =>
+            {
+                using (var db = new ChContext())
+                {
+                    var updateproject = db.Projects.Where(p => p.ID == id).First();
+
+                    updateproject.Name = projectDTO.Name;
+                    updateproject.Goal = projectDTO.Goal;
+                    updateproject.Description = projectDTO.Description;
+                    updateproject.Leader = db.People.Where(p => p.Name == projectDTO.Leader).First();
+
+                    var newplan = new ProjectPlan { img = projectDTO.PlanImg, Project = updateproject };
+
+                    db.ProjectPlans.Add(newplan);
+
+                    db.SaveChanges();
+                    /*
+                    var project = projectDTO.TransformToProject();
+                    project.Leader = db.People.Where(p => p.Name == projectDTO.Leader).First();
+
+                    var projectplan = new ProjectPlan { img = projectDTO.PlanImg, Project = project };
+
+                    db.Projects.Add(project);
+                    db.ProjectPlans.Add(projectplan);
+
+                    db.SaveChanges();*/
+                }
+
+            });
+        }
+
+        public static async Task FinishSketchReaction(int id, ReactionDTO reaction)
+        {
+            await Task.Run(() =>
+            {
+                using (var db = new ChContext())
+                {
+                    var finishreaction = db.Reactions.Where(r => r.ID == id).First();
+
+                    finishreaction.ClosureDate = reaction.ClosureDate;
+                    finishreaction.ProcedureText = reaction.Procedure;
+                    finishreaction.Yield = reaction.Yield;
+                    finishreaction.Observation = reaction.Observation;
+                    foreach (var item in reaction.ObservationImgs)
+                    {
+                        var tmp = new ObservationImg { img = item, Reaction = finishreaction };
+                        db.ObservationImgs.Add(tmp);
+                        finishreaction.ObservationImgs.Add(tmp);
+                    }
+                    finishreaction.Sketch = false;
+
+                    db.SaveChanges();
+                    
+                }
+
+            });
+        }
         public static async Task<List<Reaction>> GetReactionsAsync(int projectID)
         {
             List<Reaction> result = new List<Reaction>();
@@ -316,12 +375,16 @@ namespace ChDbProject
             {
                 using (var db = new ChContext())
                 {
-                    var query = db.StartingMaterials.Where(r => r.ReactionID == reactionId).First();
+                    var query = db.StartingMaterials.Where(r => r.ReactionID == reactionId).Include(m=> m.MoleculeStatic).First();
 
                     result.Name = query.MoleculeStatic.Name;
                     result.MoleculeCAS = query.MoleculeCAS;
                     if (query.m.HasValue) result.mValue = query.m.Value;
                     if (query.v.HasValue) result.VValue = query.v.Value;
+
+                    result.mp = query.MoleculeStatic.mp;
+                    result.bp = query.MoleculeStatic.bp;
+                    result.den = query.MoleculeStatic.d;
                 }
 
             });
@@ -341,7 +404,7 @@ namespace ChDbProject
 
                     foreach (var item in query)
                     {
-                        ReagentDTO tmp = new ReagentDTO() { MoleculeCAS = item.MoleculeCAS, Ratio = item.Ratio, Name = item.MoleculeStatic.Name };
+                        ReagentDTO tmp = new ReagentDTO() { MoleculeCAS = item.MoleculeCAS, Ratio = item.Ratio, Name = item.MoleculeStatic.Name, den=item.MoleculeStatic.d, bp=item.MoleculeStatic.bp, mp=item.MoleculeStatic.mp };
                         result.Add(tmp);
                     }
 
@@ -366,7 +429,7 @@ namespace ChDbProject
 
                     foreach (var item in query)
                     {
-                        SolventDTO tmp = new SolventDTO() { MoleculeCAS = item.MoleculeCAS, VValue=item.v, Name = item.MoleculeStatic.Name };
+                        SolventDTO tmp = new SolventDTO() { MoleculeCAS = item.MoleculeCAS, VValue=item.v, Name = item.MoleculeStatic.Name, bp=item.MoleculeStatic.bp, mp=item.MoleculeStatic.mp};
                         result.Add(tmp);
                     }
 
@@ -604,6 +667,10 @@ namespace ChDbProject
                     db.ProjectPlans.RemoveRange(plans);
 
                     reactions = db.Reactions.Where(r => r.ProjectID == projectID).ToList();
+                foreach (var item in reactions)
+                {
+                    if (item.NextStep.Count != 0) throw new Exception("One or more reaction cannot be deleted because used as previous step for another reaction!");
+                    }
                     foreach (var item in reactions)
                     {
                         sm = db.StartingMaterials.Where(stm => stm.ReactionID == item.ID).First();
@@ -643,7 +710,7 @@ namespace ChDbProject
                 using (var db = new ChContext())
                 {
                     var reaction = db.Reactions.Where(r => r.ID == reactionID).First();
-
+                    if(reaction.NextStep.Count!=0) throw new Exception("One or more reaction cannot be deleted because used as previous step for another reaction!");
                     StartingMaterial sm = new StartingMaterial();
                     List<Reagent> reagents = new List<Reagent>();
                     List<Solvent> solvents = new List<Solvent>();

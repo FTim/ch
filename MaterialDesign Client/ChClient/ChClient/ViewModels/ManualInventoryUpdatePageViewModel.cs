@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ChClient.ViewModels
 {
-    public class ManualInventoryUpdatePageViewModel :ViewModelBase
+    public class ManualInventoryUpdatePageViewModel : ViewModelBase
     {
         private IFrameNavigationService _navigationService;
         private ILogger _logService;
@@ -21,15 +21,15 @@ namespace ChClient.ViewModels
             _navigationService = navigationService;
             _logService = logService;
             _dbService = dBService;
-            
+
             ConfigNavigationCommands();
-            
+
             FoundMolecules = new ObservableCollection<SelectedMolecule>();
             _allmolecules = new List<SelectedMolecule>();
             OutputMessages = new ObservableCollection<OutputMessage>();
             Add = new RelayCommand(AddCommand);
             ExplicitModify = new RelayCommand(ExplicitModifyCommand);
-
+            GetResources = new RelayCommand(GetResourcesCommandAsync);
         }
         private void ConfigNavigationCommands()
         {
@@ -48,6 +48,17 @@ namespace ChClient.ViewModels
         }
 
         #region Commands - Navigation
+
+        public RelayCommand GetResources { get; private set; }
+        private async void GetResourcesCommandAsync()
+        {
+            _allmolecules =await _dbService.GetMoleculesAsync();
+            foreach (var item in _allmolecules)
+            {
+                FoundMolecules.Add(item);
+            }
+        }
+
         private string _currentuser;
         public string CurrentUser { get { return _currentuser; } set { Set(ref _currentuser, value); } }
         public RelayCommand Home { get; private set; }

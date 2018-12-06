@@ -38,8 +38,6 @@ namespace ChClient.Services
 
         public string AddMoleculesFromExcel(List<MoleculeData> molecules)
         {
-            
-           
                 string result = "";
                 //ui-t nem blokkol teszt
                 //System.Threading.Thread.Sleep(5000);
@@ -75,6 +73,34 @@ namespace ChClient.Services
                 return result;
            
             
+        }
+
+        public async Task<string> AddMolecule(SelectedMolecule molecule)
+        {
+            
+            string result = "";
+            try
+            {
+                await Task.Run(() =>
+                  {
+                      
+                          DbAccess.AddLocation(molecule.Location);
+
+                          DbAccess.AddMoleculeStatic(molecule.Name, molecule.CAS, molecule.MW, molecule.Den, molecule.mpValue, molecule.bpValue, molecule.Purity);
+
+                          DbAccess.ConnectLocationMoleculestatic(molecule.CAS, molecule.Location, molecule.mAvailable, molecule.VAvailable);
+                          result = "Done";
+                      
+                      
+                  });
+            } catch(Exception e)
+            {
+                throw e;
+            }
+            
+            
+
+            return result;
         }
 
         public async Task AddReaction(ReactionInfo reaction)
@@ -162,6 +188,7 @@ namespace ChClient.Services
                 {
                     tmp.ProjectPlanByreArrays.Add(planitem.img);
                 }
+                item.ProjectPlans.OrderBy(pl => pl.ID);
                 tmp.LastPlan = item.ProjectPlans.Last().img;
                 //tmp.ProjectPlanImgPaths = tmpplans;
 
@@ -191,6 +218,7 @@ namespace ChClient.Services
                 {
                     tmp.ProjectPlanByreArrays.Add(planitem.img);
                 }
+                item.ProjectPlans.OrderBy(pl => pl.ID);
                 tmp.LastPlan = item.ProjectPlans.Last().img;
                 //tmp.ProjectPlanImgPaths = tmpplans;
 
@@ -198,6 +226,11 @@ namespace ChClient.Services
             }
 
             return result;
+        }
+
+        public async Task UpdateProject(int id, string name, string leader, string goal, string description, string newplanpath)
+        {
+            await DbAccess.UpdateProject(id, new ProjectDTO { Name = name, Leader = leader, Goal = goal, Description = description, PlanImg = convertImg(newplanpath) });
         }
 
         public async Task<List<ReactionInfo>> GetReactions(int projectID)
@@ -301,7 +334,7 @@ namespace ChClient.Services
             foreach (var item in locationmolecules)
             {
                 
-                result.Add(new SelectedMolecule { Name = item.MoleculeStatic.Name, CAS = item.MoleculeCAS, Location = item.Location.Code, mAvailable = item.m, VAvailable = item.v, MW = item.MoleculeStatic.M_gpermol, Den = item.MoleculeStatic.d, mpValue = item.MoleculeStatic.mp, bpValue = item.MoleculeStatic.bp });
+                result.Add(new SelectedMolecule { Name = item.MoleculeStatic.Name, CAS = item.MoleculeCAS, Location = item.Location.Code, mAvailable = item.m, VAvailable = item.v, MW = item.MoleculeStatic.M_gpermol, Den = item.MoleculeStatic.d, mpValue = item.MoleculeStatic.mp, bpValue = item.MoleculeStatic.bp, Purity=item.MoleculeStatic.purity });
             }
 
 
@@ -319,6 +352,16 @@ namespace ChClient.Services
         public async Task ModifyMoleculeAvailable(string CAS, string location, double? mValue, double? vValue)
         {
             await DbAccess.ModifyMoleculeAvailable(CAS, location, mValue, vValue);
+        }
+
+        public async Task FinishSketchReaction(int id, DateTime closuredate, string procedure, string observation, string yield, List<string> observationimgpaths)
+        {
+            List<byte[]> tmp = new List<byte[]>();
+            foreach (var item in observationimgpaths)
+            {
+                tmp.Add(convertImg(item));
+            }
+            await DbAccess.FinishSketchReaction(id, new ReactionDTO { ClosureDate = closuredate, Procedure = procedure, Observation = observation, Yield = yield, ObservationImgs = tmp });
         }
 
         public void ResetAll()
@@ -349,9 +392,14 @@ namespace ChClient.Services
             Models.StartingMaterial result = new Models.StartingMaterial();
 
             result.CAS = tmp.MoleculeCAS;
+            
             result.Name = tmp.Name;
             if (tmp.mValue.HasValue) result.mValue = tmp.mValue.Value;
             if (tmp.VValue.HasValue) result.VValue = tmp.VValue.Value;
+            
+            result.mpValue = tmp.mp;
+            result.bpValue = tmp.bp;
+            if(tmp.den.HasValue) result.Den = tmp.den.Value;
 
             return result;
         }
@@ -363,7 +411,7 @@ namespace ChClient.Services
 
             foreach (var item in tmp)
             {
-                Models.Reagent tmpr = new Models.Reagent() { CAS = item.MoleculeCAS, Ratio = item.Ratio, Name = item.Name };
+                Models.Reagent tmpr = new Models.Reagent() { CAS = item.MoleculeCAS, Ratio = item.Ratio, Name = item.Name, mpValue=item.mp, bpValue=item.bp, Den=item.den };
                 result.Add(tmpr);
             }
 
@@ -379,7 +427,7 @@ namespace ChClient.Services
 
             foreach (var item in tmp)
             {
-                Models.Solvent tmpr = new Models.Solvent() { CAS = item.MoleculeCAS, VValue=item.VValue, Name = item.Name };
+                Models.Solvent tmpr = new Models.Solvent() { CAS = item.MoleculeCAS, VValue=item.VValue, Name = item.Name, mpValue=item.mp, bpValue=item.bp };
                 result.Add(tmpr);
             }
 

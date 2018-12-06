@@ -5,6 +5,7 @@
     xmlns:command="http://www.galasoft.ch/mvvmlight"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:converters="clr-namespace:ChClient.Converters"
     xmlns:local="clr-namespace:ChClient.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -19,6 +20,10 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <converters:MessageLevelConverter x:Key="MessageLevelConverter"/>
+    </Page.Resources>
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <command:EventToCommand Command="{Binding GetReactions, Mode=OneWay}" />
@@ -30,6 +35,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel
@@ -344,6 +350,18 @@
                 </ListView>
             </StackPanel>
         </ScrollViewer>
+
+        <GroupBox Grid.Row="2" Height="180">
+            <ListView x:Name="ConsoleListView" ItemsSource="{Binding OutputMessages, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding FullMessage}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </GroupBox>
+
 
 
     </Grid>

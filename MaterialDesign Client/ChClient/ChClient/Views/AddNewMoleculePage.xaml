@@ -2,12 +2,13 @@
     x:Class="ChClient.Views.AddNewMoleculePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:ChClient.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ChClient.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="AddNewMoleculePage"
-    d:DesignHeight="450"
+    d:DesignHeight="850"
     d:DesignWidth="800"
     Background="{DynamicResource MaterialDesignPaper}"
     DataContext="{Binding AddNewMoleculeViewModel, Source={StaticResource Locator}}"
@@ -16,10 +17,16 @@
     TextElement.FontWeight="Medium"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
+    <Page.Resources>
+        <converters:VisibilityConverter x:Key="VisibilityConverter" />
+        <converters:MessageLevelConverter x:Key="MessageLevelConverter" />
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <StackPanel
@@ -247,8 +254,118 @@
             </materialDesign:PopupBox>
         </StackPanel>
         <StackPanel Grid.Row="1">
-            <TextBlock Text="Add new molecule page, yeeey!" />
+
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Name"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Name, Mode=TwoWay}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="CAS"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding CAS, Mode=TwoWay}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Location"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Location, Mode=TwoWay}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="M (g/mol)"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding MW, Mode=TwoWay}" />
+
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Amount"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Amount, Mode=TwoWay}" />
+            <ComboBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Amount type"
+                ItemsSource="{Binding AmountType}"
+                SelectedItem="{Binding SelectedType}"
+                Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Density (g/ml)"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Den, Mode=TwoWay}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Melting point (°C)"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Mp, Mode=TwoWay}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Boiling point (°C)"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Bp, Mode=TwoWay}" />
+            <TextBox
+                Width="650"
+                MinWidth="200"
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                materialDesign:HintAssist.Hint="Purity (%)"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding Purity, Mode=TwoWay}" />
+            <Button
+                Width="180"
+                Margin="12,20"
+                HorizontalAlignment="Center"
+                Command="{Binding AddMolecule}"
+                Style="{StaticResource MaterialDesignRaisedLightButton}">
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="4,0,0,0"
+                        Text="Add molecule" />
+                </Grid>
+            </Button>
         </StackPanel>
+        <GroupBox Grid.Row="2" Height="180">
+            <ListView x:Name="ConsoleListView" ItemsSource="{Binding OutputMessages, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding FullMessage}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </GroupBox>
 
 
     </Grid>

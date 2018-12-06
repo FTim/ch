@@ -14,6 +14,8 @@ namespace ChDbProject.DTOs
         public string ReactionName { get; set; }
         public double VValue { get; set; }
 
+        public string mp { get; set; }
+        public string bp { get; set; }
         public Solvent TransformToSolvent()
         {
             Solvent result = new Solvent();

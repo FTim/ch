@@ -1,8 +1,10 @@
-﻿using ChClient.Services;
+﻿using ChClient.Models;
+using ChClient.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +15,24 @@ namespace ChClient.ViewModels
     {
         private IFrameNavigationService _navigationService;
         private ILogger _logService;
-        public ExportExcelPageViewModel(IFrameNavigationService navigationService, ILogger logService)
+        private IExcelWriterService _excelwriterService;
+        private IDBService _dbService;
+        private IOpenFileDialogService _openFileDialogService;
+        public ExportExcelPageViewModel(IFrameNavigationService navigationService, ILogger logService, IExcelWriterService excelWriterService, IDBService dBService, IOpenFileDialogService openFileDialogService)
         {
             _navigationService = navigationService;
             _logService = logService;
-            
+            _excelwriterService = excelWriterService;
+            _dbService = dBService;
+            _openFileDialogService = openFileDialogService;
+
             ConfigNavigationCommands();
+
+            ExportExcelFile = new RelayCommand(ExportExcelFileCommand);
+            SelectSaveLocation = new RelayCommand(SelectSaveLocationCommand);
+
+
+            OutputMessages = new ObservableCollection<OutputMessage>();
 
         }
 
@@ -113,5 +127,58 @@ namespace ChClient.ViewModels
             _navigationService.NavigateTo("ExportExcel", new NavigationServiceParameter { Person = CurrentUser });
         }
         #endregion
+
+        private string savepath;
+        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
+
+        public RelayCommand SelectSaveLocation { get; private set; }
+        private void SelectSaveLocationCommand()
+        {
+            var resu = _openFileDialogService.ShowSaveFileDialog(".xlsx", "Excel Files (*.xlsx)| All files (*.*)");
+            if (String.IsNullOrEmpty(resu))
+            {
+
+                savepath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Inventory.xlsx";
+                OutputMessages.Add(new OutputMessage { Message = "Using default save location", Level = "" });
+            }
+            else
+            {
+                savepath = resu;
+                OutputMessages.Add(new OutputMessage { Message = savepath + " added as Save Location", Level = "" });
+            }
+            
+            
+            
+        }
+
+
+        public RelayCommand ExportExcelFile { get; private set; }
+        private async void ExportExcelFileCommand()
+        {
+            SaveProgressVisibility = "visible";
+            if (String.IsNullOrEmpty(savepath))
+            {
+
+                savepath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Inventory.xlsx";
+                OutputMessages.Add(new OutputMessage { Message = "Using default save location", Level = "" });
+            }
+            //savepath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\savedmolecules.xlsx";
+            var molecules = await _dbService.GetMoleculesAsync();
+            _excelwriterService.ExportExcelAsync(savepath, molecules);
+            OutputMessages.Add(new OutputMessage { Message = "Excel document saved!", Level = "" });
+            SaveProgressVisibility = null;
+            
+            
+        }
+
+        private string _saveprogressvisibility;
+        public string SaveProgressVisibility { get { return _saveprogressvisibility; } set { Set(ref _saveprogressvisibility, value); } }
+
+
+
+
+
+
+
     }
 }

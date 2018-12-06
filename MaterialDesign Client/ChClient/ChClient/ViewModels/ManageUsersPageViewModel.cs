@@ -1,4 +1,5 @@
 ﻿
+using ChClient.Models;
 using ChClient.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -32,6 +33,8 @@ namespace ChClient.ViewModels
             Home = new RelayCommand(HomeCommand);
             AddNewUser = new RelayCommand(AddNewUserCommand);
             AddNewUserVisibilityChange = new RelayCommand(AddNewUserVisibilityChangeCommand);
+
+            OutputMessages = new ObservableCollection<OutputMessage>();
         }
 
         private string _currentuser;
@@ -62,6 +65,7 @@ namespace ChClient.ViewModels
             var myMessage = new NotificationMessage(SelectedUser);
             Messenger.Default.Send(myMessage);
             //MessengerInstance.Send(CurrentUser);
+            OutputMessages.Add(new OutputMessage { Message = "Current user set to: " + CurrentUser, Level = "" });
         }
 
         public RelayCommand Home { get; private set; }
@@ -82,12 +86,14 @@ namespace ChClient.ViewModels
         {
             if (Users.Contains(NewUser))
             {
-                NewUserError =NewUser+ " is already registered!";
+                //NewUserError =NewUser+ " is already registered!";
+                OutputMessages.Add(new OutputMessage { Message = NewUser+" is already registered!", Level = "error" });
             }
             else
             {
                 _dbService.AddUser(NewUser);
-                NewUserError = NewUser+" added!";
+                //NewUserError = NewUser+" added!";
+                OutputMessages.Add(new OutputMessage { Message = NewUser+" added!", Level = "" });
                 Users.Add(NewUser);
                 
             }
@@ -102,5 +108,7 @@ namespace ChClient.ViewModels
             NewUserError = "";
             NewUser = "";
         }
+
+        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
     }
 }

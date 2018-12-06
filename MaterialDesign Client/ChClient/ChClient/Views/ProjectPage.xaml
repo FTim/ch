@@ -324,36 +324,46 @@
                     </StackPanel>
                 </Expander>
                 <Expander HorizontalAlignment="Stretch" Header="Plans">
+                    <StackPanel>
+                        <ListView
+                            Name="PlanImageListView"
+                            Grid.Row="1"
+                            MaxWidth="700"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding Plans, Mode=TwoWay}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image
+                                                    MaxWidth="600"
+                                                    MaxHeight="600"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Top"
+                                                    IsEnabled="True"
+                                                    Source="{Binding ., Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                    Stretch="Uniform" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
 
-                    <ListView
-                        Name="PlanImageListView"
-                        Grid.Row="1"
-                        MaxWidth="700"
-                        Margin="16,12"
-                        HorizontalAlignment="Stretch"
-                        ItemsSource="{Binding Plans, Mode=TwoWay}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Image
-                                                MaxWidth="600"
-                                                MaxHeight="600"
-                                                HorizontalAlignment="Stretch"
-                                                VerticalAlignment="Top"
-                                                IsEnabled="True"
-                                                Source="{Binding ., Converter={StaticResource ByteArrayToImageSourceConverter}}"
-                                                Stretch="Uniform" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
 
 
-
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Image
+                            MaxWidth="600"
+                            MaxHeight="600"
+                            Margin="4"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            IsEnabled="True"
+                            Source="{Binding NewProjectPlan, Mode=TwoWay}"
+                            Stretch="Uniform" />
+                    </StackPanel>
                 </Expander>
 
                 <Expander HorizontalAlignment="Stretch" Header="Reactions">
@@ -470,7 +480,7 @@
                         Width="180"
                         Margin="12,0"
                         HorizontalAlignment="Center"
-                        Command="{Binding AddProject}"
+                        Command="{Binding SaveProject}"
                         Style="{StaticResource MaterialDesignRaisedLightButton}">
                         <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
@@ -505,7 +515,7 @@
             <ListView x:Name="ConsoleListView" ItemsSource="{Binding OutputMessages, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding Message}" />
+                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding FullMessage}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

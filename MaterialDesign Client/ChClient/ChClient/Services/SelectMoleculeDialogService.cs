@@ -16,7 +16,7 @@ namespace ChClient.Services
         public SelectMoleculeDialogService(IDBService dbService)
         {
             _dbService = dbService;
-            ConfigureAsync();
+            //ConfigureAsync();
         }
         public SelectedMolecule ShowMoleculeSelectWindow()
         {

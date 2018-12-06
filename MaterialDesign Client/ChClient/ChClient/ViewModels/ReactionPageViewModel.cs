@@ -18,16 +18,16 @@ namespace ChClient.ViewModels
         private IOpenFileDialogService _openFileDialogService;
         private ILogger _logService;
         private IDBService _dbService;
-        private IDocxGeneratorService _docxGeneratorService;
+        
 
         #endregion
-        public ReactionPageViewModel(IFrameNavigationService navigationService, IOpenFileDialogService openFileDialogService, ILogger loggerService, IDBService dBService, IDocxGeneratorService docxGeneratorService)
+        public ReactionPageViewModel(IFrameNavigationService navigationService, IOpenFileDialogService openFileDialogService, ILogger loggerService, IDBService dBService)
         {
             _navigationService = navigationService;
             _openFileDialogService = openFileDialogService;
             _logService = loggerService;
             _dbService = dBService;
-            _docxGeneratorService = docxGeneratorService;
+            
 
             
            // _reaction = (ReactionInfo)_navigationService.Parameter;
@@ -43,14 +43,20 @@ namespace ChClient.ViewModels
             Reagents = new ObservableCollection<Reagent>();
             Solvents = new ObservableCollection<Solvent>();
             Products = new ObservableCollection<Product>();
-            ObservationImgs = new ObservableCollection<byte[]>();
+            ObservationImgsByteArray = new ObservableCollection<byte[]>();
+            ObservationImgsFilePaths = new ObservableCollection<string>();
 
             GetResources = new RelayCommand(GetResourcesCommand);
+            SelectObservationImg = new RelayCommand(SelectObservationImgCommand);
+            DeleteObservationImg = new RelayCommand<string>(DeleteObservationImgCommand);
+
+            SaveReaction = new RelayCommand(SaveReactionCommandAsync);
+            OutputMessages = new ObservableCollection<OutputMessage>();
         }
 
         private int _reactionId;
         private ReactionInfo _reaction;
-        
+        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
 
         private void ConfigureReactionParameter()
         {
@@ -93,13 +99,15 @@ namespace ChClient.ViewModels
         {
             FinishSketchEnabled = "enabled";
             SketchAvailable = "available";
+
         }
 
         public ObservableCollection<StartingMaterial> StartingMaterial { get; set; }
         public ObservableCollection<Reagent> Reagents { get; set; }
         public ObservableCollection<Solvent> Solvents { get; set; }
         public ObservableCollection<Product> Products { get; set; }
-        public ObservableCollection<byte[]> ObservationImgs { get; set; }
+        public ObservableCollection<byte[]> ObservationImgsByteArray { get; set; }
+        public ObservableCollection<string> ObservationImgsFilePaths { get; set; }
         public RelayCommand GetResources { get; private set; }
         private async void GetResourcesCommand()
         {
@@ -124,7 +132,7 @@ namespace ChClient.ViewModels
             }
             foreach (var item in tmpobs)
             {
-                ObservationImgs.Add(item);
+                ObservationImgsByteArray.Add(item);
             }
             ConfigureReactionParameter();
         }
@@ -132,8 +140,28 @@ namespace ChClient.ViewModels
         public RelayCommand SelectObservationImg { get; set; }
         private void SelectObservationImgCommand()
         {
-            //todo add img
+            var resu = _openFileDialogService.ShowOpenFileDialog();
+            ObservationImgsFilePaths.Add(resu);
+            OutputMessages.Add(new OutputMessage() { Message = resu + " added as Observation Img", Level = "" });
         }
+
+        public RelayCommand<string> DeleteObservationImg { get; private set; }
+        private void DeleteObservationImgCommand(string deleteThis)
+        {
+
+            ObservationImgsFilePaths.Remove(deleteThis);
+
+        }
+
+        public RelayCommand SaveReaction { get; private set; }
+        private async void SaveReactionCommandAsync()
+        {
+            OutputMessages.Add(new OutputMessage() { Message = "Saving to database", Level = "" });
+            await _dbService.FinishSketchReaction(_reactionId, ClosureDate, Procedure, Observation, Yield, ObservationImgsFilePaths.ToList());
+            OutputMessages.Add(new OutputMessage() { Message = "Finished!", Level = "" });
+        }
+
+        
 
         private void ConfigNavigationCommands()
         {

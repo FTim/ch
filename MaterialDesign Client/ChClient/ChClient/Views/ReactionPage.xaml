@@ -24,6 +24,7 @@
         <converters:MessageLevelConverter x:Key="MessageLevelConverter" />
         <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
         <converters:EnabledConverter x:Key="EnabledConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Page.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -552,7 +553,8 @@
                             MinWidth="700"
                             Margin="16,12"
                             HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding ObservationImgs}">
+                            ItemsSource="{Binding ObservationImgsByteArray}"
+                            Visibility="{Binding IsSketch, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Image">
@@ -576,10 +578,51 @@
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal">
 
+                                                    
+                                                </StackPanel>
+
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <ListView
+                            Name="ObservableImageAddListView"
+                            Grid.Row="1"
+                            MinWidth="700"
+                            Margin="16,12"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding ObservationImgsFilePaths}"
+                            Visibility="{Binding IsSketch, Converter={StaticResource BoolToVisibilityConverter}}"
+                            >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Image">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image
+                                                    MaxWidth="600"
+                                                    MaxHeight="600"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Top"
+                                                    IsEnabled="True"
+                                                    Source="{Binding .}"
+                                                    Stretch="Uniform" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+
+                                    <GridViewColumn Width="120" Header="">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+
                                                     <Button
                                                         Width="50"
                                                         HorizontalAlignment="Left"
-                                                        Command="{Binding Path=DataContext.DeleteObservationImg, ElementName=ObservableImageListView}"
+                                                        Command="{Binding Path=DataContext.DeleteObservationImg, ElementName=ObservableImageAddListView}"
                                                         CommandParameter="{Binding .}"
                                                         Style="{StaticResource MaterialDesignRaisedLightButton}">
                                                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
@@ -597,25 +640,7 @@
                     </StackPanel>
 
                 </Expander>
-                <Button
-                    Width="180"
-                    Margin="12,0"
-                    HorizontalAlignment="Center"
-                    Command="{Binding SaveDocx}"
-                    Style="{StaticResource MaterialDesignRaisedLightButton}">
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="4,0,0,0"
-                            Text="Save docx" />
-
-                    </Grid>
-                </Button>
+                
                 <Button
                     Width="180"
                     Margin="12,20"
@@ -696,7 +721,7 @@
             <ListView x:Name="ConsoleListView" ItemsSource="{Binding OutputMessages, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding Message}" />
+                        <TextBlock Foreground="{Binding Level, Converter={StaticResource MessageLevelConverter}}" Text="{Binding FullMessage}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

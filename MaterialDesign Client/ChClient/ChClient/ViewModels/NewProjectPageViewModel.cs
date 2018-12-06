@@ -37,15 +37,27 @@ namespace ChClient.ViewModels
             OutputMessages = new ObservableCollection<OutputMessage>();
 
             _ProjectInfo = new Project();
-            UsersInit();
+            GetResources = new RelayCommand(GetResourcesCommand);
+
+            Users = new ObservableCollection<string>();
         }
         private List<string> users;
+        public ObservableCollection<string> Users { get; set; }
 
-        private async void UsersInit()
+        private string _leaderselected;
+        public string LeaderSelected { get { return _leaderselected; } set { Set(ref _leaderselected, value); _ProjectInfo.Leader = value; } }
+
+        public RelayCommand GetResources { get; private set; }
+        private async void GetResourcesCommand()
         {
            users = new List<string>();
 
-            users = await _dbService.GetUsersAsync();
+           users = await _dbService.GetUsersAsync();
+
+            foreach (var item in users)
+            {
+                Users.Add(item);
+            }
         }
 
         private void ConfigNavigationCommands()

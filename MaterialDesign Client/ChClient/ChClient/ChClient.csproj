@@ -93,6 +93,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ByteArrayToImageSourceConverter.cs" />
     <Compile Include="Converters\EnabledConverter.cs" />
     <Compile Include="Converters\MessageLevelConverter.cs" />
@@ -109,10 +110,12 @@
     <Compile Include="Services\DBService.cs" />
     <Compile Include="Services\DocxGeneratorService.cs" />
     <Compile Include="Services\ExcelReaderService.cs" />
+    <Compile Include="Services\ExcelWriterService.cs" />
     <Compile Include="Services\FrameNavigationService.cs" />
     <Compile Include="Services\IDBService.cs" />
     <Compile Include="Services\IDocxGeneratorService.cs" />
     <Compile Include="Services\IExcelReaderService.cs" />
+    <Compile Include="Services\IExcelWriterService.cs" />
     <Compile Include="Services\IFrameNavigationService.cs" />
     <Compile Include="Services\IOpenCustomDialogWindow.cs" />
     <Compile Include="Services\IOpenFileDialogService.cs" />
@@ -283,6 +286,10 @@
     <ProjectReference Include="..\DocxGen\DocxGen.csproj">
       <Project>{360b5372-6df6-4910-9e1e-85138fc21fb1}</Project>
       <Name>DocxGen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InventoryGen\InventoryGen.csproj">
+      <Project>{6266c1b3-7b80-4370-8c39-b2e45a66c83e}</Project>
+      <Name>InventoryGen</Name>
     </ProjectReference>
     <ProjectReference Include="..\InventoryReader\InventoryReader.csproj">
       <Project>{a389af44-c371-4675-901d-b9f54f5c8ebf}</Project>

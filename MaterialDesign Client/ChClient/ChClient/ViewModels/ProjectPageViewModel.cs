@@ -26,9 +26,10 @@ namespace ChClient.ViewModels
             _logService = loggerService;
             _dbService = dBService;
 
+            OutputMessages = new ObservableCollection<OutputMessage>();
             //CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person
             _project = ((NavigationServiceParameter)_navigationService.Parameter).ObjParam as Project;
-
+            OutputMessages.Add(new OutputMessage { Message = _project.Name + " details", Level = "" });
             ProjectName = _project.Name;
             Leader = _project.Leader;
             Goal = _project.Goal;
@@ -49,6 +50,11 @@ namespace ChClient.ViewModels
 
             ViewReaction = new RelayCommand<ReactionInfo>(ViewReactionCommand);
             DeleteReaction = new RelayCommand<ReactionInfo>(DeleteReactionCommand);
+
+            SaveProject = new RelayCommand(SaveProjectCommand);
+
+
+            
         }
 
         
@@ -61,6 +67,7 @@ namespace ChClient.ViewModels
             {
                 Reactions.Add(item);
             }
+            OutputMessages.Add(new OutputMessage { Message = Reactions.Count + " reactions loaded for this project", Level = "info" });
         }
 
         
@@ -170,7 +177,7 @@ namespace ChClient.ViewModels
         public string Leader { get { return _leader; } set { Set(ref _leader, value);  } }
         public string Goal { get { return _goal; } set { Set(ref _goal, value);  } }
         public string Description { get { return _description; } set { Set(ref _description, value); } }
-        public string PlanImgPath { get { return _planimgpath; } set { Set(ref _planimgpath, value);  } }
+        //public string PlanImgPath { get { return _planimgpath; } set { Set(ref _planimgpath, value);  } }
 
         public ObservableCollection<byte[]> Plans { get; set; }
 
@@ -185,6 +192,8 @@ namespace ChClient.ViewModels
         {
             ModifyAvailable = "available";
         }
+        private string _newprojectplan;
+        public string NewProjectPlan { get { return _newprojectplan; } set { Set(ref _newprojectplan, value); } }
 
         public RelayCommand AddPlan { get; private set; }
         private void AddPlanCommand()
@@ -193,14 +202,14 @@ namespace ChClient.ViewModels
             
             if (resu != null)
             {
-                Plans.Add(convertImg(resu));
-                //OutputMessages.Add(new OutputMessage { Message = resu + " added as Observation Image", Level = "" });
+                NewProjectPlan=resu;
+                OutputMessages.Add(new OutputMessage { Message = resu + " added as New Project Plan", Level = "" });
             }
 
 
             else
             {
-                //OutputMessages.Add(new OutputMessage { Message = "No image added as Observation Image", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "No image added as New Project Plan", Level = "" });
                 //_logService.Write(this, tmp.Message, tmp.Level);
             }
 
@@ -214,14 +223,29 @@ namespace ChClient.ViewModels
         public RelayCommand<ReactionInfo> DeleteReaction { get; set; }
         private async void DeleteReactionCommand(ReactionInfo deleteThis)
         {
-        await _dbService.DeleteReaction(deleteThis.ReactionID);
-        Reactions.Remove(deleteThis);
-    }
-
-        private byte[] convertImg(string path)
-        {
-            byte[] imgToByte = File.ReadAllBytes(path);
-            return imgToByte;
+            try
+            {
+                OutputMessages.Add(new OutputMessage { Message = "Deleting reaction(s)...", Level = "" });
+                await _dbService.DeleteReaction(deleteThis.ReactionID);
+                Reactions.Remove(deleteThis);
+                OutputMessages.Add(new OutputMessage { Message = "Reaction(s) deleted!", Level = "" });
+            }
+            catch (Exception e)
+            {
+                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "error" });
+            }
+            
         }
+
+        public RelayCommand SaveProject { get; private set; }
+        private void SaveProjectCommand()
+        {
+            
+            _dbService.UpdateProject(_project.ProjectID, ProjectName, Leader, Goal, Description, NewProjectPlan);
+            OutputMessages.Add(new OutputMessage { Message = "Project modified!", Level = "" });
+        }
+
+        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
+        
     }
 }

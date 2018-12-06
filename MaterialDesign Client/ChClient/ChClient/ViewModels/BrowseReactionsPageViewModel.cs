@@ -31,8 +31,10 @@ namespace ChClient.ViewModels
             ViewReaction = new RelayCommand<ReactionInfo>(ViewReactionCommand);
             DeleteReaction = new RelayCommand<ReactionInfo>(DeleteReactionCommand);
 
-           
+            OutputMessages = new ObservableCollection<OutputMessage>();
         }
+        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
+
         private string _person;
         public string Person { get { return _person; } set { Set(ref _person, value); } }
 
@@ -139,12 +141,15 @@ namespace ChClient.ViewModels
             List<ReactionInfo> tmp = new List<ReactionInfo>();
             if (Mode == "my")
             {
+                OutputMessages.Add(new OutputMessage { Message = "Loading " + CurrentUser + "'s reaction(s)...", Level = "" });
                 tmp = await _dbService.GetReactions(Person);
             }
             else
             {
+                OutputMessages.Add(new OutputMessage { Message = "Loading all reaction(s)...", Level = "" });
                 tmp = await _dbService.GetReactions();
             }
+            OutputMessages.Add(new OutputMessage { Message = tmp.Count + " reaction(s) loaded!", Level = "" });
             foreach (var item in tmp)
             {
                 ReactionList.Add(item);
@@ -163,9 +168,21 @@ namespace ChClient.ViewModels
         public RelayCommand<ReactionInfo> DeleteReaction { get; set; }
         private async void DeleteReactionCommand(ReactionInfo deleteThis)
         {
+            try
+            {
+                OutputMessages.Add(new OutputMessage { Message = "Deleting reaction...", Level = "" });
+                await _dbService.DeleteReaction(deleteThis.ReactionID);
+                ReactionList.Remove(deleteThis);
+                OutputMessages.Add(new OutputMessage { Message = "Reaction deleted!", Level = "" });
+            }
+            catch (Exception e)
+            {
+                //output: error msg
+                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "error" });
+            }
 
-            await _dbService.DeleteReaction(deleteThis.ReactionID);
-            ReactionList.Remove(deleteThis);
+
+
         }
     }
 }
