@@ -27,7 +27,7 @@ namespace ChClient.ViewModels
             _dbService = dBService;
 
             OutputMessages = new ObservableCollection<OutputMessage>();
-            //CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person
+            
             _project = ((NavigationServiceParameter)_navigationService.Parameter).ObjParam as Project;
             OutputMessages.Add(new OutputMessage { Message = _project.Name + " details", Level = "" });
             ProjectName = _project.Name;
@@ -39,7 +39,6 @@ namespace ChClient.ViewModels
             {
                 Plans.Add(item);
             }
-            //Plans = _project.ProjectPlanByreArrays;
             Reactions = new ObservableCollection<ReactionInfo>();
             Modify = null;
             ConfigNavigationCommands();
@@ -53,8 +52,6 @@ namespace ChClient.ViewModels
 
             SaveProject = new RelayCommand(SaveProjectCommand);
 
-
-            
         }
 
         
@@ -62,12 +59,15 @@ namespace ChClient.ViewModels
         public RelayCommand GetResources { get; private set; }
         private async void GetResourcesCommand()
         {
+            _logService.Write(this, "Loading project with ID " + _project.ProjectID, "debug");
             var tmplist = await _dbService.GetReactions(_project.ProjectID);
+            _logService.Write(this, "Loaded " + _project.ProjectID, "debug");
             foreach (var item in tmplist)
             {
                 Reactions.Add(item);
             }
             OutputMessages.Add(new OutputMessage { Message = Reactions.Count + " reactions loaded for this project", Level = "info" });
+            _logService.Write(this, Reactions.Count + " reactions loaded for this project", "debug");
         }
 
         
@@ -95,6 +95,7 @@ namespace ChClient.ViewModels
         public RelayCommand Home { get; private set; }
         private void HomeCommand()
         {
+            _logService.Write(this, "Navigate to: Home page");
             _navigationService.NavigateTo("Home");
         }
 
@@ -177,7 +178,6 @@ namespace ChClient.ViewModels
         public string Leader { get { return _leader; } set { Set(ref _leader, value);  } }
         public string Goal { get { return _goal; } set { Set(ref _goal, value);  } }
         public string Description { get { return _description; } set { Set(ref _description, value); } }
-        //public string PlanImgPath { get { return _planimgpath; } set { Set(ref _planimgpath, value);  } }
 
         public ObservableCollection<byte[]> Plans { get; set; }
 
@@ -203,14 +203,16 @@ namespace ChClient.ViewModels
             if (resu != null)
             {
                 NewProjectPlan=resu;
-                OutputMessages.Add(new OutputMessage { Message = resu + " added as New Project Plan", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = resu + " added as New Project Plan", Level = "debug" });
+                _logService.Write(this, resu + " added as New Project Plan", "debug");
+
             }
 
 
             else
             {
-                OutputMessages.Add(new OutputMessage { Message = "No image added as New Project Plan", Level = "" });
-                //_logService.Write(this, tmp.Message, tmp.Level);
+                OutputMessages.Add(new OutputMessage { Message = "No image added as New Project Plan", Level = "debug" });
+                _logService.Write(this, "No image added as New Project Plan", "debug");
             }
 
         }
@@ -218,6 +220,7 @@ namespace ChClient.ViewModels
         public RelayCommand<ReactionInfo> ViewReaction { get; set; }
         private void ViewReactionCommand(ReactionInfo viewThis)
         {
+            _logService.Write(this, "Navigate to: Project page");
             _navigationService.NavigateTo("Reaction", new NavigationServiceParameter() { Person = CurrentUser, ObjParam = viewThis });
         }
         public RelayCommand<ReactionInfo> DeleteReaction { get; set; }
@@ -225,14 +228,17 @@ namespace ChClient.ViewModels
         {
             try
             {
-                OutputMessages.Add(new OutputMessage { Message = "Deleting reaction(s)...", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "Deleting reaction(s)...", Level = "debug" });
+                _logService.Write(this, "Deleting reaction(s)...", "debug");
                 await _dbService.DeleteReaction(deleteThis.ReactionID);
                 Reactions.Remove(deleteThis);
-                OutputMessages.Add(new OutputMessage { Message = "Reaction(s) deleted!", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "Reaction(s) deleted!", Level = "debug" });
+                _logService.Write(this, "Deleting reaction(s)...", "debug");
             }
             catch (Exception e)
             {
-                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "error" });
+                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "fatal" });
+                _logService.Write(this, e.Message, "fatal");
             }
             
         }
@@ -242,6 +248,7 @@ namespace ChClient.ViewModels
         {
             
             _dbService.UpdateProject(_project.ProjectID, ProjectName, Leader, Goal, Description, NewProjectPlan);
+            _logService.Write(this, "Project modified", "debug");
             OutputMessages.Add(new OutputMessage { Message = "Project modified!", Level = "" });
         }
 

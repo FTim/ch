@@ -80,12 +80,6 @@ namespace ChClient.ViewModels
                 Observation = _reaction.Observation;
                 Yield = _reaction.Yield;
             }
-            else
-            {
-                //enable modify-> closure date, proc, obs, obs img yield
-            }
-
-
             
         }
         private string _finishsketchenabled;
@@ -93,7 +87,7 @@ namespace ChClient.ViewModels
         private string _sketchavailable;
         public string SketchAvailable { get { return _sketchavailable; } set { Set(ref _sketchavailable, value); } }
 
-        //SketchAvailable
+
         public RelayCommand FinishSketch { get; set; }
         private void FinishSketchCommand()
         {
@@ -111,29 +105,35 @@ namespace ChClient.ViewModels
         public RelayCommand GetResources { get; private set; }
         private async void GetResourcesCommand()
         {
+            _logService.Write(this, "Loading reaction with ID " + _reactionId, "debug");
             _reaction =await  _dbService.GetReactionAsync(_reactionId);
             var tmpsm = await _dbService.GetStartingMaterial(_reactionId);
             var tmpr = await _dbService.GetReagents(_reactionId);
             var tmps = await _dbService.GetSolvents(_reactionId);
             var tmpp = await _dbService.GetProducts(_reactionId);
             var tmpobs = await _dbService.GetObsImgs(_reactionId);
+            _logService.Write(this, "Loaded " + _reactionId, "debug");
             StartingMaterial.Add(tmpsm);
             foreach (var item in tmpr)
             {
                 Reagents.Add(item);
             }
+            _logService.Write(this, Reagents.Count + " reagents loaded for this reaction", "debug");
             foreach (var item in tmps)
             {
                 Solvents.Add(item);
             }
+            _logService.Write(this, Solvents.Count + " solvents loaded for this reaction", "debug");
             foreach (var item in tmpp)
             {
                 Products.Add(item);
             }
+            _logService.Write(this, Products.Count + " products loaded for this reaction", "debug");
             foreach (var item in tmpobs)
             {
                 ObservationImgsByteArray.Add(item);
             }
+            _logService.Write(this, ObservationImgsByteArray.Count + " observable imgs loaded for this reaction", "debug");
             ConfigureReactionParameter();
         }
 
@@ -142,7 +142,9 @@ namespace ChClient.ViewModels
         {
             var resu = _openFileDialogService.ShowOpenFileDialog();
             ObservationImgsFilePaths.Add(resu);
-            OutputMessages.Add(new OutputMessage() { Message = resu + " added as Observation Img", Level = "" });
+            OutputMessages.Add(new OutputMessage() { Message = resu + " added as Observation Img", Level = "debug" });
+            _logService.Write(this, resu + " added as Observation Img", "debug");
+
         }
 
         public RelayCommand<string> DeleteObservationImg { get; private set; }
@@ -156,9 +158,11 @@ namespace ChClient.ViewModels
         public RelayCommand SaveReaction { get; private set; }
         private async void SaveReactionCommandAsync()
         {
-            OutputMessages.Add(new OutputMessage() { Message = "Saving to database", Level = "" });
+            OutputMessages.Add(new OutputMessage() { Message = "Saving to database", Level = "debug" });
+            _logService.Write(this, "Saving to database", "debug");
             await _dbService.FinishSketchReaction(_reactionId, ClosureDate, Procedure, Observation, Yield, ObservationImgsFilePaths.ToList());
-            OutputMessages.Add(new OutputMessage() { Message = "Finished!", Level = "" });
+            OutputMessages.Add(new OutputMessage() { Message = "Finished!", Level = "debug" });
+            _logService.Write(this, "Finished", "debug");
         }
 
         

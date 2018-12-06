@@ -27,6 +27,10 @@ namespace ChClient.ViewModels
             _dbService = dbService;
             
             CurrentUser = _navigationService.Parameter.ToString();
+            Config();
+        }
+        private void Config()
+        {
             Users = new ObservableCollection<string>();
             ConfirmUserChange = new RelayCommand(ConfirmUserChangeCommand);
             GetUsers = new RelayCommand(GetUsersCommand);
@@ -36,7 +40,6 @@ namespace ChClient.ViewModels
 
             OutputMessages = new ObservableCollection<OutputMessage>();
         }
-
         private string _currentuser;
         public string CurrentUser { get { return _currentuser; } set { Set(ref _currentuser, value); } }
 
@@ -51,7 +54,7 @@ namespace ChClient.ViewModels
             List<string> users = new List<string>();
             Users.Clear();
             users = await _dbService.GetUsersAsync();
-
+            _loggerService.Write(this, users.Count + " user(s) loaded", "debug");
             foreach (var item in users)
             {
                 Users.Add(item);
@@ -64,14 +67,14 @@ namespace ChClient.ViewModels
             CurrentUser = SelectedUser;
             var myMessage = new NotificationMessage(SelectedUser);
             Messenger.Default.Send(myMessage);
-            //MessengerInstance.Send(CurrentUser);
-            OutputMessages.Add(new OutputMessage { Message = "Current user set to: " + CurrentUser, Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Current user set to: " + CurrentUser, Level = "debug" });
+            _loggerService.Write(this, "Current user set to: " + CurrentUser, "debug");
         }
 
         public RelayCommand Home { get; private set; }
         private void HomeCommand()
         {
-
+            _loggerService.Write(this, "Navigate to: Home page");
             _navigationService.NavigateTo("Home");
         }
 
@@ -86,13 +89,14 @@ namespace ChClient.ViewModels
         {
             if (Users.Contains(NewUser))
             {
-                //NewUserError =NewUser+ " is already registered!";
                 OutputMessages.Add(new OutputMessage { Message = NewUser+" is already registered!", Level = "error" });
+                _loggerService.Write(this, NewUser + " is already registered!", "error");
             }
             else
             {
+                _loggerService.Write(this, "Add started", "debug");
                 _dbService.AddUser(NewUser);
-                //NewUserError = NewUser+" added!";
+                _loggerService.Write(this, NewUser+" added!", "debug");
                 OutputMessages.Add(new OutputMessage { Message = NewUser+" added!", Level = "" });
                 Users.Add(NewUser);
                 

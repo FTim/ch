@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocxDropboxUploader", "Docx
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryGen", "InventoryGen\InventoryGen.csproj", "{6266C1B3-7B80-4370-8C39-B2E45A66C83E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChClientUnitTests", "ChClientUnitTests\ChClientUnitTests.csproj", "{7D8CDFD4-C00E-4B78-88B8-3A8A4ECB99B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{6266C1B3-7B80-4370-8C39-B2E45A66C83E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6266C1B3-7B80-4370-8C39-B2E45A66C83E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6266C1B3-7B80-4370-8C39-B2E45A66C83E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D8CDFD4-C00E-4B78-88B8-3A8A4ECB99B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D8CDFD4-C00E-4B78-88B8-3A8A4ECB99B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D8CDFD4-C00E-4B78-88B8-3A8A4ECB99B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D8CDFD4-C00E-4B78-88B8-3A8A4ECB99B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

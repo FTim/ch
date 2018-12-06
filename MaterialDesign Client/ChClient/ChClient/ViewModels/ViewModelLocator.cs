@@ -1,5 +1,4 @@
-﻿
-using ChClient.Services;
+﻿using ChClient.Services;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using System;
@@ -15,8 +14,7 @@ namespace ChClient.ViewModels
         static ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-            //SimpleIoc.Default.Register<CurrentUserMessenger>();
-
+            
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<HomePageViewModel>();
             SimpleIoc.Default.Register<ManageUsersPageViewModel>();
@@ -37,17 +35,7 @@ namespace ChClient.ViewModels
 
             SetupNavigation();
 
-            // var openFileDialogService = new OpenFileDialogService();
-
-
-            SimpleIoc.Default.Register<IOpenFileDialogService, OpenFileDialogService>();
-            SimpleIoc.Default.Register<ILogger, Logger>();
-            SimpleIoc.Default.Register<ISelectMoleculeDialogService, SelectMoleculeDialogService>();
-            SimpleIoc.Default.Register<IExcelReaderService, ExcelReaderService>();
-            SimpleIoc.Default.Register<IDBService, DBService>();
-            SimpleIoc.Default.Register<IDocxGeneratorService, DocxGeneratorService>();
-            SimpleIoc.Default.Register<IExcelWriterService, ExcelWriterService>();
-            
+            SetupServices();                     
 
         }
 
@@ -70,8 +58,17 @@ namespace ChClient.ViewModels
             navigationService.Configure("ManualInventoryUpdate", new Uri("../Views/ManualInventoryUpdatePage.xaml", UriKind.Relative));
             navigationService.Configure("ExportExcel", new Uri("../Views/ExportExcelPage.xaml", UriKind.Relative));
 
-            //navigationService.Configure("MaterialSelect", new Uri("../Views/MaterialSelectWindow.xaml", UriKind.Relative));
             SimpleIoc.Default.Register<IFrameNavigationService>(() => navigationService);
+        }
+        private static void SetupServices()
+        {
+            SimpleIoc.Default.Register<IOpenFileDialogService, OpenFileDialogService>();
+            SimpleIoc.Default.Register<ILogger, Logger>();
+            SimpleIoc.Default.Register<ISelectMoleculeDialogService, SelectMoleculeDialogService>();
+            SimpleIoc.Default.Register<IExcelReaderService, ExcelReaderService>();
+            SimpleIoc.Default.Register<IDBService, DBService>();
+            SimpleIoc.Default.Register<IDocxGeneratorService, DocxGeneratorService>();
+            SimpleIoc.Default.Register<IExcelWriterService, ExcelWriterService>();
         }
         public MainViewModel Main {
             get {
@@ -108,43 +105,32 @@ namespace ChClient.ViewModels
         }
         public ProjectPageViewModel ProjectViewModel {
             get {
-                //mindig új példány legyen
                 SimpleIoc ioc = ServiceLocator.Current as SimpleIoc;
                 return ioc.GetInstanceWithoutCaching<ProjectPageViewModel>(Guid.NewGuid().ToString());
-                //return ServiceLocator.Current.GetInstance<NewReactionPageViewModel>();
-
             }
         }
         public ReactionPageViewModel ReactionViewModel {
             get {
-                //mindig új példány legyen
                 SimpleIoc ioc = ServiceLocator.Current as SimpleIoc;
                 return ioc.GetInstanceWithoutCaching<ReactionPageViewModel>(Guid.NewGuid().ToString());
-                //return ServiceLocator.Current.GetInstance<NewReactionPageViewModel>();
-
             }
         }
         public NewReactionPageViewModel NewReactionViewModel {
             get {
-                //mindig új példány legyen
                 SimpleIoc ioc = ServiceLocator.Current as SimpleIoc;
                 return ioc.GetInstanceWithoutCaching<NewReactionPageViewModel>(Guid.NewGuid().ToString());
-                //return ServiceLocator.Current.GetInstance<NewReactionPageViewModel>();
-
             }
         }
         public MaterialSelectWindowViewModel MaterialSelectWindowViewModel {
             get {
                 SimpleIoc ioc = ServiceLocator.Current as SimpleIoc;
                 return ioc.GetInstanceWithoutCaching<MaterialSelectWindowViewModel>(Guid.NewGuid().ToString());
-                //return ServiceLocator.Current.GetInstance<MaterialSelectWindowViewModel>();
             }
         }
         public BrowseReactionsPageViewModel BrowseReactionsViewModel {
             get {
                 SimpleIoc ioc = ServiceLocator.Current as SimpleIoc;
                 return ioc.GetInstanceWithoutCaching<BrowseReactionsPageViewModel>(Guid.NewGuid().ToString());
-                //return ServiceLocator.Current.GetInstance<BrowseReactionsPageViewModel>();
             }
         }
         public AddNewMoleculePageViewModel AddNewMoleculeViewModel {

@@ -52,7 +52,9 @@ namespace ChClient.ViewModels
         public RelayCommand GetResources { get; private set; }
         private async void GetResourcesCommandAsync()
         {
+            _logService.Write(this, "Reading molecules from database started", "debug");
             _allmolecules =await _dbService.GetMoleculesAsync();
+            _logService.Write(this, _allmolecules.Count + " molecule(s) readed", "debug");
             foreach (var item in _allmolecules)
             {
                 FoundMolecules.Add(item);
@@ -149,12 +151,15 @@ namespace ChClient.ViewModels
                     {
                         Selected.mAvailable += tmp;
                         RaisePropertyChanged(nameof(Selected));
+                        _logService.Write(this, "Update inventory with: " + Selected.CAS + " " + Selected.Location + " " + newValue + " " + null, "debug");
                         _dbService.ModifyMoleculeAvailable(Selected.CAS, Selected.Location, newValue, null);
-                        OutputMessages.Add(new OutputMessage { Message = "Inventory updated!", Level = "" });
+                        OutputMessages.Add(new OutputMessage { Message = "Inventory updated!", Level = "debug" });
+                        _logService.Write(this, "Inventory updated!", "debug");
                     }
                     else
                     {
                         OutputMessages.Add(new OutputMessage { Message = "Amount cannot be negative!", Level = "error" });
+                        _logService.Write(this, "Amount cannot be negative!", "error");
                     }
 
                     
@@ -167,21 +172,23 @@ namespace ChClient.ViewModels
                     {
                         Selected.VAvailable += tmp;
                         RaisePropertyChanged(nameof(Selected));
+                        _logService.Write(this, "Update inventory with: " + Selected.CAS + " " + Selected.Location + " " + null + " " + newValue, "debug");
                         _dbService.ModifyMoleculeAvailable(Selected.CAS, Selected.Location, null, newValue);
                         OutputMessages.Add(new OutputMessage { Message = "Inventory updated!", Level = "" });
+                        _logService.Write(this, "Inventory updated!", "debug");
                     }
                     else
                     {
                         OutputMessages.Add(new OutputMessage { Message = "Amount cannot be negative!", Level = "error" });
+                        _logService.Write(this, "Amount cannot be negative!", "error");
                     }
 
-
-                    
                 }
             }
             else
             {
                 OutputMessages.Add(new OutputMessage { Message = "Cannot convert given value to number", Level = "error" });
+                _logService.Write(this, "Cannot convert given value to number", "error");
             }
 
         }
@@ -195,6 +202,7 @@ namespace ChClient.ViewModels
                 if (tmp < 0)
                 {
                     OutputMessages.Add(new OutputMessage { Message = "Amount cannot be negative!", Level = "error" });
+                    _logService.Write(this, "Amount cannot be negative!", "error");
                 }
                 else
                 {
@@ -202,21 +210,28 @@ namespace ChClient.ViewModels
                     {
                         Selected.mAvailable = tmp;
                         RaisePropertyChanged(nameof(Selected));
+                        _logService.Write(this, "Update inventory with: " + Selected.CAS + " " + Selected.Location + " " + tmp + " " + null, "debug");
+
                         _dbService.ModifyMoleculeAvailable(Selected.CAS, Selected.Location, tmp, null);
                         OutputMessages.Add(new OutputMessage { Message = "Inventory updated!", Level = "" });
+                        _logService.Write(this, "Inventory updated!", "debug");
                     }
                     else
                     {
                         Selected.VAvailable = tmp;
                         RaisePropertyChanged(nameof(Selected));
+                        _logService.Write(this, "Update inventory with: " + Selected.CAS + " " + Selected.Location + " " + null + " " + tmp, "debug");
+
                         _dbService.ModifyMoleculeAvailable(Selected.CAS, Selected.Location, null, tmp);
                         OutputMessages.Add(new OutputMessage { Message = "Inventory updated!", Level = "" });
+                        _logService.Write(this, "Inventory updated!", "debug");
                     }
                 }
             }
             else
             {
                 OutputMessages.Add(new OutputMessage { Message = "Cannot convert given value to number", Level = "error" });
+                _logService.Write(this, "Cannot convert given value to number", "error");
             }
         }
         #endregion

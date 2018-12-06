@@ -28,6 +28,7 @@ namespace ChClient.ViewModels
             Config();
         }
 
+        #region Commands - Navigation
         private void ConfigNavigationCommands()
         {
             CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person;
@@ -44,7 +45,6 @@ namespace ChClient.ViewModels
             ExportExcel = new RelayCommand(ExportExcelCommand);
         }
 
-        #region Commands - Navigation
         private string _currentuser;
         public string CurrentUser { get { return _currentuser; } set { Set(ref _currentuser, value); } }
         public RelayCommand Home { get; private set; }

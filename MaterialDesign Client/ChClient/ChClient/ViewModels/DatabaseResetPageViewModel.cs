@@ -38,8 +38,26 @@ namespace ChClient.ViewModels
 
         private string _donevisibility;
         public string DoneVisibility { get { return _donevisibility; } set { Set(ref _donevisibility, value); } }
+
+        public RelayCommand ResetDb { get; set; }
+
+        private async void ResetDbCommand()
+        {
+            QuestionVisibility = null;
+            QuestionEnable = null;
+            InProgressVisibility = "visible";
+            DoneVisibility = null;
+            _dbService.ResetAll();
+            _logService.Write(this, "Init database started", "debug");
+            State = await _dbService.InitMolecules();
+            _logService.Write(this, "Init database finished", "debug");
+            InProgressVisibility = null;
+            DoneVisibility = "visible";
+        }
         #endregion
 
+
+        
         public RelayCommand Home { get; private set; }
         private void HomeCommand()
         {
@@ -53,21 +71,6 @@ namespace ChClient.ViewModels
             QuestionVisibility = "visible";
         }
 
-        public RelayCommand ResetDb { get; set; }
-
-        private async void ResetDbCommand()
-        {
-            QuestionVisibility = null;
-            QuestionEnable = null;
-            InProgressVisibility = "visible";
-            DoneVisibility = null;
-            _dbService.ResetAll();
-
-            State = await _dbService.InitMolecules();
-
-            InProgressVisibility = null;
-            DoneVisibility = "visible";
-        }
 
     }
 }

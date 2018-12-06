@@ -13,42 +13,31 @@ namespace ChClient.ViewModels
 {
     public class BrowseProjectsPageViewModel :ViewModelBase
     {
+        #region Services
         private IFrameNavigationService _navigationService;
         private ILogger _logService;
         private IDBService _dbService;
+        #endregion
         public BrowseProjectsPageViewModel(IFrameNavigationService navigationService, ILogger logService, IDBService dbService)
         {
             _navigationService = navigationService;
             _logService = logService;
             _dbService = dbService;
+
             NavigationServiceParameter tmp = (NavigationServiceParameter)navigationService.Parameter;
             Person = tmp.Person;
             Mode = tmp.Mode;
+
             ConfigNavigationCommands();
-
-            ProjectList = new ObservableCollection<Project>();
-
-            GetProjects = new RelayCommand(GetProjectsCommand);
-
-            ViewProject = new RelayCommand<Project>(ViewProjectCommand);
-            DeleteProject = new RelayCommand<Project>(DeleteProjectCommand);
-
-            OutputMessages = new ObservableCollection<OutputMessage>();
+            Config();
+            
         }
-
-        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
-
-        private string _person;
-        public string Person { get { return _person; } set { Set(ref _person, value); } }
-
-        private string _mode;
-        public string Mode { get { return _mode; } set { Set(ref _mode, value); } }
-
-
+        
+        #region Commands - Navigation
         private void ConfigNavigationCommands()
         {
             CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person;
-            
+
             Home = new RelayCommand(HomeCommand);
             NewReaction = new RelayCommand(NewReactionCommand);
             BrowseAllProjects = new RelayCommand(BrowseAllProjectsCommand);
@@ -60,8 +49,6 @@ namespace ChClient.ViewModels
             ManualInventoryUpdate = new RelayCommand(ManualInventoryUpdateCommand);
             ExportExcel = new RelayCommand(ExportExcelCommand);
         }
-
-        #region Commands - Navigation
         private string _currentuser;
         public string CurrentUser { get { return _currentuser; } set { Set(ref _currentuser, value); } }
         public RelayCommand Home { get; private set; }
@@ -137,6 +124,22 @@ namespace ChClient.ViewModels
         }
         #endregion
 
+        #region Person&Mode bindings + Logic Commands
+        private void Config()
+        {
+            ProjectList = new ObservableCollection<Project>();
+            GetProjects = new RelayCommand(GetProjectsCommand);
+            ViewProject = new RelayCommand<Project>(ViewProjectCommand);
+            DeleteProject = new RelayCommand<Project>(DeleteProjectCommand);
+            OutputMessages = new ObservableCollection<OutputMessage>();
+        }
+        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
+
+        private string _person;
+        public string Person { get { return _person; } set { Set(ref _person, value); } }
+
+        private string _mode;
+        public string Mode { get { return _mode; } set { Set(ref _mode, value); } }
         public RelayCommand GetProjects { get;  private set; }
         private async void GetProjectsCommand()
         {
@@ -145,15 +148,18 @@ namespace ChClient.ViewModels
             List<Project> tmp = new List<Project>();
             if (Mode == "my")
             {
-                OutputMessages.Add(new OutputMessage { Message = "Loading "+CurrentUser+"'s project(s)...", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "Loading "+CurrentUser+"'s project(s)...", Level = "debug" });
+                _logService.Write(this, "Loading " + CurrentUser + "'s project(s)...", "debug");
                 tmp = await _dbService.GetProjects(Person);
             }
             else
             {
-                OutputMessages.Add(new OutputMessage { Message = "Loading all project(s)...", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "Loading all project(s)...", Level = "debug" });
+                _logService.Write(this, "Loading all project(s)...", "debug");
                 tmp = await _dbService.GetProjects();
             }
-            OutputMessages.Add(new OutputMessage { Message = tmp.Count+" project(s) loaded!", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = tmp.Count+" project(s) loaded!", Level = "debug" });
+            _logService.Write(this, tmp.Count + " project(s) loaded", "debug");
             foreach (var item in tmp)
             {
                 ProjectList.Add(item);
@@ -163,7 +169,9 @@ namespace ChClient.ViewModels
         public RelayCommand<Project> ViewProject { get; private set; }
         private void ViewProjectCommand(Project viewThis)
         {
+            _logService.Write(this, "Navigate to: Project page");
             _navigationService.NavigateTo("Project", new NavigationServiceParameter() { Person = CurrentUser, ObjParam = viewThis });
+            
         }
 
         public ObservableCollection<Project> ProjectList { get; set; }
@@ -173,21 +181,21 @@ namespace ChClient.ViewModels
         {
             try
             {
-                OutputMessages.Add(new OutputMessage { Message = "Deleting reaction(s)...", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "Deleting reaction(s)...", Level = "debug" });
+                _logService.Write(this, "Deleting reaction(s)...", "debug");
                 await _dbService.DeleteProjct(deleteThis.ProjectID);
                 ProjectList.Remove(deleteThis);
-                OutputMessages.Add(new OutputMessage { Message = "Reaction(s) deleted!", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "Reaction(s) deleted!", Level = "debug" });
+                _logService.Write(this, "Reaction(s) deleted!", "debug");
 
             }
             catch (Exception e)
             {
-                //output: error msg
-                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "error" });
+                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "fatal" });
+                _logService.Write(this, e.Message, "fatal");
             }
             
-            
-
-
         }
+        #endregion
     }
 }

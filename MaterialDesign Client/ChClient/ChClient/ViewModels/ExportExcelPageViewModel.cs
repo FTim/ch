@@ -13,11 +13,13 @@ namespace ChClient.ViewModels
 {
     public class ExportExcelPageViewModel :ViewModelBase
     {
+        #region Services
         private IFrameNavigationService _navigationService;
         private ILogger _logService;
         private IExcelWriterService _excelwriterService;
         private IDBService _dbService;
         private IOpenFileDialogService _openFileDialogService;
+        #endregion
         public ExportExcelPageViewModel(IFrameNavigationService navigationService, ILogger logService, IExcelWriterService excelWriterService, IDBService dBService, IOpenFileDialogService openFileDialogService)
         {
             _navigationService = navigationService;
@@ -36,6 +38,9 @@ namespace ChClient.ViewModels
 
         }
 
+
+
+        #region Commands - Navigation
         private void ConfigNavigationCommands()
         {
             CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person;
@@ -51,8 +56,6 @@ namespace ChClient.ViewModels
             ManualInventoryUpdate = new RelayCommand(ManualInventoryUpdateCommand);
             ExportExcel = new RelayCommand(ExportExcelCommand);
         }
-
-        #region Commands - Navigation
         private string _currentuser;
         public string CurrentUser { get { return _currentuser; } set { Set(ref _currentuser, value); } }
         public RelayCommand Home { get; private set; }
@@ -139,16 +142,16 @@ namespace ChClient.ViewModels
             {
 
                 savepath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Inventory.xlsx";
-                OutputMessages.Add(new OutputMessage { Message = "Using default save location", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "Using default save location", Level = "info" });
+                _logService.Write(this, "Using default save location", "info");
             }
             else
             {
                 savepath = resu;
-                OutputMessages.Add(new OutputMessage { Message = savepath + " added as Save Location", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = savepath + " added as Save Location", Level = "debug" });
+                _logService.Write(this, savepath + " added as Save Location", "debug");
             }
-            
-            
-            
+                  
         }
 
 
@@ -158,14 +161,16 @@ namespace ChClient.ViewModels
             SaveProgressVisibility = "visible";
             if (String.IsNullOrEmpty(savepath))
             {
-
                 savepath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Inventory.xlsx";
-                OutputMessages.Add(new OutputMessage { Message = "Using default save location", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "Using default save location", Level = "info" });
+                _logService.Write(this, "Using default save location", "info");
+
             }
-            //savepath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\savedmolecules.xlsx";
+            _logService.Write(this, "Save started", "debug");
             var molecules = await _dbService.GetMoleculesAsync();
             _excelwriterService.ExportExcelAsync(savepath, molecules);
-            OutputMessages.Add(new OutputMessage { Message = "Excel document saved!", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Excel document saved!", Level = "debug" });
+            _logService.Write(this, "Excel document saved", "debug");
             SaveProgressVisibility = null;
             
             
@@ -173,11 +178,6 @@ namespace ChClient.ViewModels
 
         private string _saveprogressvisibility;
         public string SaveProgressVisibility { get { return _saveprogressvisibility; } set { Set(ref _saveprogressvisibility, value); } }
-
-
-
-
-
 
 
     }

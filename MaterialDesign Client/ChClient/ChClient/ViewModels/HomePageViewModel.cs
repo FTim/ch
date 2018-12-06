@@ -12,18 +12,18 @@ namespace ChClient.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
+        #region Services
         private IFrameNavigationService _navigationService;
         private ILogger _logService;
-        private IDBService _dbService;
-        
-        public HomePageViewModel(IFrameNavigationService navigationService, ILogger logService, IDBService dBService)
+        #endregion
+
+        public HomePageViewModel(IFrameNavigationService navigationService, ILogger logService)
         {
             
             _navigationService = navigationService;
             _logService = logService;
 
-            _dbService = dBService;
-
+            //MVVMLight default messenger for CurrentUserChange on ManageUsers page
             Messenger.Default.Register<NotificationMessage>(this, OtherUserSelected);
             ConfigNavigationCommands();
             CurrentUser = "-";
@@ -56,12 +56,14 @@ namespace ChClient.ViewModels
         public RelayCommand ChangeUser { get; private set; }
         private void ChangeUserCommand()
         {
+            _logService.Write(this, "Navigate to: Manage users page");
             _navigationService.NavigateTo("ManageUsers", CurrentUser);
         }
 
         public RelayCommand DatabaseReset { get; private set; }
         private void DatabaseResetCommand()
         {
+            _logService.Write(this, "Navigate to: Database reset page");
             _navigationService.NavigateTo("DatabaseReset");
         }
         public RelayCommand NewProject { get; private set; }

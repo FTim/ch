@@ -17,9 +17,11 @@ namespace ChClient.Services
     public class DBService : IDBService
     {
         private IExcelReaderService _excelReaderService;
-        public DBService(IExcelReaderService exceldatareader)
+        private ILogger _logger;
+        public DBService(IExcelReaderService exceldatareader, ILogger logger)
         {
             _excelReaderService = exceldatareader;
+            _logger = logger;
         }
 
 
@@ -39,9 +41,7 @@ namespace ChClient.Services
         public string AddMoleculesFromExcel(List<MoleculeData> molecules)
         {
                 string result = "";
-                //ui-t nem blokkol teszt
-                //System.Threading.Thread.Sleep(5000);
-
+                
                 try
                 {
                     foreach (var item in molecules)
@@ -54,8 +54,9 @@ namespace ChClient.Services
                             DbAccess.AddMoleculeStatic(item.Name, item.CAS, item.Mvalue, item.dvalue, item.mpvalue, item.bpvalue, item.purity);
                             DbAccess.ConnectLocationMoleculestatic(item.CAS, item.Location, item.mvalue, item.Vvalue);
                         }
-                        catch
+                        catch (Exception e)
                         {
+                            _logger.Write(this, e.InnerException.InnerException.Message, "fatal");
                             throw new Exception(item.Name);
                         }
                        

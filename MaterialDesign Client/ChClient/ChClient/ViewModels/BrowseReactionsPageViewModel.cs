@@ -13,9 +13,11 @@ namespace ChClient.ViewModels
 {
     public class BrowseReactionsPageViewModel :ViewModelBase
     {
+        #region Services
         private IFrameNavigationService _navigationService;
         private ILogger _logService;
         private IDBService _dbService;
+        #endregion
         public BrowseReactionsPageViewModel(IFrameNavigationService navigationService, ILogger logService, IDBService dBService)
         {
             _navigationService = navigationService;
@@ -26,20 +28,12 @@ namespace ChClient.ViewModels
             Mode = tmp.Mode;
             ConfigNavigationCommands();
 
-            ReactionList = new ObservableCollection<ReactionInfo>();
-            GetReactions = new RelayCommand(GetReactionsCommand);
-            ViewReaction = new RelayCommand<ReactionInfo>(ViewReactionCommand);
-            DeleteReaction = new RelayCommand<ReactionInfo>(DeleteReactionCommand);
-
-            OutputMessages = new ObservableCollection<OutputMessage>();
+            Config();
         }
-        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
 
-        private string _person;
-        public string Person { get { return _person; } set { Set(ref _person, value); } }
 
-        private string _mode;
-        public string Mode { get { return _mode; } set { Set(ref _mode, value); } }
+
+        #region Commands - Navigation
         private void ConfigNavigationCommands()
         {
             CurrentUser = ((NavigationServiceParameter)_navigationService.Parameter).Person;
@@ -55,8 +49,6 @@ namespace ChClient.ViewModels
             ManualInventoryUpdate = new RelayCommand(ManualInventoryUpdateCommand);
             ExportExcel = new RelayCommand(ExportExcelCommand);
         }
-
-        #region Commands - Navigation
         private string _currentuser;
         public string CurrentUser { get { return _currentuser; } set { Set(ref _currentuser, value); } }
         public RelayCommand Home { get; private set; }
@@ -133,7 +125,23 @@ namespace ChClient.ViewModels
         #endregion
 
 
+        #region Person&Mode bindings + Logic Commands
+        private void Config()
+        {
+            ReactionList = new ObservableCollection<ReactionInfo>();
+            GetReactions = new RelayCommand(GetReactionsCommand);
+            ViewReaction = new RelayCommand<ReactionInfo>(ViewReactionCommand);
+            DeleteReaction = new RelayCommand<ReactionInfo>(DeleteReactionCommand);
 
+            OutputMessages = new ObservableCollection<OutputMessage>();
+        }
+        public ObservableCollection<OutputMessage> OutputMessages { get; set; }
+
+        private string _person;
+        public string Person { get { return _person; } set { Set(ref _person, value); } }
+
+        private string _mode;
+        public string Mode { get { return _mode; } set { Set(ref _mode, value); } }
         public RelayCommand GetReactions { get; private set; }
         private async void GetReactionsCommand()
         {
@@ -142,14 +150,17 @@ namespace ChClient.ViewModels
             if (Mode == "my")
             {
                 OutputMessages.Add(new OutputMessage { Message = "Loading " + CurrentUser + "'s reaction(s)...", Level = "" });
+                _logService.Write(this, "Loading " + CurrentUser + "'s reaction(s)...", "debug");
                 tmp = await _dbService.GetReactions(Person);
             }
             else
             {
                 OutputMessages.Add(new OutputMessage { Message = "Loading all reaction(s)...", Level = "" });
+                _logService.Write(this, "Loading all reaction(s)...", "debug");
                 tmp = await _dbService.GetReactions();
             }
             OutputMessages.Add(new OutputMessage { Message = tmp.Count + " reaction(s) loaded!", Level = "" });
+            _logService.Write(this, tmp.Count + " reaction(s) loaded", "debug");
             foreach (var item in tmp)
             {
                 ReactionList.Add(item);
@@ -159,7 +170,7 @@ namespace ChClient.ViewModels
         public RelayCommand<ReactionInfo> ViewReaction { get; private set; }
         private void ViewReactionCommand(ReactionInfo viewThis)
         {
-           // _navigationService.NavigateTo("Reaction", viewThis);
+            _logService.Write(this, "Navigate to: Reaction page");
             _navigationService.NavigateTo("Reaction", new NavigationServiceParameter() { Person = CurrentUser, ObjParam = viewThis });
         }
 
@@ -171,18 +182,21 @@ namespace ChClient.ViewModels
             try
             {
                 OutputMessages.Add(new OutputMessage { Message = "Deleting reaction...", Level = "" });
+                _logService.Write(this, "Deleting reaction...", "debug");
                 await _dbService.DeleteReaction(deleteThis.ReactionID);
                 ReactionList.Remove(deleteThis);
                 OutputMessages.Add(new OutputMessage { Message = "Reaction deleted!", Level = "" });
+                _logService.Write(this, "Reaction(s) deleted!", "debug");
             }
             catch (Exception e)
             {
-                //output: error msg
-                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "error" });
+                OutputMessages.Add(new OutputMessage { Message = e.Message, Level = "fatal" });
+                _logService.Write(this, e.Message, "fatal");
             }
 
 
 
         }
+        #endregion
     }
 }
