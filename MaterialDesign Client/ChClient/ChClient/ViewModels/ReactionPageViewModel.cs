@@ -106,6 +106,7 @@ namespace ChClient.ViewModels
         private async void GetResourcesCommand()
         {
             _logService.Write(this, "Loading reaction with ID " + _reactionId, "debug");
+            OutputMessages.Add(new OutputMessage() { Message = "Loading reaction...", Level = "debug" });
             _reaction =await  _dbService.GetReactionAsync(_reactionId);
             var tmpsm = await _dbService.GetStartingMaterial(_reactionId);
             var tmpr = await _dbService.GetReagents(_reactionId);
@@ -113,6 +114,8 @@ namespace ChClient.ViewModels
             var tmpp = await _dbService.GetProducts(_reactionId);
             var tmpobs = await _dbService.GetObsImgs(_reactionId);
             _logService.Write(this, "Loaded " + _reactionId, "debug");
+
+            OutputMessages.Add(new OutputMessage() { Message = "Loaded", Level = "debug" });
             StartingMaterial.Add(tmpsm);
             foreach (var item in tmpr)
             {

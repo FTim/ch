@@ -180,7 +180,7 @@ namespace ChDbProject
             {
                 using (var db = new ChContext())
                 {
-                    var query = db.Projects.Include(p=>p.ProjectPlans);
+                    var query = db.Projects.Include(p=>p.ProjectPlans).ToList();
 
 
                     foreach (var item in query)
@@ -205,7 +205,7 @@ namespace ChDbProject
             {
                 using (var db = new ChContext())
                 {
-                    var query = db.Projects.Include(p => p.ProjectPlans).Where(p=>p.Leader.Name==leader);
+                    var query = db.Projects.Include(p => p.ProjectPlans).Where(p=>p.Leader.Name==leader).ToList();
 
 
                     foreach (var item in query)
@@ -223,7 +223,7 @@ namespace ChDbProject
             return result;
         }
 
-        public static async Task UpdateProject(int id, ProjectDTO projectDTO)
+        public static async Task UpdateProjectAsync(int id, ProjectDTO projectDTO)
         {
             await Task.Run(() =>
             {
@@ -256,7 +256,7 @@ namespace ChDbProject
             });
         }
 
-        public static async Task FinishSketchReaction(int id, ReactionDTO reaction)
+        public static async Task FinishSketchReactionAsync(int id, ReactionDTO reaction)
         {
             await Task.Run(() =>
             {
@@ -494,13 +494,16 @@ namespace ChDbProject
 
 
 
-        public static async Task AddPerson(string name)
+        public static async Task AddPersonAsync(string name)
         {
             
             await Task.Run(() =>
             {
+                
                 using (var db = new ChContext())
                 {
+                   // var tmp=AppDomain.CurrentDomain.GetData("DataDirectory");
+                    //string asd = tmp.ToString();
                     var person = new Person { Name = name };
                     db.People.Add(person);
                     db.SaveChanges();
@@ -512,7 +515,7 @@ namespace ChDbProject
             
         }
 
-        public static async Task AddProject(ProjectDTO projectDTO)
+        public static async Task AddProjectAsync(ProjectDTO projectDTO)
         {
 
             await Task.Run(() =>
@@ -537,7 +540,7 @@ namespace ChDbProject
 
         }
 
-        public static async Task AddReaction(ReactionDTO reactionDTO)
+        public static async Task AddReactionAsync(ReactionDTO reactionDTO)
         {
             await Task.Run(() =>
             {
@@ -646,7 +649,7 @@ namespace ChDbProject
             });
         }
 
-        public static async Task DeleteProject(int projectID)
+        public static async Task DeleteProjectAsync(int projectID)
         {
             await Task.Run(() =>
             {
@@ -703,7 +706,7 @@ namespace ChDbProject
             });
          }
 
-        public static async Task DeleteReaction(int reactionID)
+        public static async Task DeleteReactionAsync(int reactionID)
         {
             await Task.Run(() =>
             {
@@ -742,7 +745,7 @@ namespace ChDbProject
             });
         }
 
-        public static async Task ModifyMoleculeAvailable(string CAS, string location, double? mValue, double? vValue)
+        public static async Task ModifyMoleculeAvailableAsync(string CAS, string location, double? mValue, double? vValue)
         {
             await Task.Run(() =>
             {

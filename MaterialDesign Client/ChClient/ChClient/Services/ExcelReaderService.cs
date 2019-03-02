@@ -17,7 +17,7 @@ namespace ChClient.Services
             List<MoleculeData> Readed = new List<MoleculeData>();
             try
             {
-                reader.FilePath = String.Concat(System.IO.Directory.GetCurrentDirectory(), "\\Resources\\Inventory.xlsx");
+                reader.FilePath = @"C:\ChClient\Resources\Inventory.xlsx";
                 Readed = reader.ReadTo();
 
             }

@@ -66,7 +66,7 @@ namespace ChClient.ViewModels
             {
                 Reactions.Add(item);
             }
-            OutputMessages.Add(new OutputMessage { Message = Reactions.Count + " reactions loaded for this project", Level = "info" });
+            OutputMessages.Add(new OutputMessage { Message = Reactions.Count + " reactions loaded for this project", Level = "debug" });
             _logService.Write(this, Reactions.Count + " reactions loaded for this project", "debug");
         }
 

@@ -14,7 +14,6 @@ namespace ChClient.Converters
         {
             if (value.ToString() == "error"||value.ToString()=="fatal") return "red";
             if (value.ToString() == "info") return "orange";
-            //if(value.ToString()==)
             else return "green";
         }
 

@@ -449,7 +449,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                        <materialDesign:PackIcon Grid.Column="0" Kind="Pencil" />
                         <TextBlock
                             Grid.Column="1"
                             Margin="4,0,0,0"
@@ -487,7 +487,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Grid.Column="0" Kind="ImagePlus" />
+                            <materialDesign:PackIcon Grid.Column="0" Kind="Check" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="4,0,0,0"

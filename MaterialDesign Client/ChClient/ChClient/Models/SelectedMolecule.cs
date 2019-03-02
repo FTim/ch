@@ -98,7 +98,7 @@ namespace ChClient.Models
             }
             else
             {
-                result.Add(new OutputMessage { Message = "Molecule density will be empty", Level = "" });
+                result.Add(new OutputMessage { Message = "Molecule density will be empty", Level = "info" });
             }
 
             if (string.IsNullOrEmpty(Amount))
@@ -133,9 +133,9 @@ namespace ChClient.Models
                 }
             }
 
-            if(string.IsNullOrEmpty(mpValue)) result.Add(new OutputMessage { Message = "Molecule mp will be empty", Level = "" });
-            if (string.IsNullOrEmpty(bpValue)) result.Add(new OutputMessage { Message = "Molecule bp will be empty", Level = "" });
-            if (string.IsNullOrEmpty(Purity)) result.Add(new OutputMessage { Message = "Molecule purity will be empty", Level = "" });
+            if(string.IsNullOrEmpty(mpValue)) result.Add(new OutputMessage { Message = "Molecule mp will be empty", Level = "info" });
+            if (string.IsNullOrEmpty(bpValue)) result.Add(new OutputMessage { Message = "Molecule bp will be empty", Level = "info" });
+            if (string.IsNullOrEmpty(Purity)) result.Add(new OutputMessage { Message = "Molecule purity will be empty", Level = "info" });
 
 
 

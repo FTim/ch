@@ -53,7 +53,18 @@ namespace ChClient.ViewModels
             AddNewUserVisibility = null;
             List<string> users = new List<string>();
             Users.Clear();
-            users = await _dbService.GetUsersAsync();
+            try
+            {
+                users = await _dbService.GetUsersAsync();
+            }
+            catch(Exception e)
+            {
+                _loggerService.Write(this,e.Message);
+                _loggerService.Write(this, e.Source);
+                _loggerService.Write(this, e.InnerException.Message);
+                _loggerService.Write(this, e.InnerException.Source);
+            }
+            
             _loggerService.Write(this, users.Count + " user(s) loaded", "debug");
             foreach (var item in users)
             {

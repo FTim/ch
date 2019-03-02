@@ -115,7 +115,7 @@ namespace ChClient.ViewModels
         {
             var resu = _openFileDialogService.ShowOpenFileDialog();
             ReactionImgPath = resu;
-            OutputMessage tmp = new OutputMessage { Message = ReactionImgPath + " added as Reaction Image", Level = "" };
+            OutputMessage tmp = new OutputMessage { Message = ReactionImgPath + " added as Reaction Image", Level = "debug" };
             OutputMessages.Add(tmp);
             _logService.Write(this, tmp.Message, tmp.Level);
         }
@@ -127,21 +127,23 @@ namespace ChClient.ViewModels
             if (resu != null)
             {
                 ObservationImgPaths.Add(resu);
-                OutputMessages.Add(new OutputMessage { Message = resu + " added as Observation Image", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = resu + " added as Observation Image", Level = "debug" });
+                _logService.Write(this, resu + " added as ObservationImage", "debug");
             }
 
 
             else
             {
-                OutputMessages.Add(new OutputMessage { Message = "No image added as Observation Image", Level = "" });
-                //_loggerService.Write(this, tmp.Message, tmp.Level);
+                OutputMessages.Add(new OutputMessage { Message = "No image added as Observation Image", Level = "debug" });
+                _logService.Write(this, "No image added as Observation Image", "debug");
             }
 
         }
         public RelayCommand<string> DeleteObservationImg { get; private set; }
         private void DeleteObservationImgCommand(string deleteThis)
         {
-            OutputMessages.Add(new OutputMessage { Message = "Observation Image " + deleteThis + " removed!", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Observation Image " + deleteThis + " removed!", Level = "debug" });
+            _logService.Write(this, "Observation Image " + deleteThis + " removeld!", "debug");
             ObservationImgPaths.Remove(deleteThis);
             
         }
@@ -150,7 +152,7 @@ namespace ChClient.ViewModels
         {
             var resu = _openFileDialogService.ShowSaveFileDialog(".docx", "Docx Files (*.docx)| All files (*.*)");
             SaveLocation = resu;
-            OutputMessage tmp = new OutputMessage { Message = SaveLocation + " added as Save Location", Level = "" };
+            OutputMessage tmp = new OutputMessage { Message = SaveLocation + " added as Save Location", Level = "debug" };
             OutputMessages.Add(tmp);
             _logService.Write(this, tmp.Message, tmp.Level);
             
@@ -160,6 +162,7 @@ namespace ChClient.ViewModels
         public RelayCommand SaveReaction { get; private set; }
         private async void SaveReactionCommandAsync()
         {
+            _logService.Write(this, "Attempting to save", "debug");
             _ReactionInfo.StartingMaterial = StartingMaterialList.FirstOrDefault();
             _ReactionInfo.Reagents = ReagentList.ToList();
             _ReactionInfo.Solvents = SolventList.ToList();
@@ -171,27 +174,32 @@ namespace ChClient.ViewModels
                 UploadVisibility = "visible";
                 SaveVisibility = "visible";
                 _docxGeneratorService.GenerateSingleReaction(_ReactionInfo);
-                OutputMessages.Add(new OutputMessage { Message = "Document saved!", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = "Document saved!", Level = "debug" });
+                _logService.Write(this, "Document saved", "debug");
                 SaveSuccessful = "Saved! ";
-                
-                
-                
+
+
+                _logService.Write(this, "Saving to database started", "debug");
                 await _dbService.AddReaction(_ReactionInfo);
                 UploadVisibility = null;
                 SaveSuccessful += "Saved to database!";
                 OutputMessages.Add(new OutputMessage { Message = "Saved to database!", Level = "" });
+                _logService.Write(this, "Saved to database", "debug");
                 if (DropboxUpload)
                 {
+                    _logService.Write(this, "Uploading to Drupbox requested", "debug");
                     string dropboxresult;
                     try
                     {
                         dropboxresult = await _docxGeneratorService.UploadToDropboxAsync(_ReactionInfo.SaveLocation, _ReactionInfo.Project, _ReactionInfo.Code + ".docx");
-                        OutputMessages.Add(new OutputMessage { Message = dropboxresult, Level = "" });
+                        OutputMessages.Add(new OutputMessage { Message = dropboxresult, Level = "debug" });
+                        _logService.Write(this, dropboxresult, "debug");
                     }
                     catch
                     {
                         dropboxresult = "Cannot upload to Dropbox! Check internet connection! ";
                         OutputMessages.Add(new OutputMessage { Message = dropboxresult, Level = "info" });
+                        _logService.Write(this, dropboxresult, "info");
                     }
                     SaveSuccessful += dropboxresult;
                 }
@@ -206,6 +214,7 @@ namespace ChClient.ViewModels
             SelectedMolecule tmp = _selectMoleculeDialogService.ShowMoleculeSelectWindow();
             if (tmp != null)
             {
+                _logService.Write(this, "Selected Starting Material MoleculeCAS&Location:" + tmp.CAS + " ; " + tmp.Location, "debug");
                 SMName = tmp.Name;
                 SMCAS = tmp.CAS;
                 SMLocation = tmp.Location;
@@ -244,19 +253,22 @@ namespace ChClient.ViewModels
                 if (ValidateNewStartingMaterial())
                 {
                     StartingMaterialList.Add(_newsm);
-                    OutputMessages.Add(new OutputMessage { Message = _newsm.Name + " added as Starting Material", Level = "" });
+                    OutputMessages.Add(new OutputMessage { Message = _newsm.Name + " added as Starting Material", Level = "debug" });
+                    _logService.Write(this, _newsm.Name + " added as Starting Material", "debug");
                 }
             }
             else
             {
                 OutputMessages.Add(new OutputMessage { Message = "Only 1 starting material can be added!", Level = "error" });
+                _logService.Write(this, "Only 1 starting material can be added!", "error");
                 
             }
         }
         public RelayCommand<StartingMaterial> DeleteStartingMaterial { get; private set; }
         private void DeleteSM(StartingMaterial deleteThis)
         {
-            OutputMessages.Add(new OutputMessage { Message ="Starting Material "+ deleteThis.Name+" removed!", Level = "info" });
+            OutputMessages.Add(new OutputMessage { Message ="Starting Material "+ deleteThis.Name+" removed!", Level = "debug" });
+            _logService.Write(this, "Starting Material " + deleteThis.Name + " removed!", "debug");
             StartingMaterialList.Remove(deleteThis);
             SMNameEdit = "";
             SMCASEdit = "";
@@ -270,6 +282,8 @@ namespace ChClient.ViewModels
             SelectedMolecule tmp = _selectMoleculeDialogService.ShowMoleculeSelectWindow();
             if (tmp != null)
             {
+
+                _logService.Write(this, "Selected edited MoleculeCAS&Location:" + tmp.CAS + " ; " + tmp.Location, "debug");
                 SMNameEdit = tmp.Name;
                 SMCASEdit = tmp.CAS;
                 SMLocationEdit = tmp.Location;
@@ -311,6 +325,8 @@ namespace ChClient.ViewModels
                 if (ValidateEditedStartingMaterial())
                 {
                     OutputMessages.Add(new OutputMessage { Message = "Starting Material " + _selectedsm.Name + " with "+_selectedsm.mValueString+" m value and "+_selectedsm.VValueString+" V value edited to " + _editedsm.Name + " with " + _editedsm.mValueString + " m value and " + _editedsm.VValueString + " V value!", Level = "info" });
+
+                    _logService.Write(this, "Starting Material " + _selectedsm.CAS+" ; "+_selectedsm.Location + " with " + _selectedsm.mValueString + " m value and " + _selectedsm.VValueString + " V value edited to " + _editedsm.Name + " with " + _editedsm.mValueString + " m value and " + _editedsm.VValueString + " V value!", "info" );
                     StartingMaterialList.Remove(_selectedsm);
                     StartingMaterialList.Add(_editedsm);
                     _selectedsm = null;
@@ -330,6 +346,8 @@ namespace ChClient.ViewModels
             SelectedMolecule tmp = _selectMoleculeDialogService.ShowMoleculeSelectWindow();
             if (tmp != null)
             {
+                _logService.Write(this, "Selected Reagent MoleculeCAS&Location:" + tmp.CAS + " ; " + tmp.Location, "debug");
+
                 RName = tmp.Name;
                 RCAS = tmp.CAS;
                 RLocation = tmp.Location;
@@ -349,6 +367,7 @@ namespace ChClient.ViewModels
             if (ValidateNewReagent())
             {
                 OutputMessages.Add(new OutputMessage { Message = _newr.Name + " added as Reagent", Level = "" });
+                _logService.Write(this, _newr.Name + " added as Starting Material", "debug");
                 ReagentList.Add(_newr);
             }
 
@@ -357,6 +376,7 @@ namespace ChClient.ViewModels
         private void DeleteR(Reagent deleteThis)
         {
             OutputMessages.Add(new OutputMessage { Message = "Reagent " + deleteThis.Name + " removed!", Level = "info" });
+            _logService.Write(this, "Reagent " + deleteThis.Name + " removed!", "debug");
             ReagentList.Remove(deleteThis);
             RNameEdit = "";
             RCASEdit = "";
@@ -370,6 +390,7 @@ namespace ChClient.ViewModels
             SelectedMolecule tmp = _selectMoleculeDialogService.ShowMoleculeSelectWindow();
             if (tmp != null)
             {
+                _logService.Write(this, "Selected edited MoleculeCAS&Location:" + tmp.CAS + " ; " + tmp.Location, "debug");
                 RNameEdit = tmp.Name;
                 RCASEdit = tmp.CAS;
                 RLocationEdit = tmp.Location;
@@ -393,6 +414,8 @@ namespace ChClient.ViewModels
                 if (ValidateEditedReagent())
                 {
                     OutputMessages.Add(new OutputMessage { Message = "Reagent " + _selectedr.Name + " with " + _selectedr.RatioString + " ratio edited to " + _editedr.Name + " with " + _editedr.RatioString + " ratio!", Level = "info" });
+                    _logService.Write(this, "Reagent " + _selectedr.Name + " with " + _selectedr.RatioString + " ratio edited to " + _editedr.Name + " with " + _editedr.RatioString + " ratio!", "info" );
+
                     ReagentList.Remove(_selectedr);
                     ReagentList.Add(_editedr);
                     _selectedr = null;
@@ -408,9 +431,11 @@ namespace ChClient.ViewModels
         public RelayCommand AddMaterialAsSolvent { get; private set; }
         private void AddMaterialAsSolventCommand()
         {
+            
             SelectedMolecule tmp = _selectMoleculeDialogService.ShowMoleculeSelectWindow();
             if (tmp != null)
             {
+                _logService.Write(this, "Selected Solvent MoleculeCAS&Location:" + tmp.CAS + " ; " + tmp.Location, "debug");
                 SName = tmp.Name;
                 SCAS = tmp.CAS;
                 SLocation = tmp.Location;
@@ -431,6 +456,7 @@ namespace ChClient.ViewModels
             if (ValidateNewSolvent())
             {
                 OutputMessages.Add(new OutputMessage { Message = _news.Name + " added as Solvent", Level = "" });
+                _logService.Write(this, _news.Name + " added as Solvent", "debug");
                 SolventList.Add(_news);
             }
 
@@ -438,7 +464,8 @@ namespace ChClient.ViewModels
         public RelayCommand<Solvent> DeleteSolvent { get; private set; }
         private void DeleteS(Solvent deleteThis)
         {
-            OutputMessages.Add(new OutputMessage { Message = "Solvent " + deleteThis.Name + " removed!", Level = "info" });
+            OutputMessages.Add(new OutputMessage { Message = "Solvent " + deleteThis.Name + " removed!", Level = "debug" });
+            _logService.Write(this, "Solvent " + deleteThis.Name + " removed!", "debug");
             SolventList.Remove(deleteThis);
             SNameEdit = "";
             SCASEdit = "";
@@ -452,6 +479,7 @@ namespace ChClient.ViewModels
             SelectedMolecule tmp = _selectMoleculeDialogService.ShowMoleculeSelectWindow();
             if (tmp != null)
             {
+                _logService.Write(this, "Selected edited MoleculeCAS&Location:" + tmp.CAS + " ; " + tmp.Location, "debug");
                 SNameEdit = tmp.Name;
                 SCASEdit = tmp.CAS;
                 SLocationEdit = tmp.Location;
@@ -476,6 +504,7 @@ namespace ChClient.ViewModels
                 if (ValidateEditedSolvent())
                 {
                     OutputMessages.Add(new OutputMessage { Message = "Solvent " + _selecteds.Name + " with " + _selecteds.VValueString + " V value edited to " + _editeds.Name + " with " + _editeds.VValueString + " V value!", Level = "info" });
+                    _logService.Write(this, "Solvent " + _selecteds.Name + " with " + _selecteds.VValueString + " V value edited to " + _editeds.Name + " with " + _editeds.VValueString + " V value!",  "info" );
                     SolventList.Remove(_selecteds);
                     SolventList.Add(_editeds);
                     _selecteds = null;
@@ -495,7 +524,9 @@ namespace ChClient.ViewModels
 
             if (ValidateNewProduct())
             {
-                OutputMessages.Add(new OutputMessage { Message ="Product added with "+ _newp.MWString + " MW value and "+_newp.RatioString+" ratio!", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message ="Product added with "+ _newp.MWString + " MW value and "+_newp.RatioString+" ratio!", Level = "debug" });
+                _logService.Write(this, "Product added with " + _newp.MWString + " MW value and " + _newp.RatioString + " ratio!",   "debug");
+
                 ProductList.Add(_newp);
 
             }
@@ -504,7 +535,8 @@ namespace ChClient.ViewModels
         private void DeleteP(Product deleteThis)
         {
             ProductList.Remove(deleteThis);
-            OutputMessages.Add(new OutputMessage { Message = "Product removed with " + deleteThis.MWString + " MW value and " + deleteThis.RatioString + " ratio!", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Product removed with " + deleteThis.MWString + " MW value and " + deleteThis.RatioString + " ratio!", Level = "dobug" });
+            _logService.Write(this, "Product removed with " + deleteThis.MWString + " MW value and " + deleteThis.RatioString + " ratio!", "debug" );
             PRatioEdit = "";
             PMWvalueEdit = "";
         }
@@ -524,6 +556,7 @@ namespace ChClient.ViewModels
                 if (ValidateEditedProduct())
                 {
                     OutputMessages.Add(new OutputMessage { Message = "Product with " + _selectedp.MWString + " MW value and " + _selectedp.RatioString + " ratio edited to product with " + _editedp.MWString + "MW value and " + _editedp.RatioString + " ratio!", Level = "info" });
+                    _logService.Write( this, "Product with " + _selectedp.MWString + " MW value and " + _selectedp.RatioString + " ratio edited to product with " + _editedp.MWString + "MW value and " + _editedp.RatioString + " ratio!",  "info" );
                     ProductList.Remove(_selectedp);
                     ProductList.Add(_editedp);
                     _selectedp = null;

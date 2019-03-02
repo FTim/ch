@@ -155,18 +155,18 @@ namespace ChClient.Services
             reactionDTO.ObservationImgs = observationImgs;
 
 
-            await DbAccess.AddReaction(reactionDTO);
+            await DbAccess.AddReactionAsync(reactionDTO);
         }
 
         public async Task AddProject(Models.Project project)
         {
             //ProjectDTO projectDTO = new ProjectDTO();
-            await DbAccess.AddProject(new ProjectDTO { Name = project.Name, Leader = project.Leader, Goal = project.Goal, Description = project.Description , PlanImg = convertImg(project.CurrentPlan) });
+            await DbAccess.AddProjectAsync(new ProjectDTO { Name = project.Name, Leader = project.Leader, Goal = project.Goal, Description = project.Description , PlanImg = convertImg(project.CurrentPlan) });
         }
 
         public async Task AddUser(string name)
         {
-            await DbAccess.AddPerson(name);
+            await DbAccess.AddPersonAsync(name);
         }
 
         public async Task<List<Models.Project>> GetProjects()
@@ -231,7 +231,7 @@ namespace ChClient.Services
 
         public async Task UpdateProject(int id, string name, string leader, string goal, string description, string newplanpath)
         {
-            await DbAccess.UpdateProject(id, new ProjectDTO { Name = name, Leader = leader, Goal = goal, Description = description, PlanImg = convertImg(newplanpath) });
+            await DbAccess.UpdateProjectAsync(id, new ProjectDTO { Name = name, Leader = leader, Goal = goal, Description = description, PlanImg = convertImg(newplanpath) });
         }
 
         public async Task<List<ReactionInfo>> GetReactions(int projectID)
@@ -344,15 +344,15 @@ namespace ChClient.Services
 
         public async Task DeleteProjct(int id)
         {
-            await DbAccess.DeleteProject(id);
+            await DbAccess.DeleteProjectAsync(id);
         }
         public async Task DeleteReaction(int id)
         {
-            await DbAccess.DeleteReaction(id);
+            await DbAccess.DeleteReactionAsync(id);
         }
         public async Task ModifyMoleculeAvailable(string CAS, string location, double? mValue, double? vValue)
         {
-            await DbAccess.ModifyMoleculeAvailable(CAS, location, mValue, vValue);
+            await DbAccess.ModifyMoleculeAvailableAsync(CAS, location, mValue, vValue);
         }
 
         public async Task FinishSketchReaction(int id, DateTime closuredate, string procedure, string observation, string yield, List<string> observationimgpaths)
@@ -362,7 +362,7 @@ namespace ChClient.Services
             {
                 tmp.Add(convertImg(item));
             }
-            await DbAccess.FinishSketchReaction(id, new ReactionDTO { ClosureDate = closuredate, Procedure = procedure, Observation = observation, Yield = yield, ObservationImgs = tmp });
+            await DbAccess.FinishSketchReactionAsync(id, new ReactionDTO { ClosureDate = closuredate, Procedure = procedure, Observation = observation, Yield = yield, ObservationImgs = tmp });
         }
 
         public void ResetAll()

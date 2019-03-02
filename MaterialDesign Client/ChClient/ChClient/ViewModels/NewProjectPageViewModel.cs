@@ -53,7 +53,7 @@ namespace ChClient.ViewModels
            users = new List<string>();
 
            users = await _dbService.GetUsersAsync();
-
+            _logService.Write(this, users.Count + " user(s) loaded", "debug");
             foreach (var item in users)
             {
                 Users.Add(item);
@@ -82,6 +82,7 @@ namespace ChClient.ViewModels
         public RelayCommand Home { get; private set; }
         private void HomeCommand()
         {
+            _logService.Write(this, "Navigate to: Home page", "debug");
             _navigationService.NavigateTo("Home");
         }
 
@@ -184,7 +185,8 @@ namespace ChClient.ViewModels
             {
 
                 _dbService.AddProject(_ProjectInfo);
-                OutputMessages.Add(new OutputMessage { Message = ProjectName + " added!", Level = "" });
+                OutputMessages.Add(new OutputMessage { Message = ProjectName + " added!", Level = "debug" });
+                _logService.Write(this, ProjectName + " added", "debug");
             }
            
         }
@@ -195,7 +197,8 @@ namespace ChClient.ViewModels
 
         private bool Validate()
         {
-            OutputMessages.Add(new OutputMessage { Message = "Validate project inputs", Level = "" });
+            OutputMessages.Add(new OutputMessage { Message = "Validate project inputs", Level = "debug" });
+            _logService.Write(this, "Validate project inputs", "debug");
             bool result = true;
             List<OutputMessage> tmp = new List<OutputMessage>();
             tmp = _ProjectInfo.Validate(users);

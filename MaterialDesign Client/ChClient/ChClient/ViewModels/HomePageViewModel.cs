@@ -27,6 +27,7 @@ namespace ChClient.ViewModels
             Messenger.Default.Register<NotificationMessage>(this, OtherUserSelected);
             ConfigNavigationCommands();
             CurrentUser = "-";
+            _logService.Write(this, "HomePage inited", "debug");
         }
 
         private void OtherUserSelected(NotificationMessage notificationMessage)
